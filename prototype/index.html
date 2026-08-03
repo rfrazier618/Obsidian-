@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Obsidian Estate</title>
+  <meta name="description" content="Step inside the mind of R.S. Frazier. The Obsidian Estate is not a website — it is a place.">
+  <meta property="og:title" content="The Obsidian Estate">
+  <meta property="og:description" content="An explorable world. Music, books, style, and thought — five districts, one Estate.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estate.css">
+</head>
+<body class="preload">
+<noscript>
+  <div class="noscript-veil">
+    <p>The Obsidian Estate is an explorable environment and requires JavaScript.</p>
+  </div>
+</noscript>
+
+<!-- ===== Persistent estate chrome (kept to an absolute minimum) ===== -->
+<header id="estate-mark" aria-hidden="true">
+  <span class="mark-rule"></span>
+  <span class="mark-word">THE&nbsp;OBSIDIAN&nbsp;ESTATE</span>
+  <span class="mark-rule"></span>
+</header>
+
+<button id="sound-toggle" type="button" aria-pressed="false" title="Sound">
+  <span class="st-label">SOUND</span><span class="st-state">OFF</span>
+</button>
+
+<button id="compass" type="button" hidden title="Return to the Onyx Lounge">
+  <span>ONYX&nbsp;LOUNGE</span>
+</button>
+
+<main id="estate">
+
+  <!-- ============ ARRIVAL: THE SECURITY GATE (EXT-800) ============ -->
+  <section class="scene scape-gate" id="s-security-gate" data-title="The Security Gate" data-hide-mark>
+    <div class="scape">
+      <div class="sky"></div>
+      <div class="ground"></div>
+      <div class="gate-render open-state"></div>
+      <div class="gate-render closed-state"></div>
+      <div class="vignette"></div>
+    </div>
+    <video id="gate-video" class="gate-video" src="assets/video/gate-opening.mp4"
+           muted playsinline preload="auto" hidden></video>
+    <video id="arrival-video" class="gate-video" src="assets/video/arrival-film.mp4"
+           muted playsinline preload="metadata" hidden></video>
+    <button id="arrival-skip" class="film-skip" type="button" hidden>Skip</button>
+    <div class="room-head arrive gate-head">
+      <h1 class="sr-only">The Obsidian Estate</h1>
+      <p class="mood">You have been expected.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot center-low" data-go="founders-way" data-gate="open">
+        <span class="ring"></span><span class="label">Enter the Estate</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FOUNDER'S WAY ============ -->
+  <section class="scene scape-allee" id="s-founders-way" data-title="Founder's Way">
+    <div class="scape">
+      <div class="sky dusk"></div>
+      <div class="allee-trees left"></div>
+      <div class="allee-trees right"></div>
+      <div class="drive"></div>
+      <div class="lanterns"></div>
+      <div class="render-backdrop founders-render" data-aspect="1.5"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">THE ARRIVAL</p>
+      <h2>Founder&rsquo;s Way</h2>
+      <p class="mood">A wooded all&eacute;e. The world falls away behind you.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot" data-go="legacy-circle" data-ix="0.5" data-iy="0.62" data-clamp>
+        <span class="ring"></span><span class="label">Continue up the drive</span>
+      </button>
+      <button class="hotspot subtle" data-go="security-gate" data-ix="0.5" data-iy="0.94" data-clamp>
+        <span class="ring"></span><span class="label">Back to the gates</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ LEGACY CIRCLE (EXT-110) ============ -->
+  <section class="scene scape-circle" id="s-legacy-circle" data-title="Legacy Circle">
+    <div class="scape">
+      <div class="sky dusk"></div>
+      <div class="facade"></div>
+      <div class="fountain-ring"></div>
+      <div class="court"></div>
+      <div class="render-backdrop circle-render" data-aspect="1.5"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">EXT-110 · THE MOTOR COURT</p>
+      <h2>Legacy Circle</h2>
+      <p class="mood">The residence rises ahead — restrained from the front, certain of itself.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot" data-go="fountain-court" data-ix="0.5" data-iy="0.56" data-clamp>
+        <span class="ring"></span><span class="label">Approach the fountain court</span>
+      </button>
+      <button class="hotspot subtle" data-locked="The gallery is reached from the drive spur." data-ix="0.125" data-iy="0.6">
+        <span class="ring"></span><span class="label">The Vehicle Gallery</span>
+      </button>
+      <button class="hotspot subtle" data-go="founders-way" data-ix="0.5" data-iy="0.96" data-clamp>
+        <span class="ring"></span><span class="label">Back down the drive</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ CENTRAL FOUNTAIN COURT (EXT-100) ============ -->
+  <section class="scene scape-fountain" id="s-fountain-court" data-title="Central Fountain Court">
+    <div class="scape">
+      <div class="sky dusk"></div>
+      <div class="water-court"></div>
+      <div class="entry-doors"></div>
+      <div class="render-backdrop court-render" data-aspect="1.5"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">EXT-100 · THE THRESHOLD</p>
+      <h2>Central Fountain Court</h2>
+      <p class="mood">Water, stone, and the sound of your own footsteps.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot" data-go="grand-atrium" data-ix="0.5" data-iy="0.47" data-clamp>
+        <span class="ring"></span><span class="label">Enter the Estate</span>
+      </button>
+      <button class="hotspot subtle" data-go="legacy-circle" data-ix="0.5" data-iy="0.955" data-clamp>
+        <span class="ring"></span><span class="label">Back to the motor court</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ GRAND ATRIUM (IV-101) ============ -->
+  <section class="scene scape-atrium interior render-titled" id="s-grand-atrium" data-title="The Grand Atrium">
+    <div class="scape">
+      <div class="atrium-glow"></div>
+      <div class="columns"></div>
+      <div class="stair"></div>
+      <div class="marble-floor">
+        <div class="crest-slot floor-crest" data-crest aria-label="RSF floor crest"></div>
+      </div>
+      <div class="render-backdrop atrium-render" data-aspect="2.5006"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Grand Atrium</h2>
+      <p class="mood">Welcome home.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot" data-go="onyx-lounge" data-ix="0.502" data-iy="0.565">
+        <span class="ring"></span><span class="label">The Onyx Lounge</span>
+      </button>
+      <button class="hotspot" data-go="library" data-ix="0.276" data-iy="0.765" data-clamp>
+        <span class="ring"></span><span class="label">The Library</span>
+      </button>
+      <button class="hotspot" data-go="chefs-kitchen" data-ix="0.733" data-iy="0.765" data-clamp>
+        <span class="ring"></span><span class="label">The Chef&rsquo;s Kitchen</span>
+      </button>
+      <button class="hotspot subtle" data-locked="The family&rsquo;s floors are private." data-ix="0.499" data-iy="0.259">
+        <span class="ring"></span><span class="label">Upper Living</span>
+      </button>
+      <button class="hotspot subtle" data-go="fountain-court" data-ix="0.505" data-iy="0.9">
+        <span class="ring"></span><span class="label">Return outside</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ ONYX LOUNGE — ORIENTATION ============ -->
+  <section class="scene scape-onyx interior render-titled" id="s-onyx-lounge" data-title="The Onyx Lounge">
+    <div class="scape">
+      <div class="onyx-panels"></div>
+      <div class="hearth"></div>
+      <div class="render-backdrop onyx-render" data-aspect="2.5006" data-fit="contain"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Onyx Lounge</h2>
+      <p class="mood">Gather yourself. The Estate is yours to explore.</p>
+    </div>
+
+    <!-- On wide screens the render's own signage is the navigation:
+         invisible hit areas sit over each baked marker. -->
+    <div class="onyx-nav">
+      <button class="hotspot bare" data-go="library"
+              data-ix="0.0715" data-iy="0.270" data-w="0.095" data-h="0.100">
+        <span class="halo"></span><span class="sr-only">The Library</span>
+      </button>
+      <button class="hotspot bare" data-guestbook
+              data-ix="0.2925" data-iy="0.378" data-w="0.148" data-h="0.250">
+        <span class="halo"></span><span class="sr-only">Concierge &amp; Reservations</span>
+      </button>
+      <button class="hotspot bare" data-go="hall-of-legacy"
+              data-ix="0.495" data-iy="0.264" data-w="0.108" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Hall of Legacy</span>
+      </button>
+      <button class="hotspot bare" data-go="founders-gallery"
+              data-ix="0.6875" data-iy="0.291" data-w="0.112" data-h="0.100">
+        <span class="halo"></span><span class="sr-only">The Founder&rsquo;s Gallery</span>
+      </button>
+      <button class="hotspot bare" data-go="chefs-kitchen"
+              data-ix="0.836" data-iy="0.285" data-w="0.090" data-h="0.090">
+        <span class="halo"></span><span class="sr-only">The Chef&rsquo;s Kitchen</span>
+      </button>
+      <button class="hotspot bare" data-locked="Staff only. The silver sleeps here."
+              data-ix="0.1535" data-iy="0.879" data-w="0.100" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Butler&rsquo;s Pantry</span>
+      </button>
+      <button class="hotspot bare" data-go="formal-dining"
+              data-ix="0.299" data-iy="0.879" data-w="0.100" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Formal Dining Room</span>
+      </button>
+      <button class="hotspot bare" data-go="rear-estate"
+              data-ix="0.495" data-iy="0.930" data-w="0.138" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Courtyard Terrace</span>
+      </button>
+      <button class="hotspot bare" data-go="conservatory-gallery"
+              data-ix="0.680" data-iy="0.879" data-w="0.128" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Conservatory Gallery</span>
+      </button>
+      <button class="hotspot bare" data-go="morning-room"
+              data-ix="0.8175" data-iy="0.879" data-w="0.102" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Morning Room</span>
+      </button>
+      <!-- appears only once the Library has given up its secret -->
+      <button class="hotspot secret-mark" id="onyx-gemini" data-go="gemini" hidden
+              data-ix="0.413" data-iy="0.432">
+        <span class="ring"></span><span class="label">Gemini</span>
+      </button>
+    </div>
+
+    <nav class="lounge-index" aria-label="Rooms of the Estate">
+      <h3 class="li-head">THE MAIN LEVEL</h3>
+      <ul>
+        <li><button data-go="grand-atrium">The Grand Atrium</button></li>
+        <li><button data-go="library">The Library</button></li>
+        <li><button data-go="hall-of-legacy">The Hall of Legacy</button></li>
+        <li><button data-go="founders-gallery">The Founder&rsquo;s Gallery</button></li>
+        <li><button data-go="morning-room">The Morning Room</button></li>
+        <li><button data-go="chefs-kitchen">The Chef&rsquo;s Kitchen</button></li>
+        <li><button data-go="formal-dining">The Formal Dining Room</button></li>
+        <li><button data-go="conservatory-gallery">The Conservatory Gallery</button></li>
+        <li><button data-go="rear-estate">The Rear Estate</button></li>
+      </ul>
+      <h3 class="li-head li-secret" id="li-gemini" hidden>DISCOVERED</h3>
+      <ul>
+        <li id="li-gemini-link" hidden><button data-go="gemini">Gemini</button></li>
+      </ul>
+      <div class="li-actions">
+        <button class="li-reserve" id="open-guestbook">Sign the Guest Book</button>
+      </div>
+      <p class="li-whisper">Some rooms in this house are not on any list.</p>
+    </nav>
+  </section>
+
+  <!-- ============ LIBRARY (IV-201) ============ -->
+  <section class="scene scape-library interior render-titled" id="s-library" data-title="The Library">
+    <div class="scape">
+      <div class="shelf-wall" id="library-shelves" aria-hidden="true"></div>
+      <div class="library-lamp"></div>
+      <div class="render-backdrop library-render" data-aspect="1.5"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Library</h2>
+      <p class="mood">Knowledge. Reflection. And one or two things the house keeps to itself.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot" data-locked="The garden waits beyond the glass." data-ix="0.113" data-iy="0.429" data-clamp>
+        <span class="ring"></span><span class="label">The Reflection Garden</span>
+      </button>
+      <button class="hotspot" data-go="founders-gallery" data-ix="0.324" data-iy="0.481" data-clamp>
+        <span class="ring"></span><span class="label">The Founder&rsquo;s Gallery</span>
+      </button>
+      <button class="hotspot" data-go="conservatory-gallery" data-ix="0.716" data-iy="0.499" data-clamp>
+        <span class="ring"></span><span class="label">The Reading Alcove</span>
+      </button>
+      <button class="hotspot discover" id="discover-more" data-ix="0.926" data-iy="0.434" data-clamp>
+        <span class="ring"></span><span class="label">Discover more</span>
+      </button>
+      <button class="hotspot subtle" data-go="grand-atrium" data-ix="0.5" data-iy="0.9" data-clamp>
+        <span class="ring"></span><span class="label">Return to the Grand Atrium</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ HALL OF LEGACY (IV-202) ============ -->
+  <section class="scene scape-legacy interior" id="s-hall-of-legacy" data-title="The Hall of Legacy">
+    <div class="scape">
+      <div class="legacy-cases"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Hall of Legacy</h2>
+      <p class="mood">Records. Books. Milestones. A life, kept in gold and glass.</p>
+    </div>
+    <div class="legacy-plinth">
+      <p class="lp-kicker">THE NEXT CHAPTER</p>
+      <p class="lp-title">Lost in the Mind of R.S.&nbsp;Frazier</p>
+      <p class="lp-note">The album. August 21.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-right" data-go="founders-gallery">
+        <span class="ring"></span><span class="label">The Founder&rsquo;s Gallery</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="library">
+        <span class="ring"></span><span class="label">Back to the Library</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FOUNDER'S GALLERY ============ -->
+  <section class="scene scape-gallery interior" id="s-founders-gallery" data-title="The Founder's Gallery">
+    <div class="scape">
+      <div class="gallery-frames"></div>
+      <div class="crest-slot wall-crest" data-crest aria-label="RSF wall crest"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Founder&rsquo;s Gallery</h2>
+      <p class="mood">Music. Books. Style. Thought. One mind, many rooms.</p>
+    </div>
+    <div class="gallery-cards">
+      <article class="g-card"><h4>THE MUSIC</h4><p>DEPMG Records — where the albums are born.</p></article>
+      <article class="g-card"><h4>THE BOOKS</h4><p>Twin Scales Publishing — stories with two sides.</p></article>
+      <article class="g-card"><h4>THE STYLE</h4><p>Algorhythm — create the style. Be the trend.</p></article>
+      <article class="g-card"><h4>THE WORD</h4><p>Obsidian Magazine — the Estate, in print.</p></article>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-left" data-go="morning-room">
+        <span class="ring"></span><span class="label">The Morning Room</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="library">
+        <span class="ring"></span><span class="label">Back to the Library</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ MORNING ROOM (IV-304) ============ -->
+  <section class="scene scape-morning interior" id="s-morning-room" data-title="The Morning Room">
+    <div class="scape">
+      <div class="morning-light"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Morning Room</h2>
+      <p class="mood">East light. Quiet thought. The day begins gently here.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-right" data-go="chefs-kitchen">
+        <span class="ring"></span><span class="label">The Chef&rsquo;s Kitchen</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="founders-gallery">
+        <span class="ring"></span><span class="label">Return</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ CHEF'S KITCHEN (IV-301) ============ -->
+  <section class="scene scape-kitchen interior" id="s-chefs-kitchen" data-title="The Chef's Kitchen">
+    <div class="scape">
+      <div class="kitchen-steel"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Chef&rsquo;s Kitchen</h2>
+      <p class="mood">Copper, steam, and the low music of a working house.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-right" data-go="formal-dining">
+        <span class="ring"></span><span class="label">The Formal Dining Room</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="morning-room">
+        <span class="ring"></span><span class="label">Return</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FORMAL DINING (IV-303) ============ -->
+  <section class="scene scape-dining interior" id="s-formal-dining" data-title="The Formal Dining Room">
+    <div class="scape">
+      <div class="dining-table"></div>
+      <div class="chandelier"></div>
+      <div class="vignette warm"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Formal Dining Room</h2>
+      <p class="mood">Twenty seats. One long candlelit conversation.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-right" data-go="conservatory-gallery">
+        <span class="ring"></span><span class="label">The Conservatory Gallery</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="chefs-kitchen">
+        <span class="ring"></span><span class="label">Return</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ CONSERVATORY GALLERY ============ -->
+  <section class="scene scape-conservatory interior" id="s-conservatory-gallery" data-title="The Conservatory Gallery">
+    <div class="scape">
+      <div class="glass-ribs"></div>
+      <div class="green-shadow"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
+      <h2>The Conservatory Gallery</h2>
+      <p class="mood">Glass walls. Rain on the ceiling. The garden, held indoors.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot at-right" data-go="rear-estate">
+        <span class="ring"></span><span class="label">The Rear Estate</span>
+      </button>
+      <button class="hotspot center-low subtle" data-go="formal-dining">
+        <span class="ring"></span><span class="label">Return</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ REAR ESTATE ============ -->
+  <section class="scene scape-rear" id="s-rear-estate" data-title="The Rear Estate">
+    <div class="scape">
+      <div class="night-sky"></div>
+      <div class="skyline"></div>
+      <div class="infinity-pool"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">THE REAR ESTATE · NORTH TO THE HUDSON</p>
+      <h2>The Grand Terrace</h2>
+      <p class="mood">The ridge falls away. Manhattan burns gold across the water.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot center-low subtle" data-go="conservatory-gallery">
+        <span class="ring"></span><span class="label">Return inside</span>
+      </button>
+      <button class="hotspot at-left" data-go="onyx-lounge">
+        <span class="ring"></span><span class="label">The Onyx Lounge</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ GEMINI (revealed only after discovery) ============ -->
+  <section class="scene scape-gemini interior" id="s-gemini" data-title="Gemini">
+    <div class="scape">
+      <div class="gemini-glow"></div>
+      <div class="gemini-arch"></div>
+      <div class="vignette deep"></div>
+    </div>
+    <div class="room-head">
+      <p class="district">DISTRICT III · BENEATH THE HOUSE</p>
+      <h2 class="gemini-title">GEMINI</h2>
+      <p class="mood">You found it. Not everyone does.</p>
+    </div>
+    <div class="gemini-card">
+      <p>The Speakeasy opens its doors soon. Reservations begin at the Onyx Lounge.</p>
+    </div>
+    <div class="hotspots">
+      <button class="hotspot center-low subtle" data-go="library">
+        <span class="ring"></span><span class="label">Back through the bookshelf</span>
+      </button>
+      <button class="hotspot at-left" data-go="onyx-lounge">
+        <span class="ring"></span><span class="label">The Onyx Lounge</span>
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== Cutscene stage ===== -->
+<div id="cutscene" hidden>
+  <!-- The secret-entrance film (primary path) -->
+  <video id="secret-video" class="cs-video" src="assets/video/secret-entrance.mp4"
+         muted playsinline preload="none" hidden></video>
+  <!-- Cutscene 1 — the bookshelf (fallback still) -->
+  <div class="cs" id="cs-1">
+    <div class="cs-still"></div>
+    <p class="cs-hint">Eight rows down. Four books across.</p>
+  </div>
+  <!-- Cutscene 2 — the shelf opens -->
+  <div class="cs" id="cs-2">
+    <div class="cs-doorway">
+      <div class="cs-door-half left"></div>
+      <div class="cs-door-half right"></div>
+      <div class="cs-lightspill"></div>
+    </div>
+    <p class="cs-cap">Somewhere behind the wall, old gears remember their purpose.</p>
+  </div>
+  <!-- Cutscene 3 — the corridor -->
+  <div class="cs" id="cs-3">
+    <div class="cs-corridor">
+      <div class="corridor-walls"></div>
+      <div class="corridor-floor"></div>
+      <div class="corridor-glow"></div>
+    </div>
+    <p class="cs-cap">No signage. No names. Only marble, gold — and something red, far ahead.</p>
+  </div>
+  <!-- Cutscene 4 — the walk -->
+  <div class="cs" id="cs-4">
+    <div class="cs-corridor walking">
+      <div class="corridor-walls"></div>
+      <div class="corridor-floor"></div>
+      <div class="corridor-glow bright"></div>
+    </div>
+    <p class="cs-cap">Faint jazz. Ice against glass. Laughter that hasn&rsquo;t noticed you yet.</p>
+  </div>
+  <button id="cs-skip" type="button">Skip</button>
+</div>
+
+<!-- ===== Guest Book (Netlify form) ===== -->
+<div id="guestbook" hidden>
+  <div class="gb-panel">
+    <p class="gb-kicker">THE ONYX LOUNGE</p>
+    <h3>The Guest Book</h3>
+    <p class="gb-note">Leave your name, and the Estate will remember you when Gemini opens its doors.</p>
+    <form name="guest-book" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="guest-book">
+      <p class="hp"><label>Don&rsquo;t fill this out: <input name="bot-field"></label></p>
+      <label>Name<input type="text" name="name" required autocomplete="name"></label>
+      <label>Correspondence<input type="email" name="email" required autocomplete="email"></label>
+      <button type="submit" class="gb-sign">Sign</button>
+    </form>
+    <button class="gb-close" type="button" aria-label="Close the guest book">Return to the Lounge</button>
+  </div>
+</div>
+
+<script src="js/estate.js"></script>
+</body>
+</html>
