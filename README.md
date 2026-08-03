@@ -59,3 +59,10 @@ Mark convention observed so far: **OE** on the perimeter and the
 building itself (institution), **RSF** on the founder's ground and in
 his rooms. Worth a Canon Keeper ruling so future renders are
 unambiguous.
+
+## Clickable preview
+
+`prototype/preview.html` is the prototype packaged as one self-contained
+file — fonts, renders, and the discovery film all inlined, no network
+required. Rebuilt by hand when the prototype changes; not part of the
+deploy.
