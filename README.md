@@ -46,6 +46,21 @@ Founder's Gallery wall) is a `crest-slot` that renders the canonical file.
 Until the file exists, slots display a clearly-marked placeholder ring —
 a stand-in, not a redrawn crest.
 
+## The arrival films
+
+Entering the Estate is cinematic and viewport-aware:
+
+- **Landscape / desktop** — `assets/video/arrival-film.mp4` (15 s, 16:9)
+  plays on "Enter the Estate": through the gates, up the drive, past the
+  dome, aerial reveal — then delivers the visitor into the Grand Atrium.
+  Skippable. The outdoor walk (Founder's Way → Legacy Circle → Fountain
+  Court) remains explorable via "Return outside."
+- **Portrait / phones** — `assets/video/gate-opening.mp4` (10 s, 9:16)
+  plays the gates opening, then the on-foot walk begins at Founder's Way.
+- Every path is fail-safed: the closed→open gate render crossfade always
+  runs underneath, films stay hidden until they actually render frames,
+  and timers guarantee the visitor is never stranded.
+
 ## Sound
 
 Off by default; toggled top-right. All ambience is synthesized (WebAudio)

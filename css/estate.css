@@ -247,6 +247,13 @@ body.preload .scene { transition: none; }
   background: var(--obsidian);
 }
 .gate-video[hidden] { display: none; }
+.film-skip {
+  position: absolute; bottom: 1.6rem; right: 1.8rem; z-index: 9;
+  font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: rgba(242, 239, 233, 0.45); transition: color 0.4s;
+}
+.film-skip:hover { color: var(--gold); }
+.film-skip[hidden] { display: none; }
 .room-head.arrive.gate-head { top: auto; bottom: 19vh; }
 .gate-head .mood {
   font-size: clamp(1.05rem, 2vw, 1.35rem);

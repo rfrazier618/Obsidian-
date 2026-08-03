@@ -188,38 +188,57 @@
      Portrait screens play the gate-opening film; landscape crossfades the
      closed render into the open one. Either way the stills are the fallback. */
   const gateVideo = document.getElementById("gate-video");
+  const arrivalVideo = document.getElementById("arrival-video");
+  const arrivalSkip = document.getElementById("arrival-skip");
+
+  /* Play a film over the gate scene. The still-render crossfade always runs
+     underneath, so a codec failure or slow buffer never strands the visitor.
+     The film stays hidden until it actually renders frames. */
+  function playFilm(video, { onDone, onFallback, maxMs }) {
+    let settled = false;
+    const cleanup = () => {
+      video.pause();
+      video.hidden = true;
+      arrivalSkip.hidden = true;
+    };
+    const done = () => { if (!settled) { settled = true; cleanup(); onDone(); } };
+    const fallback = () => { if (!settled) { settled = true; cleanup(); onFallback(); } };
+    video.currentTime = 0;
+    video.addEventListener("playing", () => {
+      if (!settled) { video.hidden = false; arrivalSkip.hidden = false; }
+    }, { once: true });
+    video.addEventListener("ended", done, { once: true });
+    video.addEventListener("error", fallback, { once: true });
+    arrivalSkip.onclick = done;
+    video.onclick = done;
+    setTimeout(fallback, maxMs);
+    const p = video.play();
+    if (p && p.catch) p.catch(fallback);
+  }
 
   function openGate(dest) {
     const gateScene = document.getElementById("s-security-gate");
     gateScene.classList.add("gate-open");
     Sound.ensure();
     Sound.rumble(3.2);
-    let advanced = false;
-    let failsafe = null;
-    const advance = () => {
-      if (advanced) return;
-      advanced = true;
-      clearTimeout(failsafe);
-      if (gateVideo) { gateVideo.pause(); gateVideo.hidden = true; }
-      go(dest);
-    };
     const portrait = window.innerHeight > window.innerWidth * 1.05;
     if (portrait && gateVideo) {
-      gateVideo.hidden = false;
-      gateVideo.currentTime = 0;
-      gateVideo.addEventListener("ended", advance, { once: true });
-      gateVideo.addEventListener("error", () => {
-        gateVideo.hidden = true;
-        setTimeout(advance, 2300);
-      }, { once: true });
-      failsafe = setTimeout(advance, 11500);
-      const p = gateVideo.play();
-      if (p && p.catch) p.catch(() => {
-        gateVideo.hidden = true;
-        setTimeout(advance, 2300);
+      /* phones: the gates open on film, then the walk begins */
+      playFilm(gateVideo, {
+        onDone: () => go(dest),
+        onFallback: () => setTimeout(() => go(dest), 1200),
+        maxMs: 11500
+      });
+    } else if (arrivalVideo) {
+      /* landscape: the arrival film carries you up the drive and delivers
+         you home; the grounds remain explorable via "Return outside" */
+      playFilm(arrivalVideo, {
+        onDone: () => go("grand-atrium"),
+        onFallback: () => setTimeout(() => go(dest), 1200),
+        maxMs: 17500
       });
     } else {
-      failsafe = setTimeout(advance, 2600);
+      setTimeout(() => go(dest), 2600);
     }
   }
 
