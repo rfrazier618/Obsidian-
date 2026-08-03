@@ -467,6 +467,7 @@ body.preload .scene { transition: none; }
 .library-render { background-image: url("../assets/renders/library.png"); }
 .founders-render { background-image: url("../assets/renders/founders-way.png"); }
 .circle-render { background-image: url("../assets/renders/legacy-circle.png"); }
+.court-render { background-image: url("../assets/renders/fountain-court.png"); }
 /* a render that carries its own baked-in title replaces the HTML room head
    and the persistent estate mark while active */
 .render-titled .room-head { display: none; }
