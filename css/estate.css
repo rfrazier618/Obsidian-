@@ -453,6 +453,8 @@ body.preload .scene { transition: none; }
 }
 .atrium-render { background-image: url("../assets/renders/grand-atrium.png"); }
 .library-render { background-image: url("../assets/renders/library.png"); }
+/* interim art — awaiting corrected RSF monogram per ARCH-002 protected letterform */
+.founders-render { background-image: url("../assets/renders/founders-way.png"); }
 /* a render that carries its own baked-in title replaces the HTML room head
    and the persistent estate mark while active */
 .render-titled .room-head { display: none; }
