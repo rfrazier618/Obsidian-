@@ -269,14 +269,48 @@
   /* ---------- cutscenes: the secret entrance ---------- */
 
   const cutsceneEl = document.getElementById("cutscene");
+  const secretVideo = document.getElementById("secret-video");
   const steps = ["cs-1", "cs-2", "cs-3", "cs-4"];
   const DURATIONS = { "cs-1": 10000, "cs-2": 9500, "cs-3": 8000, "cs-4": 11500 };
-  let csTimer = null, csIndex = -1, csActive = false;
+  let csTimer = null, csIndex = -1, csActive = false, csFilm = false;
 
+  /* the discovery plays the secret-entrance film; the staged CSS
+     cutscenes are the fallback if the film cannot play */
   function playCutscenes() {
     csActive = true;
     cutsceneEl.hidden = false;
-    buildShelf(document.getElementById("cs-shelf"), 9, 12, true);
+    if (secretVideo) {
+      let settled = false;
+      csFilm = true;
+      const fallback = () => {
+        if (settled) return;
+        settled = true;
+        csFilm = false;
+        secretVideo.pause();
+        secretVideo.hidden = true;
+        if (csActive) startCssCutscenes();
+      };
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        csFilm = false;
+        endCutscenes();
+      };
+      secretVideo.hidden = false;
+      secretVideo.currentTime = 0;
+      secretVideo.addEventListener("ended", finish, { once: true });
+      secretVideo.addEventListener("error", fallback, { once: true });
+      secretVideo.onclick = finish;
+      setTimeout(() => { if (!settled && secretVideo.currentTime < 0.5) fallback(); }, 4000);
+      setTimeout(finish, 13000);
+      const p = secretVideo.play();
+      if (p && p.catch) p.catch(fallback);
+    } else {
+      startCssCutscenes();
+    }
+  }
+
+  function startCssCutscenes() {
     csIndex = -1;
     nextCutscene();
   }
@@ -300,7 +334,9 @@
 
   function endCutscenes() {
     csActive = false;
+    csFilm = false;
     clearTimeout(csTimer);
+    if (secretVideo) { secretVideo.pause(); secretVideo.hidden = true; }
     steps.forEach(s => document.getElementById(s).classList.remove("active", "leaving"));
     cutsceneEl.hidden = true;
     store.geminiFound = true;
@@ -314,9 +350,10 @@
     playCutscenes();
   });
 
-  /* advance a cutscene early on click (not on the skip button) */
+  /* advance a cutscene early on click (not on the skip button; the film
+     handles its own clicks) */
   cutsceneEl.addEventListener("click", e => {
-    if (e.target.id === "cs-skip" || !csActive) return;
+    if (e.target.id === "cs-skip" || e.target.id === "secret-video" || !csActive || csFilm) return;
     clearTimeout(csTimer);
     nextCutscene();
   });
@@ -335,14 +372,22 @@
       if (h < vh) { h = vh; w = vh * aspect; }
       const ox = (vw - w) / 2, oy = (vh - h) / 2;
       scene.querySelectorAll("[data-ix]").forEach(hs => {
-        const x = ox + parseFloat(hs.dataset.ix) * w;
-        const y = oy + parseFloat(hs.dataset.iy) * h;
+        let x = ox + parseFloat(hs.dataset.ix) * w;
+        let y = oy + parseFloat(hs.dataset.iy) * h;
+        if (hs.hasAttribute("data-clamp")) {
+          /* critical navigation stays reachable even when the crop cuts
+             its marker off — it slides to the nearest edge instead */
+          x = Math.min(Math.max(x, vw * 0.09), vw * 0.91);
+          y = Math.min(Math.max(y, vh * 0.12), vh * 0.9);
+          hs.style.display = "";
+        } else {
+          hs.style.display = (x < -24 || x > vw + 24 || y < -24 || y > vh + 24) ? "none" : "";
+        }
         hs.style.left = x + "px";
         hs.style.top = y + "px";
         hs.style.right = "auto";
         hs.style.bottom = "auto";
         hs.style.transform = "translate(-50%, -50%)";
-        hs.style.display = (x < -24 || x > vw + 24 || y < -24 || y > vh + 24) ? "none" : "";
       });
     });
   }

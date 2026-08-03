@@ -452,6 +452,7 @@ body.preload .scene { transition: none; }
   background-size: cover;
 }
 .atrium-render { background-image: url("../assets/renders/grand-atrium.png"); }
+.library-render { background-image: url("../assets/renders/library.png"); }
 /* a render that carries its own baked-in title replaces the HTML room head
    and the persistent estate mark while active */
 .render-titled .room-head { display: none; }
@@ -759,44 +760,21 @@ body.render-scene #estate-mark { opacity: 0; }
   animation: rise 2.2s var(--ease-cine) 1.2s backwards;
 }
 
-/* cutscene 1 — bookshelf close-up */
-#cs-1 .cs-shelf {
-  position: absolute; left: 50%; top: 8vh; transform: translateX(-50%);
-  width: min(64rem, 92vw); height: 58vh;
-  display: grid; gap: 0.5vh;
-  background: #0c0b0e; padding: 1vh;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  animation: shelfzoom 9s var(--ease-cine) forwards;
+/* the secret-entrance film */
+.cs-video {
+  position: absolute; inset: 0; z-index: 62;
+  width: 100%; height: 100%; object-fit: cover;
+  background: #050505;
 }
-@keyframes shelfzoom { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.28) translateY(4%); } }
-#cs-1 .shelf-row { display: flex; gap: 0.4%; align-items: flex-end; border-bottom: 2px solid rgba(212, 175, 55, 0.22); }
-#cs-1 .book-spine { border-radius: 1px 1px 0 0; }
-.book-spine.the-book {
-  background: linear-gradient(#3a2c17, #241a0d) !important;
-  border: 1px solid var(--gold);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.55);
-  animation: bookcall 2.6s ease-in-out infinite alternate;
-  position: relative;
+.cs-video[hidden] { display: none; }
+
+/* cutscene 1 — bookshelf close-up (fallback still) */
+#cs-1 .cs-still {
+  position: absolute; inset: 0;
+  background: url("../assets/renders/cutscene-book.png") center/cover no-repeat;
+  animation: stillzoom 9.5s var(--ease-cine) forwards;
 }
-@keyframes bookcall { from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.35); } to { box-shadow: 0 0 22px rgba(212, 175, 55, 0.75); } }
-.book-spine.the-book::after {
-  content: "MANCHILD IN THE PROMISED LAND · CLAUDE BROWN";
-  position: absolute; inset: 0; display: grid; place-items: center;
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font-family: var(--display); font-size: min(0.62vh + 0.28vw, 0.55rem);
-  letter-spacing: 0.16em; color: var(--gold);
-  overflow: hidden; padding: 4% 0;
-}
-#cs-1 .cs-plaque {
-  position: absolute; left: 50%; bottom: 22vh; transform: translateX(-50%);
-  text-align: center; padding: 1rem 2.2rem;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  background: linear-gradient(#151310, #0d0c09);
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.8);
-  animation: rise 2s var(--ease-cine) 1.6s backwards;
-}
-.cs-clue { font-family: var(--display); font-size: 1.5rem; letter-spacing: 0.4em; color: var(--gold); padding-left: 0.4em; margin-bottom: 0.4rem; }
-.cs-quote { font-style: italic; font-size: 1rem; color: var(--pearl-dim); }
+@keyframes stillzoom { from { transform: scale(1); } to { transform: scale(1.12); } }
 #cs-1 .cs-hint {
   position: absolute; left: 50%; bottom: 12vh; transform: translateX(-50%);
   font-style: italic; color: rgba(242, 239, 233, 0.4); font-size: 0.95rem;

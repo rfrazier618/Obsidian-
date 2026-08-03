@@ -146,10 +146,10 @@
       <button class="hotspot" data-go="onyx-lounge" data-ix="0.502" data-iy="0.565">
         <span class="ring"></span><span class="label">The Onyx Lounge</span>
       </button>
-      <button class="hotspot" data-go="library" data-ix="0.276" data-iy="0.765">
+      <button class="hotspot" data-go="library" data-ix="0.276" data-iy="0.765" data-clamp>
         <span class="ring"></span><span class="label">The Library</span>
       </button>
-      <button class="hotspot" data-go="chefs-kitchen" data-ix="0.733" data-iy="0.765">
+      <button class="hotspot" data-go="chefs-kitchen" data-ix="0.733" data-iy="0.765" data-clamp>
         <span class="ring"></span><span class="label">The Chef&rsquo;s Kitchen</span>
       </button>
       <button class="hotspot subtle" data-locked="The family&rsquo;s floors are private." data-ix="0.499" data-iy="0.259">
@@ -204,10 +204,11 @@
   </section>
 
   <!-- ============ LIBRARY (IV-201) ============ -->
-  <section class="scene scape-library interior" id="s-library" data-title="The Library">
+  <section class="scene scape-library interior render-titled" id="s-library" data-title="The Library">
     <div class="scape">
       <div class="shelf-wall" id="library-shelves" aria-hidden="true"></div>
       <div class="library-lamp"></div>
+      <div class="render-backdrop library-render" data-aspect="1.5"></div>
       <div class="vignette warm"></div>
     </div>
     <div class="room-head">
@@ -216,20 +217,20 @@
       <p class="mood">Knowledge. Reflection. And one or two things the house keeps to itself.</p>
     </div>
     <div class="hotspots">
-      <button class="hotspot at-left" data-go="hall-of-legacy">
-        <span class="ring"></span><span class="label">The Hall of Legacy</span>
+      <button class="hotspot" data-locked="The garden waits beyond the glass." data-ix="0.113" data-iy="0.429" data-clamp>
+        <span class="ring"></span><span class="label">The Reflection Garden</span>
       </button>
-      <button class="hotspot at-right" data-go="founders-gallery">
+      <button class="hotspot" data-go="founders-gallery" data-ix="0.324" data-iy="0.481" data-clamp>
         <span class="ring"></span><span class="label">The Founder&rsquo;s Gallery</span>
       </button>
-      <button class="hotspot at-right-low" data-go="conservatory-gallery">
+      <button class="hotspot" data-go="conservatory-gallery" data-ix="0.716" data-iy="0.499" data-clamp>
         <span class="ring"></span><span class="label">The Reading Alcove</span>
       </button>
-      <button class="hotspot center-mid discover" id="discover-more">
+      <button class="hotspot discover" id="discover-more" data-ix="0.926" data-iy="0.434" data-clamp>
         <span class="ring"></span><span class="label">Discover more</span>
       </button>
-      <button class="hotspot center-low subtle" data-go="grand-atrium">
-        <span class="ring"></span><span class="label">Return</span>
+      <button class="hotspot subtle" data-go="grand-atrium" data-ix="0.5" data-iy="0.9" data-clamp>
+        <span class="ring"></span><span class="label">Return to the Grand Atrium</span>
       </button>
     </div>
   </section>
@@ -426,13 +427,12 @@
 
 <!-- ===== Cutscene stage ===== -->
 <div id="cutscene" hidden>
-  <!-- Cutscene 1 — the bookshelf -->
+  <!-- The secret-entrance film (primary path) -->
+  <video id="secret-video" class="cs-video" src="assets/video/secret-entrance.mp4"
+         muted playsinline preload="none" hidden></video>
+  <!-- Cutscene 1 — the bookshelf (fallback still) -->
   <div class="cs" id="cs-1">
-    <div class="cs-shelf" id="cs-shelf"></div>
-    <div class="cs-plaque">
-      <p class="cs-clue">19&thinsp;&middot;&thinsp;84</p>
-      <p class="cs-quote">&ldquo;Never stop dreaming&hellip; even when the world wants you to.&rdquo;</p>
-    </div>
+    <div class="cs-still"></div>
     <p class="cs-hint">Eight rows down. Four books across.</p>
   </div>
   <!-- Cutscene 2 — the shelf opens -->
