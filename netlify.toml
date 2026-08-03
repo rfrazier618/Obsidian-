@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Single continuous environment — every route resolves to the Estate.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

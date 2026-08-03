@@ -1,0 +1,903 @@
+/* ============================================================
+   THE OBSIDIAN ESTATE — design system
+   The architecture is the interface. No panels. No chrome.
+   Palette: obsidian black, gold, warm light, pearl.
+   ============================================================ */
+
+:root {
+  --obsidian: #0a0a0a;
+  --onyx: #101013;
+  --marble: #16161b;
+  --marble-vein: #24242c;
+  --gold: #d4af37;
+  --gold-dim: rgba(212, 175, 55, 0.45);
+  --gold-faint: rgba(212, 175, 55, 0.16);
+  --warm: #ffd9a0;
+  --warm-faint: rgba(255, 217, 160, 0.10);
+  --pearl: #f2efe9;
+  --pearl-dim: rgba(242, 239, 233, 0.72);
+  --burgundy: #4b0e14;
+  --red-glow: #8f1420;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --ease-cine: cubic-bezier(0.22, 0.08, 0.14, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--obsidian);
+  color: var(--pearl);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+.noscript-veil {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  background: var(--obsidian); color: var(--pearl); font-size: 1.2rem; z-index: 99;
+  text-align: center; padding: 2rem;
+}
+
+/* ============ persistent chrome ============ */
+
+#estate-mark {
+  position: fixed; top: 1.4rem; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 0.9rem;
+  z-index: 40; pointer-events: none;
+  opacity: 0; transition: opacity 2s var(--ease-cine) 0.6s;
+}
+body.awake #estate-mark { opacity: 1; }
+.mark-word {
+  font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.42em;
+  color: var(--gold-dim); padding-left: 0.42em; /* optically re-center tracked text */
+}
+.mark-rule { width: 3rem; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-faint), transparent); }
+
+#sound-toggle {
+  position: fixed; top: 1.35rem; right: 1.6rem; z-index: 41;
+  display: flex; gap: 0.5em; align-items: baseline;
+  font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: var(--gold-dim); opacity: 0.75; transition: opacity 0.4s, color 0.4s;
+}
+#sound-toggle:hover { opacity: 1; color: var(--gold); }
+#sound-toggle .st-state { color: var(--pearl-dim); }
+#sound-toggle[aria-pressed="true"] .st-state { color: var(--gold); }
+
+#compass {
+  position: fixed; bottom: 1.5rem; right: 1.7rem; z-index: 41;
+  font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.32em;
+  color: var(--gold-dim); border: 1px solid var(--gold-faint);
+  padding: 0.65em 1.1em 0.55em; border-radius: 2em;
+  backdrop-filter: blur(4px); background: rgba(10, 10, 10, 0.35);
+  transition: color 0.4s, border-color 0.4s;
+}
+#compass:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+/* ============ scene engine ============ */
+
+#estate { position: fixed; inset: 0; }
+
+.scene {
+  position: absolute; inset: 0;
+  opacity: 0; visibility: hidden;
+  transform: scale(1.045);
+  transition:
+    opacity 1.7s var(--ease-cine),
+    transform 2.6s var(--ease-cine),
+    visibility 0s linear 1.7s;
+  overflow: hidden;
+}
+.scene.active {
+  opacity: 1; visibility: visible;
+  transform: scale(1);
+  transition:
+    opacity 1.7s var(--ease-cine),
+    transform 2.6s var(--ease-cine),
+    visibility 0s;
+}
+body.preload .scene { transition: none; }
+
+.scape { position: absolute; inset: 0; }
+.scape > div { position: absolute; }
+
+.vignette {
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 42%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.35), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+}
+.vignette.warm {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 217, 160, 0.05) 0%, transparent 45%, rgba(0, 0, 0, 0.6) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.4), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.55));
+}
+.vignette.deep {
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 30%, rgba(0, 0, 0, 0.75) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.5), transparent 25%, transparent 75%, rgba(0, 0, 0, 0.65));
+}
+
+/* ============ room titles ============ */
+
+.room-head {
+  position: absolute; top: 14vh; left: 0; right: 0;
+  text-align: center; z-index: 5; pointer-events: none;
+  padding: 0 1.5rem;
+}
+.room-head .district {
+  font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.44em;
+  color: var(--gold-dim); margin-bottom: 1.1rem; padding-left: 0.44em;
+  opacity: 0; transform: translateY(0.6rem);
+}
+.room-head h1, .room-head h2 {
+  font-family: var(--display); font-weight: 500;
+  font-size: clamp(1.7rem, 4.6vw, 3.4rem);
+  letter-spacing: 0.16em; color: var(--pearl);
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.8);
+  margin-bottom: 1rem; padding-left: 0.16em;
+  opacity: 0; transform: translateY(0.8rem);
+}
+.room-head .mood {
+  font-style: italic; font-weight: 300;
+  font-size: clamp(1rem, 1.9vw, 1.3rem);
+  color: var(--pearl-dim);
+  opacity: 0; transform: translateY(0.6rem);
+}
+.scene.active .room-head .district { animation: rise 1.6s var(--ease-cine) 0.7s forwards; }
+.scene.active .room-head h1,
+.scene.active .room-head h2 { animation: rise 1.8s var(--ease-cine) 1s forwards; }
+.scene.active .room-head .mood { animation: rise 1.8s var(--ease-cine) 1.5s forwards; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+/* for elements centered with left:50% — keeps the X-transform through the animation */
+@keyframes riseC {
+  from { opacity: 0; transform: translateX(-50%) translateY(0.8rem); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.room-head.arrive { top: 24vh; }
+.est-title { font-size: clamp(2rem, 6vw, 4.4rem) !important; }
+
+/* ============ hotspots ============ */
+
+.hotspots { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.hotspot {
+  position: absolute; pointer-events: auto;
+  display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-cine);
+}
+.scene.active .hotspot { opacity: 1; transition-delay: 2.2s; }
+.scene.active .hotspot.subtle { transition-delay: 3s; }
+
+.hotspot .ring {
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  position: relative;
+  transition: border-color 0.5s, transform 0.5s var(--ease-cine);
+}
+.hotspot .ring::before {
+  content: ""; position: absolute; inset: 30%;
+  border-radius: 50%; background: var(--gold);
+  opacity: 0.65; transform: scale(0.42);
+  transition: transform 0.5s var(--ease-cine), opacity 0.5s;
+}
+.hotspot .ring::after {
+  content: ""; position: absolute; inset: -1px;
+  border-radius: 50%; border: 1px solid var(--gold-faint);
+  animation: breathe 3.4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.45); opacity: 0; }
+}
+.hotspot:hover .ring, .hotspot:focus-visible .ring { border-color: var(--gold); transform: scale(1.12); }
+.hotspot:hover .ring::before { transform: scale(0.6); opacity: 1; }
+
+.hotspot .label {
+  font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.3em;
+  color: var(--pearl-dim); white-space: nowrap; padding-left: 0.3em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
+  opacity: 0; transform: translateY(-0.3rem);
+  transition: opacity 0.5s, transform 0.5s var(--ease-cine), color 0.5s;
+}
+.hotspot:hover .label, .hotspot:focus-visible .label { opacity: 1; transform: translateY(0); color: var(--gold); }
+@media (hover: none) { .hotspot .label { opacity: 0.85; transform: none; } }
+
+.hotspot.subtle .ring { width: 1.9rem; height: 1.9rem; opacity: 0.7; }
+.hotspot.discover .ring { border-color: var(--gold); box-shadow: 0 0 18px rgba(212, 175, 55, 0.25); }
+
+.hotspot.center-low { left: 50%; bottom: 9vh; transform: translateX(-50%); }
+.hotspot.center-mid { left: 50%; top: 56vh; transform: translateX(-50%); }
+.hotspot.at-left { left: 12vw; top: 52vh; }
+.hotspot.at-right { right: 12vw; top: 52vh; }
+.hotspot.at-right-low { right: 18vw; bottom: 16vh; }
+
+/* ============================================================
+   SCAPES — each room is painted in light and stone
+   ============================================================ */
+
+/* ---- Security Gate ---- */
+.scape-gate .sky {
+  inset: 0 0 30% 0;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.12), transparent 60%),
+    linear-gradient(#05050a, #0d0d16 55%, #1a1626);
+}
+.scape-gate .ground {
+  inset: 70% 0 0 0;
+  background: linear-gradient(#141018, #08080b);
+}
+.scape-gate .ground::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 34%;
+  transform: translateX(-50%) perspective(300px) rotateX(38deg);
+  transform-origin: top;
+  background: linear-gradient(#1d1a22, #0b0a0e);
+  border-left: 1px solid rgba(212, 175, 55, 0.08);
+  border-right: 1px solid rgba(212, 175, 55, 0.08);
+}
+.scape-gate .gate-piers {
+  inset: 26% 0 30% 0;
+}
+.scape-gate .gate-piers::before, .scape-gate .gate-piers::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 7%;
+  background: linear-gradient(90deg, #1b1b22, #26262e 50%, #131318);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+.scape-gate .gate-piers::before { left: 26%; }
+.scape-gate .gate-piers::after { right: 26%; }
+.scape-gate .gate { inset: 30% 33% 30% 33%; }
+.gate-leaf {
+  position: absolute; top: 0; bottom: 0; width: 50%;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9%, rgba(212, 175, 55, 0.5) 9% 10.5%, transparent 10.5% 19%),
+    linear-gradient(rgba(212, 175, 55, 0.35) 0 2%, transparent 2% 47%, rgba(212, 175, 55, 0.35) 47% 50%, transparent 50% 97%, rgba(212, 175, 55, 0.35) 97%);
+  transition: transform 2.8s var(--ease-cine);
+}
+.gate-leaf.left { left: 0; transform-origin: left center; }
+.gate-leaf.right { right: 0; transform-origin: right center; }
+.scene.gate-open .gate-leaf.left { transform: perspective(800px) rotateY(58deg); }
+.scene.gate-open .gate-leaf.right { transform: perspective(800px) rotateY(-58deg); }
+
+/* ---- Founder's Way ---- */
+.sky.dusk {
+  inset: 0 0 26% 0;
+  background:
+    radial-gradient(ellipse at 50% 105%, rgba(255, 190, 110, 0.18), transparent 55%),
+    linear-gradient(#07070d, #10101c 60%, #241a2a);
+}
+.scape-allee .drive {
+  inset: 62% 0 0 0;
+  background: linear-gradient(#191521, #0a090d);
+}
+.scape-allee .drive::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 60%;
+  transform: translateX(-50%) perspective(260px) rotateX(42deg);
+  transform-origin: top;
+  background: linear-gradient(#221d2b, #0d0c11);
+}
+.allee-trees { top: 8%; bottom: 30%; width: 42%; filter: blur(1px); }
+.allee-trees.left { left: 0; background:
+  radial-gradient(ellipse 30% 58% at 88% 44%, #0e1410 0%, transparent 70%),
+  radial-gradient(ellipse 26% 48% at 55% 40%, #0b100c 0%, transparent 70%),
+  radial-gradient(ellipse 22% 40% at 26% 36%, #090d0a 0%, transparent 70%); }
+.allee-trees.right { right: 0; background:
+  radial-gradient(ellipse 30% 58% at 12% 44%, #0e1410 0%, transparent 70%),
+  radial-gradient(ellipse 26% 48% at 45% 40%, #0b100c 0%, transparent 70%),
+  radial-gradient(ellipse 22% 40% at 74% 36%, #090d0a 0%, transparent 70%); }
+.scape-allee .lanterns {
+  inset: 52% 0 30% 0;
+  background:
+    radial-gradient(circle 3px at 24% 30%, var(--warm) 0%, transparent 100%),
+    radial-gradient(circle 26px at 24% 30%, rgba(255, 217, 160, 0.16), transparent 70%),
+    radial-gradient(circle 2.5px at 37% 44%, var(--warm) 0%, transparent 100%),
+    radial-gradient(circle 20px at 37% 44%, rgba(255, 217, 160, 0.13), transparent 70%),
+    radial-gradient(circle 3px at 76% 30%, var(--warm) 0%, transparent 100%),
+    radial-gradient(circle 26px at 76% 30%, rgba(255, 217, 160, 0.16), transparent 70%),
+    radial-gradient(circle 2.5px at 63% 44%, var(--warm) 0%, transparent 100%),
+    radial-gradient(circle 20px at 63% 44%, rgba(255, 217, 160, 0.13), transparent 70%);
+}
+
+/* ---- Legacy Circle ---- */
+.scape-circle .facade {
+  left: 18%; right: 18%; top: 22%; bottom: 44%;
+  background: linear-gradient(#1c1a20, #121014);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+}
+.scape-circle .facade::before {
+  content: ""; position: absolute; inset: 12% 6%;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 10%,
+      rgba(255, 217, 160, 0.13) 10% 15%,
+      transparent 15% 25%);
+}
+.scape-circle .facade::after {
+  content: ""; position: absolute; left: 44%; right: 44%; top: 40%; bottom: 0;
+  background: linear-gradient(rgba(255, 217, 160, 0.28), rgba(255, 217, 160, 0.1));
+  box-shadow: 0 0 34px rgba(255, 217, 160, 0.25);
+}
+.scape-circle .fountain-ring {
+  left: 50%; top: 66%; width: 34vmin; height: 12vmin;
+  transform: translateX(-50%);
+  border: 1px solid var(--gold-faint); border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 45%, rgba(120, 150, 170, 0.10), rgba(10, 10, 14, 0.4) 70%);
+}
+.scape-circle .fountain-ring::before {
+  content: ""; position: absolute; left: 50%; bottom: 48%; width: 2px; height: 9vmin;
+  transform: translateX(-50%);
+  background: linear-gradient(rgba(190, 210, 225, 0.35), transparent);
+  filter: blur(1px);
+}
+.scape-circle .court { inset: 64% 0 0 0; background: linear-gradient(#17151b, #0a090c); }
+
+/* ---- Fountain Court ---- */
+.scape-fountain .water-court {
+  left: 14%; right: 14%; top: 58%; bottom: 12%;
+  border: 1px solid var(--gold-faint);
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(150, 175, 195, 0.10), transparent 65%),
+    linear-gradient(#101018, #0a0a10);
+}
+.scape-fountain .entry-doors {
+  left: 41%; right: 41%; top: 22%; bottom: 44%;
+  background: linear-gradient(#231e18, #171310);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-bottom: none;
+  border-radius: 46% 46% 0 0 / 30% 30% 0 0;
+  box-shadow: inset 0 0 50px rgba(255, 217, 160, 0.14), 0 0 60px rgba(255, 217, 160, 0.07);
+}
+.scape-fountain .entry-doors::before {
+  content: ""; position: absolute; left: 50%; top: 12%; bottom: 0; width: 1px;
+  background: rgba(212, 175, 55, 0.35);
+}
+
+/* ---- Grand Atrium ---- */
+.scape-atrium .atrium-glow {
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(255, 217, 160, 0.14), transparent 55%),
+    linear-gradient(#131117, #0c0b0f 65%);
+}
+.scape-atrium .columns {
+  inset: 10% 0 34% 0;
+  background:
+    linear-gradient(90deg,
+      transparent 0 7%, rgba(30, 28, 36, 0.9) 7% 10%, transparent 10% 12%,
+      transparent 12% 24%, rgba(30, 28, 36, 0.9) 24% 27%, transparent 27% 29%,
+      transparent 29% 71%, rgba(30, 28, 36, 0.9) 71% 74%, transparent 74% 76%,
+      transparent 76% 88%, rgba(30, 28, 36, 0.9) 88% 91%, transparent 91%);
+}
+.scape-atrium .columns::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg,
+      transparent 0 9.6%, rgba(212, 175, 55, 0.2) 9.6% 10%, transparent 10%,
+      transparent 10% 26.6%, rgba(212, 175, 55, 0.2) 26.6% 27%, transparent 27%,
+      transparent 27% 73.6%, rgba(212, 175, 55, 0.2) 73.6% 74%, transparent 74%,
+      transparent 74% 90.6%, rgba(212, 175, 55, 0.2) 90.6% 91%, transparent 91%);
+}
+.scape-atrium .stair {
+  left: 33%; right: 33%; top: 34%; bottom: 34%;
+  background: repeating-linear-gradient(
+    #1a1820 0 9%, rgba(212, 175, 55, 0.22) 9% 9.8%, #14121a 9.8% 20%);
+  transform: perspective(420px) rotateX(24deg);
+  transform-origin: bottom;
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.55);
+}
+.scape-atrium .marble-floor {
+  inset: 66% 0 0 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 217, 160, 0.07), transparent 70%),
+    linear-gradient(#15131a, #09080c);
+}
+
+/* the crest slot — canonical asset only; placeholder until supplied */
+.crest-slot {
+  background-image: url("../assets/crest/rsf-shield.png");
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+}
+.floor-crest {
+  position: absolute; left: 50%; top: 6%;
+  width: 22vmin; height: 11vmin;
+  transform: translateX(-50%) perspective(300px) rotateX(52deg);
+  opacity: 0.9;
+}
+.wall-crest {
+  left: 50%; top: 30%; width: 12vmin; height: 14vmin;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+.crest-slot.placeholder {
+  background-image: none;
+  border: 1px solid var(--gold-faint); border-radius: 50%;
+  display: grid; place-items: center;
+}
+.crest-slot.placeholder::after {
+  content: "RSF";
+  font-family: var(--display); letter-spacing: 0.3em; padding-left: 0.3em;
+  color: var(--gold-dim); font-size: clamp(0.8rem, 2.4vmin, 1.4rem);
+}
+
+/* ---- Onyx Lounge ---- */
+.scape-onyx .onyx-panels {
+  inset: 0;
+  background:
+    linear-gradient(#0e0d12, #0a090d),
+    repeating-linear-gradient(90deg, transparent 0 12%, rgba(212, 175, 55, 0.05) 12% 12.2%, transparent 12.2% 24%);
+  background-blend-mode: screen;
+}
+.scape-onyx .hearth {
+  left: 8%; bottom: 14%; width: 16%; height: 26%;
+  background:
+    radial-gradient(ellipse at 50% 85%, rgba(255, 150, 60, 0.35), rgba(255, 100, 30, 0.12) 45%, transparent 75%),
+    linear-gradient(#141218, #0c0b0f);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-bottom: none;
+}
+.scape-onyx .hearth::before {
+  content: ""; position: absolute; left: 20%; right: 20%; bottom: 8%; height: 40%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 170, 80, 0.5), transparent 75%);
+  filter: blur(6px);
+  animation: fireflicker 2.8s ease-in-out infinite alternate;
+}
+@keyframes fireflicker { from { opacity: 0.75; } to { opacity: 1; transform: scaleY(1.12); } }
+
+.lounge-index {
+  position: absolute; left: 50%; top: 42vh; transform: translateX(-50%);
+  z-index: 6; text-align: center;
+  opacity: 0;
+}
+.scene.active .lounge-index { animation: riseC 1.8s var(--ease-cine) 2s forwards; }
+.li-head {
+  font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.4em;
+  color: var(--gold-dim); margin-bottom: 0.9rem; padding-left: 0.4em;
+}
+.li-secret { margin-top: 1.4rem; color: var(--red-glow); }
+.lounge-index ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem 1.6rem; max-width: 46rem; }
+.lounge-index li button {
+  font-family: var(--serif); font-size: 1.06rem; font-weight: 400;
+  color: var(--pearl-dim); letter-spacing: 0.04em; padding: 0.2em 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.4s, border-color 0.4s;
+}
+.lounge-index li button:hover { color: var(--gold); border-color: var(--gold-faint); }
+#li-gemini-link button { color: var(--red-glow); font-style: italic; }
+#li-gemini-link button:hover { color: #c22434; }
+.li-actions { margin-top: 1.6rem; }
+.li-reserve {
+  font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.3em; padding: 0.9em 1.8em 0.8em;
+  color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 2em;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+.li-reserve:hover { background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 24px rgba(212, 175, 55, 0.15); }
+.li-whisper {
+  margin-top: 1.5rem; font-style: italic; font-size: 0.92rem;
+  color: rgba(242, 239, 233, 0.34);
+}
+
+/* ---- Library ---- */
+.scape-library .shelf-wall {
+  inset: 12% 8% 18% 8%;
+  display: grid; gap: 1.2%;
+  background: #0d0c10;
+  border: 1px solid rgba(212, 175, 55, 0.14);
+  padding: 1.4%;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.6) inset;
+}
+.shelf-row { display: flex; gap: 0.5%; align-items: flex-end; border-bottom: 2px solid rgba(212, 175, 55, 0.18); padding-bottom: 1px; }
+.book-spine { flex: 1; border-radius: 1px 1px 0 0; opacity: 0.85; }
+.scape-library .library-lamp {
+  left: 50%; top: 6%; width: 60%; height: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 217, 160, 0.14), transparent 65%);
+  pointer-events: none;
+}
+
+/* ---- Hall of Legacy ---- */
+.scape-legacy .legacy-cases {
+  inset: 20% 6% 24% 6%;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 3%,
+      rgba(20, 19, 26, 0.95) 3% 21%,
+      transparent 21% 24%);
+}
+.scape-legacy .legacy-cases::before {
+  content: ""; position: absolute; inset: 8% 0;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 8%,
+      rgba(255, 217, 160, 0.07) 8% 16%,
+      transparent 16% 24%);
+}
+.legacy-plinth {
+  position: absolute; left: 50%; bottom: 17vh; transform: translateX(-50%);
+  text-align: center; z-index: 5; pointer-events: none;
+  padding: 1.4rem 2.6rem 1.2rem;
+  border: 1px solid var(--gold-faint);
+  background: rgba(8, 8, 10, 0.55); backdrop-filter: blur(3px);
+  opacity: 0;
+}
+.scene.active .legacy-plinth { animation: riseC 1.8s var(--ease-cine) 2.1s forwards; }
+.lp-kicker { font-family: var(--display); font-size: 0.56rem; letter-spacing: 0.4em; color: var(--gold-dim); margin-bottom: 0.6rem; padding-left: 0.4em; }
+.lp-title { font-family: var(--display); font-size: clamp(1rem, 2.4vw, 1.5rem); letter-spacing: 0.12em; color: var(--pearl); }
+.lp-note { font-style: italic; color: var(--gold); margin-top: 0.5rem; }
+
+/* ---- Founder's Gallery ---- */
+.scape-gallery .gallery-frames {
+  inset: 18% 8% 30% 8%;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 4%,
+      rgba(212, 175, 55, 0.14) 4% 4.3%, rgba(18, 17, 22, 0.9) 4.3% 20%, rgba(212, 175, 55, 0.14) 20% 20.3%,
+      transparent 20.3% 28%);
+}
+.gallery-cards {
+  position: absolute; left: 50%; bottom: 14vh; transform: translateX(-50%);
+  display: flex; gap: 1.2rem; z-index: 5; flex-wrap: wrap; justify-content: center;
+  width: min(64rem, 94vw); padding: 0 1.4rem;
+  opacity: 0;
+}
+.scene.active .gallery-cards { animation: riseC 1.8s var(--ease-cine) 2.1s forwards; }
+.g-card {
+  border: 1px solid var(--gold-faint); border-radius: 2px;
+  padding: 1.1rem 1.4rem; min-width: 11rem; max-width: 13rem;
+  background: rgba(8, 8, 10, 0.5); backdrop-filter: blur(3px);
+  text-align: center;
+}
+.g-card h4 { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.34em; color: var(--gold); margin-bottom: 0.55rem; padding-left: 0.34em; }
+.g-card p { font-size: 0.95rem; color: var(--pearl-dim); font-style: italic; }
+
+/* ---- Morning Room ---- */
+.scape-morning .morning-light {
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(255, 228, 180, 0.16) 0%, transparent 45%),
+    repeating-linear-gradient(100deg, transparent 0 6%, rgba(255, 228, 180, 0.05) 6% 8%, transparent 8% 14%),
+    linear-gradient(#121016, #0b0a0e);
+}
+
+/* ---- Chef's Kitchen ---- */
+.scape-kitchen .kitchen-steel {
+  inset: 30% 10% 20% 10%;
+  background:
+    linear-gradient(rgba(200, 205, 215, 0.06), rgba(200, 205, 215, 0.02)),
+    repeating-linear-gradient(90deg, transparent 0 18%, rgba(212, 175, 55, 0.1) 18% 18.3%, transparent 18.3% 36%),
+    linear-gradient(#141318, #0d0c10);
+  border-top: 1px solid rgba(255, 217, 160, 0.14);
+}
+.scape-kitchen .kitchen-steel::before {
+  content: ""; position: absolute; left: 15%; right: 15%; top: -18%; height: 10%;
+  background:
+    radial-gradient(circle 3px at 20% 100%, var(--warm), transparent),
+    radial-gradient(circle 3px at 50% 100%, var(--warm), transparent),
+    radial-gradient(circle 3px at 80% 100%, var(--warm), transparent);
+}
+
+/* ---- Formal Dining ---- */
+.scape-dining .dining-table {
+  left: 20%; right: 20%; top: 58%; bottom: 22%;
+  background: linear-gradient(#241c14, #140f0a);
+  transform: perspective(320px) rotateX(30deg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+.scape-dining .dining-table::before {
+  content: ""; position: absolute; left: 6%; right: 6%; top: 42%; height: 2px;
+  background:
+    radial-gradient(circle 2.4px at 10% 50%, var(--warm), transparent),
+    radial-gradient(circle 2.4px at 30% 50%, var(--warm), transparent),
+    radial-gradient(circle 2.4px at 50% 50%, var(--warm), transparent),
+    radial-gradient(circle 2.4px at 70% 50%, var(--warm), transparent),
+    radial-gradient(circle 2.4px at 90% 50%, var(--warm), transparent);
+  filter: drop-shadow(0 0 8px rgba(255, 217, 160, 0.7));
+}
+.scape-dining .chandelier {
+  left: 50%; top: 12%; width: 30%; height: 22%;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 217, 160, 0.22), transparent 65%),
+    radial-gradient(circle 2px at 35% 55%, var(--warm), transparent),
+    radial-gradient(circle 2px at 50% 62%, var(--warm), transparent),
+    radial-gradient(circle 2px at 65% 55%, var(--warm), transparent);
+}
+
+/* ---- Conservatory Gallery ---- */
+.scape-conservatory .glass-ribs {
+  inset: 0 0 24% 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 11%, rgba(212, 175, 55, 0.12) 11% 11.3%, transparent 11.3% 22%),
+    linear-gradient(rgba(150, 190, 170, 0.05), transparent 60%),
+    linear-gradient(#0e1210, #0a0c0b);
+}
+.scape-conservatory .glass-ribs::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(transparent 0 16%, rgba(212, 175, 55, 0.07) 16% 16.4%, transparent 16.4% 32%);
+}
+.scape-conservatory .green-shadow {
+  inset: 50% 0 0 0;
+  background:
+    radial-gradient(ellipse 26% 46% at 12% 68%, rgba(20, 45, 30, 0.55), transparent 75%),
+    radial-gradient(ellipse 22% 40% at 88% 72%, rgba(20, 45, 30, 0.5), transparent 75%),
+    radial-gradient(ellipse 18% 30% at 40% 82%, rgba(16, 38, 25, 0.45), transparent 75%);
+}
+
+/* ---- Rear Estate ---- */
+.scape-rear .night-sky {
+  inset: 0 0 42% 0;
+  background:
+    radial-gradient(circle 1px at 12% 22%, #fff, transparent),
+    radial-gradient(circle 1px at 34% 12%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(circle 1px at 58% 26%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(circle 1px at 76% 16%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(circle 1px at 90% 30%, rgba(255,255,255,0.8), transparent),
+    linear-gradient(#04040a, #0a0a16 70%, #141225);
+}
+.scape-rear .skyline {
+  left: 0; right: 0; top: 44%; height: 14%;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 3%,
+      rgba(22, 22, 34, 0.95) 3% 6%,
+      transparent 6% 7%,
+      rgba(26, 25, 38, 0.95) 7% 12%,
+      transparent 12% 13.5%);
+}
+.scape-rear .skyline::before {
+  content: ""; position: absolute; inset: 20% 0 0 0;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 1.1%, rgba(255, 217, 160, 0.5) 1.1% 1.25%, transparent 1.25% 2.8%,
+      transparent 2.8% 4.6%, rgba(255, 200, 130, 0.4) 4.6% 4.75%, transparent 4.75% 6%);
+  mask-image: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+}
+.scape-rear .infinity-pool {
+  left: 12%; right: 12%; top: 66%; bottom: 10%;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(90, 140, 175, 0.22), rgba(30, 55, 80, 0.14) 55%, transparent),
+    linear-gradient(rgba(16, 22, 34, 0.9), rgba(8, 10, 16, 0.95));
+  border-top: 1px solid rgba(190, 215, 235, 0.28);
+  box-shadow: 0 -1px 30px rgba(140, 180, 210, 0.12);
+}
+
+/* ---- Gemini ---- */
+.scape-gemini .gemini-glow {
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(143, 20, 32, 0.35), transparent 60%),
+    linear-gradient(#0a0708, #070506);
+}
+.scape-gemini .gemini-arch {
+  left: 30%; right: 30%; top: 26%; bottom: 26%;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0 / 42% 42% 0 0;
+  background:
+    radial-gradient(ellipse at 50% 80%, rgba(143, 20, 32, 0.5), rgba(75, 14, 20, 0.25) 55%, transparent),
+    linear-gradient(rgba(10, 8, 9, 0.4), rgba(20, 8, 10, 0.7));
+  box-shadow: 0 0 90px rgba(143, 20, 32, 0.3), inset 0 0 70px rgba(143, 20, 32, 0.2);
+}
+.gemini-title { letter-spacing: 0.5em !important; padding-left: 0.5em !important; color: #e8c9c9 !important; text-shadow: 0 0 40px rgba(200, 40, 60, 0.6) !important; }
+.gemini-card {
+  position: absolute; left: 50%; bottom: 18vh; transform: translateX(-50%);
+  z-index: 5; text-align: center; max-width: 30rem; padding: 0 1.5rem;
+  font-style: italic; color: var(--pearl-dim); font-size: 1.05rem;
+  opacity: 0;
+}
+.scene.active .gemini-card { animation: riseC 1.8s var(--ease-cine) 2.3s forwards; }
+
+/* ============================================================
+   CUTSCENES
+   ============================================================ */
+
+#cutscene {
+  position: fixed; inset: 0; z-index: 60;
+  background: #050505;
+}
+#cutscene[hidden] { display: none; }
+.cs {
+  position: absolute; inset: 0; display: none;
+}
+.cs.active { display: block; animation: csfade 1.4s var(--ease-cine); }
+@keyframes csfade { from { opacity: 0; } to { opacity: 1; } }
+.cs.leaving { animation: csleave 1s var(--ease-cine) forwards; }
+@keyframes csleave { to { opacity: 0; } }
+
+#cs-skip {
+  position: absolute; bottom: 1.6rem; right: 1.8rem; z-index: 65;
+  font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: rgba(242, 239, 233, 0.4); transition: color 0.4s;
+}
+#cs-skip:hover { color: var(--gold); }
+
+.cs-cap {
+  position: absolute; left: 50%; bottom: 11vh; transform: translateX(-50%);
+  width: min(34rem, 86vw); text-align: center;
+  font-style: italic; font-size: 1.1rem; color: var(--pearl-dim);
+  text-shadow: 0 2px 20px #000;
+  animation: rise 2.2s var(--ease-cine) 1.2s backwards;
+}
+
+/* cutscene 1 — bookshelf close-up */
+#cs-1 .cs-shelf {
+  position: absolute; left: 50%; top: 8vh; transform: translateX(-50%);
+  width: min(64rem, 92vw); height: 58vh;
+  display: grid; gap: 0.5vh;
+  background: #0c0b0e; padding: 1vh;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  animation: shelfzoom 9s var(--ease-cine) forwards;
+}
+@keyframes shelfzoom { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.28) translateY(4%); } }
+#cs-1 .shelf-row { display: flex; gap: 0.4%; align-items: flex-end; border-bottom: 2px solid rgba(212, 175, 55, 0.22); }
+#cs-1 .book-spine { border-radius: 1px 1px 0 0; }
+.book-spine.the-book {
+  background: linear-gradient(#3a2c17, #241a0d) !important;
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.55);
+  animation: bookcall 2.6s ease-in-out infinite alternate;
+  position: relative;
+}
+@keyframes bookcall { from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.35); } to { box-shadow: 0 0 22px rgba(212, 175, 55, 0.75); } }
+.book-spine.the-book::after {
+  content: "MANCHILD IN THE PROMISED LAND · CLAUDE BROWN";
+  position: absolute; inset: 0; display: grid; place-items: center;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-family: var(--display); font-size: min(0.62vh + 0.28vw, 0.55rem);
+  letter-spacing: 0.16em; color: var(--gold);
+  overflow: hidden; padding: 4% 0;
+}
+#cs-1 .cs-plaque {
+  position: absolute; left: 50%; bottom: 22vh; transform: translateX(-50%);
+  text-align: center; padding: 1rem 2.2rem;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: linear-gradient(#151310, #0d0c09);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.8);
+  animation: rise 2s var(--ease-cine) 1.6s backwards;
+}
+.cs-clue { font-family: var(--display); font-size: 1.5rem; letter-spacing: 0.4em; color: var(--gold); padding-left: 0.4em; margin-bottom: 0.4rem; }
+.cs-quote { font-style: italic; font-size: 1rem; color: var(--pearl-dim); }
+#cs-1 .cs-hint {
+  position: absolute; left: 50%; bottom: 12vh; transform: translateX(-50%);
+  font-style: italic; color: rgba(242, 239, 233, 0.4); font-size: 0.95rem;
+  animation: rise 2s var(--ease-cine) 3.4s backwards;
+}
+
+/* cutscene 2 — the shelf opens */
+#cs-2 .cs-doorway {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(46rem, 80vw); height: 72vh;
+  perspective: 900px; overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  background: #060605;
+}
+.cs-door-half {
+  position: absolute; top: 0; bottom: 0; width: 50%;
+  background:
+    repeating-linear-gradient(transparent 0 12%, rgba(212, 175, 55, 0.16) 12% 12.5%, transparent 12.5% 25%),
+    linear-gradient(#141218, #0c0b0e);
+  z-index: 2;
+}
+.cs-door-half.left { left: 0; transform-origin: left; animation: doorL 7s var(--ease-cine) 1.8s forwards; }
+.cs-door-half.right { right: 0; transform-origin: right; animation: doorR 7s var(--ease-cine) 1.8s forwards; }
+@keyframes doorL { to { transform: rotateY(72deg); } }
+@keyframes doorR { to { transform: rotateY(-72deg); } }
+.cs-lightspill {
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 205, 130, 0.85), rgba(255, 190, 110, 0.3) 45%, transparent 80%);
+  opacity: 0; animation: spill 6s var(--ease-cine) 3s forwards;
+}
+@keyframes spill { to { opacity: 1; } }
+
+/* cutscenes 3 & 4 — the corridor */
+.cs-corridor { position: absolute; inset: 0; overflow: hidden; }
+.corridor-walls {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #0b0a0d 0%, transparent 28%, transparent 72%, #0b0a0d 100%),
+    repeating-linear-gradient(90deg, transparent 0 8%, rgba(212, 175, 55, 0.09) 8% 8.2%, transparent 8.2% 16%),
+    linear-gradient(#100e13, #0a090c);
+}
+.corridor-walls::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 140vmax; height: 140vmax;
+  transform: translate(-50%, -50%) perspective(70vmax) rotateX(0deg);
+  background:
+    repeating-radial-gradient(circle at center, transparent 0 6%, rgba(212, 175, 55, 0.07) 6% 6.3%, transparent 6.3% 12%);
+  mask-image: radial-gradient(circle at center, black 0%, transparent 55%);
+}
+.corridor-floor {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 44%;
+  background:
+    linear-gradient(rgba(255, 200, 130, 0.05), transparent 30%),
+    repeating-linear-gradient(90deg, transparent 0 10%, rgba(212, 175, 55, 0.08) 10% 10.3%, transparent 10.3% 20%),
+    linear-gradient(#12101a, #08070b);
+  transform: perspective(300px) rotateX(30deg);
+  transform-origin: top;
+}
+.corridor-glow {
+  position: absolute; left: 50%; top: 40%;
+  width: 20vmin; height: 34vmin;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(160, 25, 40, 0.7), rgba(110, 16, 28, 0.3) 50%, transparent 75%);
+  filter: blur(6px);
+  animation: glowpulse 4s ease-in-out infinite alternate;
+}
+.corridor-glow.bright {
+  width: 34vmin; height: 52vmin;
+  background: radial-gradient(ellipse at center, rgba(190, 30, 48, 0.85), rgba(130, 18, 32, 0.4) 50%, transparent 78%);
+}
+@keyframes glowpulse { from { opacity: 0.75; } to { opacity: 1; } }
+.cs-corridor.walking { animation: corridorwalk 11s var(--ease-cine) forwards; }
+@keyframes corridorwalk { from { transform: scale(1); } to { transform: scale(1.65); } }
+
+/* ============================================================
+   GUEST BOOK
+   ============================================================ */
+
+#guestbook {
+  position: fixed; inset: 0; z-index: 55;
+  display: grid; place-items: center;
+  background: rgba(5, 5, 6, 0.78); backdrop-filter: blur(6px);
+  animation: csfade 0.8s var(--ease-cine);
+}
+#guestbook[hidden] { display: none; }
+.gb-panel {
+  width: min(26rem, 90vw); text-align: center;
+  border: 1px solid var(--gold-faint);
+  background: linear-gradient(#111013, #0a090c);
+  padding: 2.6rem 2.4rem 2rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+.gb-kicker { font-family: var(--display); font-size: 0.56rem; letter-spacing: 0.4em; color: var(--gold-dim); margin-bottom: 0.9rem; padding-left: 0.4em; }
+.gb-panel h3 { font-family: var(--display); font-weight: 500; font-size: 1.5rem; letter-spacing: 0.14em; margin-bottom: 0.8rem; }
+.gb-note { font-style: italic; color: var(--pearl-dim); font-size: 0.98rem; margin-bottom: 1.6rem; }
+.gb-panel form { display: grid; gap: 1.1rem; text-align: left; }
+.gb-panel .hp { position: absolute; left: -9999px; }
+.gb-panel label {
+  display: grid; gap: 0.35rem;
+  font-family: var(--display); font-size: 0.58rem; letter-spacing: 0.32em; color: var(--gold-dim);
+}
+.gb-panel input {
+  font-family: var(--serif); font-size: 1.05rem; color: var(--pearl);
+  background: transparent; border: none; border-bottom: 1px solid var(--gold-faint);
+  padding: 0.4em 0.1em; outline: none;
+  transition: border-color 0.4s;
+}
+.gb-panel input:focus { border-color: var(--gold); }
+.gb-sign {
+  justify-self: center; margin-top: 0.6rem;
+  font-family: var(--display); font-size: 0.66rem; letter-spacing: 0.32em;
+  color: var(--obsidian); background: var(--gold);
+  padding: 0.9em 2.6em 0.8em; border-radius: 2em;
+  transition: box-shadow 0.4s;
+}
+.gb-sign:hover { box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); }
+.gb-close {
+  margin-top: 1.6rem; font-style: italic; font-size: 0.9rem;
+  color: rgba(242, 239, 233, 0.45); transition: color 0.4s;
+}
+.gb-close:hover { color: var(--gold); }
+
+/* ============ small screens ============ */
+@media (max-width: 640px) {
+  .hotspot.at-left { left: 7vw; top: auto; bottom: 24vh; }
+  .hotspot.at-right { right: 7vw; top: auto; bottom: 24vh; }
+  .hotspot.at-right-low { right: 8vw; bottom: 34vh; }
+  .room-head { top: 10vh; }
+  .lounge-index { top: 34vh; width: 92vw; }
+  .gallery-cards { bottom: 20vh; gap: 0.7rem; }
+  .g-card { min-width: 40vw; padding: 0.8rem 0.9rem; }
+  .legacy-plinth { width: 86vw; padding: 1.1rem 1rem 0.9rem; }
+}
+
+/* ============ reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  .scene, .scene.active { transition-duration: 0.4s; transform: none; }
+  .hotspot .ring::after { animation: none; }
+  #cs-1 .cs-shelf, .cs-corridor.walking { animation-duration: 2s; }
+}
