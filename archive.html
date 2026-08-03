@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Archive — R.S. Frazier</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #060402;
+  --gold: #C9A84C;
+  --gold-dim: #7a6030;
+  --cream: #F2E8D5;
+  --purple: #9966cc;
+  --neon-red: #cc2233;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 120px 48px 160px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+.archive-header {
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.archive-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.6em;
+  color: var(--purple);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.archive-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.archive-sub {
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  opacity: 0.3;
+  display: block;
+  margin-bottom: 40px;
+}
+
+.gold-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.2) 70%, transparent);
+  margin: 60px 0;
+}
+
+.purple-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(153,102,204,0.2) 30%, rgba(153,102,204,0.2) 70%, transparent);
+  margin: 60px 0;
+}
+
+/* SECTIONS */
+.section {
+  margin-bottom: 80px;
+}
+
+.section-label {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.section-label.purple {
+  color: var(--purple);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 28px;
+}
+
+p {
+  color: var(--cream);
+  opacity: 0.7;
+  margin-bottom: 20px;
+  line-height: 1.9;
+}
+
+p.lead {
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-style: italic;
+  opacity: 0.85;
+  font-family: 'Cormorant Garamond', serif;
+  margin-bottom: 32px;
+}
+
+p.dim {
+  opacity: 0.4;
+}
+
+blockquote {
+  border-left: 2px solid rgba(201,168,76,0.25);
+  padding: 24px 32px;
+  margin: 32px 0;
+  background: rgba(201,168,76,0.03);
+}
+
+blockquote p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-style: italic;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+blockquote cite {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  opacity: 0.45;
+}
+
+.rule-block {
+  padding: 36px 32px;
+  border: 1px solid rgba(153,102,204,0.1);
+  background: rgba(153,102,204,0.03);
+  margin-bottom: 3px;
+}
+
+.rule-label {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  color: var(--purple);
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.rule-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-style: italic;
+  color: var(--cream);
+  opacity: 0.9;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.rule-sub {
+  font-size: 15px;
+  color: var(--cream);
+  opacity: 0.4;
+  line-height: 1.7;
+}
+
+.symbol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin: 32px 0;
+}
+
+.symbol-block {
+  padding: 28px 24px;
+  border: 1px solid rgba(153,102,204,0.08);
+  background: rgba(153,102,204,0.02);
+}
+
+.symbol-icon {
+  font-size: 18px;
+  opacity: 0.35;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.symbol-name {
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--purple);
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.symbol-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--cream);
+  opacity: 0.5;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* PHILOSOPHY LIST */
+.philosophy-list {
+  list-style: none;
+  margin: 24px 0;
+}
+
+.philosophy-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.05);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: italic;
+  color: var(--cream);
+  opacity: 0.65;
+  line-height: 1.5;
+}
+
+/* BACK LINK */
+.back-link {
+  display: inline-block;
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  opacity: 0.3;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  margin-bottom: 60px;
+}
+.back-link:hover { opacity: 0.7; }
+.back-link::before { content: '← '; }
+
+/* TOC */
+.toc {
+  padding: 32px 36px;
+  border: 1px solid rgba(201,168,76,0.08);
+  background: rgba(201,168,76,0.02);
+  margin-bottom: 80px;
+}
+
+.toc-title {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  opacity: 0.35;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.toc a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--cream);
+  opacity: 0.45;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: opacity 0.3s ease;
+  border-bottom: 1px solid rgba(201,168,76,0.04);
+}
+.toc a:hover { opacity: 0.8; }
+.toc a span {
+  font-family: 'Cormorant SC', serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.3;
+  margin-right: 16px;
+  font-style: normal;
+}
+
+@media (max-width: 600px) {
+  body { padding: 80px 24px 120px; }
+  .symbol-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">Return to the Estate</a>
+
+<div class="archive-header">
+  <span class="archive-eyebrow">Restricted · Private Canon · Not Linked From the Estate</span>
+  <h1 class="archive-title">The Archive</h1>
+  <span class="archive-sub">The Mythology of The Obsidian Estate · R.S. Frazier</span>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <span class="toc-title">Contents</span>
+  <a href="#foundation"><span>I</span>The Foundation</a>
+  <a href="#philosophy"><span>II</span>The Central Philosophy</a>
+  <a href="#origin"><span>III</span>The Origin Lore</a>
+  <a href="#truth"><span>IV</span>The Core Truth</a>
+  <a href="#rules"><span>V</span>The Estate Rules</a>
+  <a href="#symbols"><span>VI</span>The Estate Symbols</a>
+  <a href="#real-secret"><span>VII</span>The Real Secret</a>
+  <a href="#universe"><span>VIII</span>The Universe</a>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- I. THE FOUNDATION -->
+<div class="section" id="foundation">
+  <span class="section-label">I</span>
+  <h2 class="section-title">The Foundation</h2>
+  <p class="lead">The Obsidian Estate is not a mansion. It is a psychological map of R.S. Frazier.</p>
+  <p>Every room represents an emotional function. A creative instinct. A survival mechanism. A philosophy. The Estate is a living autobiography disguised as architecture.</p>
+  <p>That is the lore foundation. That is why it works.</p>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- II. THE CENTRAL PHILOSOPHY -->
+<div class="section" id="philosophy">
+  <span class="section-label">II</span>
+  <h2 class="section-title">The Central Philosophy</h2>
+  <blockquote>
+    <p>"Protect What Builds Legacy."</p>
+    <cite>— The Estate Creed</cite>
+  </blockquote>
+  <p>This is the Estate's thematic spine. Its emotional mission statement. The Estate exists to preserve what the world is designed to erode:</p>
+  <ul class="philosophy-list">
+    <li>Art</li>
+    <li>Memory</li>
+    <li>Identity</li>
+    <li>Truth</li>
+    <li>Intimacy</li>
+    <li>Creation</li>
+    <li>Emotional honesty</li>
+  </ul>
+  <p class="dim">That is the mythology.</p>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- III. THE ORIGIN LORE -->
+<div class="section" id="origin">
+  <span class="section-label">III</span>
+  <h2 class="section-title">The Origin Lore</h2>
+  <p class="lead">The Obsidian Estate was not inherited. It was assembled.</p>
+  <p>Built slowly over years by R.S. Frazier after creative exhaustion. After emotional isolation. After public performance fatigue. After the realization that success without inner architecture becomes self-destruction.</p>
+  <p>The Estate began as one private study.</p>
+  <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(18px,2vw,22px); font-style:italic; opacity:0.6; line-height:2;">Books.<br>Music.<br>Notes.<br>Whiskey.<br>Rain.</p>
+  <p>Everything else expanded outward from that room.</p>
+  <blockquote>
+    <p>"The Estate grew psychologically. Not financially."</p>
+    <cite>— The Archive</cite>
+  </blockquote>
+  <p class="dim">This is why the Study emotionally anchors the Estate. Why the hallways feel introspective. Why the Observatory exists. Why the Vault exists underground.</p>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- IV. THE CORE TRUTH -->
+<div class="section" id="truth">
+  <span class="section-label">IV</span>
+  <h2 class="section-title">The Core Truth</h2>
+  <p class="lead">Humans don't obsess over places. They obsess over what happened there.</p>
+  <ul class="philosophy-list">
+    <li>What happened there</li>
+    <li>Who changed there</li>
+    <li>What was lost there</li>
+    <li>What was hidden there</li>
+  </ul>
+  <p>Without lore, beautiful images fade. With lore, people begin attaching memory and meaning to spaces. That is how worlds become iconic.</p>
+  <p>The Estate is not designed to impress. It is designed to be remembered.</p>
+</div>
+
+<div class="purple-rule"></div>
+
+<!-- V. THE ESTATE RULES -->
+<div class="section" id="rules">
+  <span class="section-label purple">V</span>
+  <h2 class="section-title">The Estate Rules</h2>
+  <div class="rule-block">
+    <span class="rule-label">Rule I</span>
+    <p class="rule-text">"Nothing enters the Estate without intention."</p>
+    <p class="rule-sub">Guests are curated. Conversations matter. Energy matters. Art matters. Silence matters. This is why the Estate feels sacred instead of flashy.</p>
+  </div>
+  <div class="rule-block">
+    <span class="rule-label">Rule II</span>
+    <p class="rule-text">"Performance ends at the Sitting Room."</p>
+    <p class="rule-sub">Inside that room: honesty is mandatory. Ego dies. Masks come off. No business. No branding. No public identity. Just truth.</p>
+  </div>
+  <div class="rule-block">
+    <span class="rule-label">Rule III</span>
+    <p class="rule-text">"GEMINI remembers everything."</p>
+    <p class="rule-sub">Every performance leaves emotional residue. Every confession lingers. Every heartbreak echoes in the walls. Music imprints itself onto the Estate.</p>
+  </div>
+  <div class="rule-block">
+    <span class="rule-label">Rule IV</span>
+    <p class="rule-text">"The Vault protects more than valuables."</p>
+    <p class="rule-sub">Original manuscripts. Unfinished songs. Unreleased recordings. Letters never sent. Photographs. Journals. Memories too dangerous to lose. Not wealth. Emotional preservation.</p>
+  </div>
+</div>
+
+<div class="purple-rule"></div>
+
+<!-- VI. THE ESTATE SYMBOLS -->
+<div class="section" id="symbols">
+  <span class="section-label purple">VI</span>
+  <h2 class="section-title">The Estate Symbols</h2>
+  <div class="symbol-grid">
+    <div class="symbol-block">
+      <span class="symbol-icon">🖤</span>
+      <span class="symbol-name">The Black Rose</span>
+      <p class="symbol-desc">Beauty surviving darkness. Emotional resilience. Protected vulnerability.</p>
+    </div>
+    <div class="symbol-block">
+      <span class="symbol-icon">◈</span>
+      <span class="symbol-name">Amber Light</span>
+      <p class="symbol-desc">Memory. Intimacy. Preservation. Every room lit by what it holds.</p>
+    </div>
+    <div class="symbol-block">
+      <span class="symbol-icon">〰</span>
+      <span class="symbol-name">Rain</span>
+      <p class="symbol-desc">Reflection. Emotional cleansing. Transition. The sound between what was and what comes next.</p>
+    </div>
+    <div class="symbol-block">
+      <span class="symbol-icon">♪</span>
+      <span class="symbol-name">Music</span>
+      <p class="symbol-desc">Truth. Not entertainment. The distinction changes everything about what you hear.</p>
+    </div>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- VII. THE REAL SECRET -->
+<div class="section" id="real-secret">
+  <span class="section-label">VII</span>
+  <h2 class="section-title">The Real Secret</h2>
+  <p class="lead">The Estate is not designed to keep people out.</p>
+  <p>It is designed to protect what remains human inside the people allowed in.</p>
+  <p>That is why the Kitchen feels warm. Why the Sitting Room feels honest. Why GEMINI feels emotional. Why the Observatory feels philosophical. Why the Vault feels necessary.</p>
+  <blockquote>
+    <p>"The Estate is trying to preserve souls from modern noise."</p>
+    <cite>— The Archive · R.S. Frazier</cite>
+  </blockquote>
+  <p class="dim">That is the mythology.</p>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- VIII. THE UNIVERSE -->
+<div class="section" id="universe">
+  <span class="section-label">VIII</span>
+  <h2 class="section-title">The Universe</h2>
+  <p class="lead">"Welcome to the Mind of R.S. Frazier."</p>
+  <p>Not metaphorically. Architecturally. Emotionally. Narratively.</p>
+  <p>What exists so far is a beginning. The Estate was built from one room. The universe builds the same way — one room at a time, each one connected, each one earned.</p>
+  <p class="dim">The kind of lore that expands infinitely. Novels. Music videos. Album interludes. Short films. Visual journals. Collector editions. Exhibitions. A neo-soul noir universe built from grief, discipline, and a voice that had been waiting since 2007.</p>
+
+  <div style="text-align:center; margin-top:80px; padding-top:60px; border-top:1px solid rgba(201,168,76,0.06);">
+    <p style="font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:0.5em; color:var(--gold); opacity:0.2; margin-bottom:16px;">The Obsidian Estate</p>
+    <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(20px,3vw,32px); font-style:italic; color:var(--cream); opacity:0.4; line-height:1.5;">"Protect what builds legacy.<br>Everything else is temporary."</p>
+    <p style="font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:0.3em; color:var(--gold); opacity:0.2; margin-top:20px;">— R.S. Frazier</p>
+  </div>
+</div>
+
+<div style="text-align:center; margin-top:80px;">
+  <a href="index.html" class="back-link">Return to the Estate</a>
+</div>
+
+</body>
+</html>
