@@ -129,6 +129,18 @@ body.preload .scene { transition: none; }
   text-align: center; z-index: 5; pointer-events: none;
   padding: 0 1.5rem;
 }
+/* soft cinematic scrim so titles hold against bright renders —
+   a lens vignette, never a panel */
+.room-head::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: min(58rem, 96vw); height: 24rem;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(4, 4, 6, 0.62) 0%, rgba(4, 4, 6, 0.34) 42%, transparent 72%);
+  z-index: -1; pointer-events: none;
+  opacity: 0;
+}
+.scene.active .room-head::before { animation: fadeIn 2s var(--ease-cine) 0.5s forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
 .room-head .district {
   font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.44em;
   color: var(--gold-dim); margin-bottom: 1.1rem; padding-left: 0.44em;
@@ -454,6 +466,7 @@ body.preload .scene { transition: none; }
 .atrium-render { background-image: url("../assets/renders/grand-atrium.png"); }
 .library-render { background-image: url("../assets/renders/library.png"); }
 .founders-render { background-image: url("../assets/renders/founders-way.png"); }
+.circle-render { background-image: url("../assets/renders/legacy-circle.png"); }
 /* a render that carries its own baked-in title replaces the HTML room head
    and the persistent estate mark while active */
 .render-titled .room-head { display: none; }
