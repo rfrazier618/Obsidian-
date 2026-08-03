@@ -428,6 +428,21 @@ body.preload .scene { transition: none; }
   color: var(--gold-dim); font-size: clamp(0.8rem, 2.4vmin, 1.4rem);
 }
 
+/* ---- approved room renders (cinematic backdrops) ---- */
+.render-backdrop {
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.atrium-render { background-image: url("../assets/renders/grand-atrium.png"); }
+/* a render that carries its own baked-in title replaces the HTML room head
+   and the persistent estate mark while active */
+.render-titled .room-head { display: none; }
+body.render-scene #estate-mark { opacity: 0; }
+/* locked hotspot feedback — the house declines politely */
+.hotspot.locked-flash .label { opacity: 1; transform: translateY(0); color: var(--warm); font-style: italic; }
+
 /* ---- Onyx Lounge ---- */
 .scape-onyx .onyx-panels {
   inset: 0;

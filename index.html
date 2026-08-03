@@ -125,7 +125,7 @@
   </section>
 
   <!-- ============ GRAND ATRIUM (IV-101) ============ -->
-  <section class="scene scape-atrium interior" id="s-grand-atrium" data-title="The Grand Atrium">
+  <section class="scene scape-atrium interior render-titled" id="s-grand-atrium" data-title="The Grand Atrium">
     <div class="scape">
       <div class="atrium-glow"></div>
       <div class="columns"></div>
@@ -133,6 +133,7 @@
       <div class="marble-floor">
         <div class="crest-slot floor-crest" data-crest aria-label="RSF floor crest"></div>
       </div>
+      <div class="render-backdrop atrium-render" data-aspect="2.5006"></div>
       <div class="vignette warm"></div>
     </div>
     <div class="room-head">
@@ -141,13 +142,19 @@
       <p class="mood">Welcome home.</p>
     </div>
     <div class="hotspots">
-      <button class="hotspot at-left" data-go="onyx-lounge">
+      <button class="hotspot" data-go="onyx-lounge" data-ix="0.502" data-iy="0.565">
         <span class="ring"></span><span class="label">The Onyx Lounge</span>
       </button>
-      <button class="hotspot at-right" data-go="library">
+      <button class="hotspot" data-go="library" data-ix="0.276" data-iy="0.765">
         <span class="ring"></span><span class="label">The Library</span>
       </button>
-      <button class="hotspot center-low subtle" data-go="fountain-court">
+      <button class="hotspot" data-go="chefs-kitchen" data-ix="0.733" data-iy="0.765">
+        <span class="ring"></span><span class="label">The Chef&rsquo;s Kitchen</span>
+      </button>
+      <button class="hotspot subtle" data-locked="The family&rsquo;s floors are private." data-ix="0.499" data-iy="0.259">
+        <span class="ring"></span><span class="label">Upper Living</span>
+      </button>
+      <button class="hotspot subtle" data-go="fountain-court" data-ix="0.505" data-iy="0.9">
         <span class="ring"></span><span class="label">Return outside</span>
       </button>
     </div>

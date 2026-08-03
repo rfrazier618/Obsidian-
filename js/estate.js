@@ -178,6 +178,7 @@
       ? next.dataset.title + " · The Obsidian Estate"
       : "The Obsidian Estate";
     compass.hidden = (id === "security-gate" || id === "onyx-lounge");
+    document.body.classList.toggle("render-scene", next.classList.contains("render-titled"));
     sceneAmbience(id);
     setTimeout(() => { transitioning = false; }, 1400);
   }
@@ -263,6 +264,50 @@
     if (e.target.id === "cs-skip" || !csActive) return;
     clearTimeout(csTimer);
     nextCutscene();
+  });
+
+  /* ---------- room renders: map hotspots onto cover-cropped backdrops ---------- */
+  /* Hotspots carrying data-ix/data-iy are positioned in image space (fractions
+     of the render) and re-projected through the CSS cover crop, so they sit on
+     the render's own gold markers at any viewport size. */
+
+  function layoutRenderScenes() {
+    document.querySelectorAll(".scene .render-backdrop[data-aspect]").forEach(bd => {
+      const scene = bd.closest(".scene");
+      const aspect = parseFloat(bd.dataset.aspect);
+      const vw = window.innerWidth, vh = window.innerHeight;
+      let w = vw, h = vw / aspect;
+      if (h < vh) { h = vh; w = vh * aspect; }
+      const ox = (vw - w) / 2, oy = (vh - h) / 2;
+      scene.querySelectorAll("[data-ix]").forEach(hs => {
+        const x = ox + parseFloat(hs.dataset.ix) * w;
+        const y = oy + parseFloat(hs.dataset.iy) * h;
+        hs.style.left = x + "px";
+        hs.style.top = y + "px";
+        hs.style.right = "auto";
+        hs.style.bottom = "auto";
+        hs.style.transform = "translate(-50%, -50%)";
+        hs.style.display = (x < -24 || x > vw + 24 || y < -24 || y > vh + 24) ? "none" : "";
+      });
+    });
+  }
+  window.addEventListener("resize", layoutRenderScenes);
+  layoutRenderScenes();
+
+  /* locked hotspots — rooms the house declines to open */
+  document.querySelectorAll("[data-locked]").forEach(btn => {
+    const label = btn.querySelector(".label");
+    const original = label.innerHTML;
+    let timer = null;
+    btn.addEventListener("click", () => {
+      label.textContent = btn.dataset.locked;
+      btn.classList.add("locked-flash");
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        label.innerHTML = original;
+        btn.classList.remove("locked-flash");
+      }, 2600);
+    });
   });
 
   /* ---------- guest book ---------- */
