@@ -178,22 +178,58 @@
       ? next.dataset.title + " · The Obsidian Estate"
       : "The Obsidian Estate";
     compass.hidden = (id === "security-gate" || id === "onyx-lounge");
-    document.body.classList.toggle("render-scene", next.classList.contains("render-titled"));
+    document.body.classList.toggle("render-scene",
+      next.classList.contains("render-titled") || next.hasAttribute("data-hide-mark"));
     sceneAmbience(id);
     setTimeout(() => { transitioning = false; }, 1400);
   }
 
-  /* gate opening is a scene event, then movement */
+  /* gate opening is a scene event, then movement.
+     Portrait screens play the gate-opening film; landscape crossfades the
+     closed render into the open one. Either way the stills are the fallback. */
+  const gateVideo = document.getElementById("gate-video");
+
+  function openGate(dest) {
+    const gateScene = document.getElementById("s-security-gate");
+    gateScene.classList.add("gate-open");
+    Sound.ensure();
+    Sound.rumble(3.2);
+    let advanced = false;
+    let failsafe = null;
+    const advance = () => {
+      if (advanced) return;
+      advanced = true;
+      clearTimeout(failsafe);
+      if (gateVideo) { gateVideo.pause(); gateVideo.hidden = true; }
+      go(dest);
+    };
+    const portrait = window.innerHeight > window.innerWidth * 1.05;
+    if (portrait && gateVideo) {
+      gateVideo.hidden = false;
+      gateVideo.currentTime = 0;
+      gateVideo.addEventListener("ended", advance, { once: true });
+      gateVideo.addEventListener("error", () => {
+        gateVideo.hidden = true;
+        setTimeout(advance, 2300);
+      }, { once: true });
+      failsafe = setTimeout(advance, 11500);
+      const p = gateVideo.play();
+      if (p && p.catch) p.catch(() => {
+        gateVideo.hidden = true;
+        setTimeout(advance, 2300);
+      });
+    } else {
+      failsafe = setTimeout(advance, 2600);
+    }
+  }
+
   document.querySelectorAll("[data-go]").forEach(btn => {
     btn.addEventListener("click", () => {
       const dest = btn.dataset.go;
       if (btn.dataset.gate === "open") {
         const gateScene = document.getElementById("s-security-gate");
         if (!gateScene.classList.contains("gate-open")) {
-          gateScene.classList.add("gate-open");
-          Sound.ensure();
-          Sound.rumble(3.2);
-          setTimeout(() => go(dest), 2300);
+          openGate(dest);
           return;
         }
       }

@@ -221,7 +221,38 @@ body.preload .scene { transition: none; }
    SCAPES — each room is painted in light and stone
    ============================================================ */
 
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
 /* ---- Security Gate ---- */
+.gate-render {
+  inset: 0;
+  background-position: center 38%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.gate-render.closed-state {
+  background-image: url("../assets/renders/security-gate-closed.png");
+  transition: opacity 2.8s var(--ease-cine);
+}
+.gate-render.open-state {
+  background-image: url("../assets/renders/security-gate-open.png");
+}
+.scene.gate-open .gate-render.closed-state { opacity: 0; }
+.gate-video {
+  position: absolute; inset: 0; z-index: 7;
+  width: 100%; height: 100%; object-fit: cover;
+  background: var(--obsidian);
+}
+.gate-video[hidden] { display: none; }
+.room-head.arrive.gate-head { top: auto; bottom: 19vh; }
+.gate-head .mood {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.95);
+}
+.scene.active .gate-head .mood { animation-delay: 2s; }
 .scape-gate .sky {
   inset: 0 0 30% 0;
   background:
@@ -240,28 +271,6 @@ body.preload .scene { transition: none; }
   border-left: 1px solid rgba(212, 175, 55, 0.08);
   border-right: 1px solid rgba(212, 175, 55, 0.08);
 }
-.scape-gate .gate-piers {
-  inset: 26% 0 30% 0;
-}
-.scape-gate .gate-piers::before, .scape-gate .gate-piers::after {
-  content: ""; position: absolute; top: 0; bottom: 0; width: 7%;
-  background: linear-gradient(90deg, #1b1b22, #26262e 50%, #131318);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-}
-.scape-gate .gate-piers::before { left: 26%; }
-.scape-gate .gate-piers::after { right: 26%; }
-.scape-gate .gate { inset: 30% 33% 30% 33%; }
-.gate-leaf {
-  position: absolute; top: 0; bottom: 0; width: 50%;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 9%, rgba(212, 175, 55, 0.5) 9% 10.5%, transparent 10.5% 19%),
-    linear-gradient(rgba(212, 175, 55, 0.35) 0 2%, transparent 2% 47%, rgba(212, 175, 55, 0.35) 47% 50%, transparent 50% 97%, rgba(212, 175, 55, 0.35) 97%);
-  transition: transform 2.8s var(--ease-cine);
-}
-.gate-leaf.left { left: 0; transform-origin: left center; }
-.gate-leaf.right { right: 0; transform-origin: right center; }
-.scene.gate-open .gate-leaf.left { transform: perspective(800px) rotateY(58deg); }
-.scene.gate-open .gate-leaf.right { transform: perspective(800px) rotateY(-58deg); }
 
 /* ---- Founder's Way ---- */
 .sky.dusk {
