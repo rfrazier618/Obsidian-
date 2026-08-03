@@ -468,6 +468,72 @@ body.preload .scene { transition: none; }
 .founders-render { background-image: url("../assets/renders/founders-way.png"); }
 .circle-render { background-image: url("../assets/renders/legacy-circle.png"); }
 .court-render { background-image: url("../assets/renders/fountain-court.png"); }
+/* the lounge is a panorama — shown whole and letterboxed, never cropped,
+   so every marker in its signage stays reachable */
+.onyx-render {
+  background-image: url("../assets/renders/onyx-lounge.png");
+  background-size: contain;
+  background-color: #050506;   /* clean letterbox bands */
+}
+/* narrow screens can't hold the panorama's width: it becomes atmosphere
+   behind the written index instead of a thin unreadable strip */
+@media (max-width: 1099px), (max-aspect-ratio: 13/10) {
+  .onyx-render {
+    background-size: cover;
+    /* blurred so the panorama's own signage can't compete with the
+       written index — the room becomes light and depth, not labels */
+    filter: brightness(0.46) saturate(0.9) blur(3px);
+  }
+}
+
+/* ---- the render's own signage as navigation ----
+   Bare hotspots are invisible hit areas laid over baked markers: the
+   architecture already shows the affordance, so we only answer to it. */
+.onyx-nav { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.onyx-nav .hotspot { pointer-events: auto; }
+.hotspot.bare { gap: 0; }
+.hotspot.bare .halo {
+  display: block; width: 100%; height: 100%;
+  border-radius: 6px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.20), rgba(212, 175, 55, 0.06) 55%, transparent 78%);
+  opacity: 0;
+  transition: opacity 0.55s var(--ease-cine);
+}
+.hotspot.bare:hover .halo,
+.hotspot.bare:focus-visible .halo { opacity: 1; }
+.hotspot.bare.locked-flash .halo { opacity: 1; background: radial-gradient(ellipse at center, rgba(255, 217, 160, 0.22), transparent 72%); }
+/* a locked bare marker still needs to speak */
+.hotspot.bare .locked-word {
+  position: absolute; left: 50%; top: 106%; transform: translateX(-50%);
+  font-family: var(--display); font-size: 0.58rem; letter-spacing: 0.22em;
+  color: var(--warm); white-space: nowrap; font-style: italic;
+  text-shadow: 0 1px 12px #000; opacity: 0;
+  transition: opacity 0.4s;
+}
+.hotspot.bare.locked-flash .locked-word { opacity: 1; }
+
+/* the discovered way down — never present until earned */
+.hotspot.secret-mark .ring {
+  border-color: rgba(200, 40, 58, 0.85);
+  box-shadow: 0 0 22px rgba(160, 22, 38, 0.55);
+}
+.hotspot.secret-mark .ring::before { background: var(--red-glow); }
+.hotspot.secret-mark .ring::after { border-color: rgba(190, 30, 48, 0.4); }
+.hotspot.secret-mark .label { color: rgba(232, 201, 201, 0.85); }
+.hotspot.secret-mark:hover .label { color: #c22434; }
+.hotspot.secret-mark[hidden] { display: none; }
+
+/* The lounge panorama is a wide-screen experience. On narrow or portrait
+   screens the crop would strand most markers off-frame, so the room falls
+   back to its written index over the same art — and keeps its title, since
+   the render's baked title is cropped away. */
+.onyx-nav { display: none; }
+#s-onyx-lounge.render-titled .room-head { display: block; }
+@media (min-width: 1100px) and (min-aspect-ratio: 13/10) {
+  .onyx-nav { display: block; }
+  #s-onyx-lounge .lounge-index { display: none; }
+  #s-onyx-lounge.render-titled .room-head { display: none; }
+}
 /* a render that carries its own baked-in title replaces the HTML room head
    and the persistent estate mark while active */
 .render-titled .room-head { display: none; }

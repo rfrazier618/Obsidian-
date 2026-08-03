@@ -177,16 +177,67 @@
   </section>
 
   <!-- ============ ONYX LOUNGE — ORIENTATION ============ -->
-  <section class="scene scape-onyx interior" id="s-onyx-lounge" data-title="The Onyx Lounge">
+  <section class="scene scape-onyx interior render-titled" id="s-onyx-lounge" data-title="The Onyx Lounge">
     <div class="scape">
       <div class="onyx-panels"></div>
       <div class="hearth"></div>
+      <div class="render-backdrop onyx-render" data-aspect="2.5006" data-fit="contain"></div>
       <div class="vignette warm"></div>
     </div>
     <div class="room-head">
       <p class="district">DISTRICT IV · THE MAIN LEVEL</p>
       <h2>The Onyx Lounge</h2>
       <p class="mood">Gather yourself. The Estate is yours to explore.</p>
+    </div>
+
+    <!-- On wide screens the render's own signage is the navigation:
+         invisible hit areas sit over each baked marker. -->
+    <div class="onyx-nav">
+      <button class="hotspot bare" data-go="library"
+              data-ix="0.0715" data-iy="0.270" data-w="0.095" data-h="0.100">
+        <span class="halo"></span><span class="sr-only">The Library</span>
+      </button>
+      <button class="hotspot bare" data-guestbook
+              data-ix="0.2925" data-iy="0.378" data-w="0.148" data-h="0.250">
+        <span class="halo"></span><span class="sr-only">Concierge &amp; Reservations</span>
+      </button>
+      <button class="hotspot bare" data-go="hall-of-legacy"
+              data-ix="0.495" data-iy="0.264" data-w="0.108" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Hall of Legacy</span>
+      </button>
+      <button class="hotspot bare" data-go="founders-gallery"
+              data-ix="0.6875" data-iy="0.291" data-w="0.112" data-h="0.100">
+        <span class="halo"></span><span class="sr-only">The Founder&rsquo;s Gallery</span>
+      </button>
+      <button class="hotspot bare" data-go="chefs-kitchen"
+              data-ix="0.836" data-iy="0.285" data-w="0.090" data-h="0.090">
+        <span class="halo"></span><span class="sr-only">The Chef&rsquo;s Kitchen</span>
+      </button>
+      <button class="hotspot bare" data-locked="Staff only. The silver sleeps here."
+              data-ix="0.1535" data-iy="0.879" data-w="0.100" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Butler&rsquo;s Pantry</span>
+      </button>
+      <button class="hotspot bare" data-go="formal-dining"
+              data-ix="0.299" data-iy="0.879" data-w="0.100" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Formal Dining Room</span>
+      </button>
+      <button class="hotspot bare" data-go="rear-estate"
+              data-ix="0.495" data-iy="0.930" data-w="0.138" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Courtyard Terrace</span>
+      </button>
+      <button class="hotspot bare" data-go="conservatory-gallery"
+              data-ix="0.680" data-iy="0.879" data-w="0.128" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Conservatory Gallery</span>
+      </button>
+      <button class="hotspot bare" data-go="morning-room"
+              data-ix="0.8175" data-iy="0.879" data-w="0.102" data-h="0.098">
+        <span class="halo"></span><span class="sr-only">The Morning Room</span>
+      </button>
+      <!-- appears only once the Library has given up its secret -->
+      <button class="hotspot secret-mark" id="onyx-gemini" data-go="gemini" hidden
+              data-ix="0.413" data-iy="0.432">
+        <span class="ring"></span><span class="label">Gemini</span>
+      </button>
     </div>
 
     <nav class="lounge-index" aria-label="Rooms of the Estate">
@@ -211,11 +262,6 @@
       </div>
       <p class="li-whisper">Some rooms in this house are not on any list.</p>
     </nav>
-    <div class="hotspots">
-      <button class="hotspot center-low subtle" data-go="grand-atrium">
-        <span class="ring"></span><span class="label">Return to the Grand Atrium</span>
-      </button>
-    </div>
   </section>
 
   <!-- ============ LIBRARY (IV-201) ============ -->

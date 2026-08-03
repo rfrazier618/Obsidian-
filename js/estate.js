@@ -177,7 +177,12 @@
     document.title = next.dataset.title
       ? next.dataset.title + " · The Obsidian Estate"
       : "The Obsidian Estate";
-    compass.hidden = (id === "security-gate" || id === "onyx-lounge");
+    /* the compass always points home; from the lounge, home is the Atrium */
+    const inLounge = (id === "onyx-lounge");
+    compass.hidden = (id === "security-gate");
+    compass.dataset.dest = inLounge ? "grand-atrium" : "onyx-lounge";
+    compass.firstElementChild.textContent = inLounge ? "GRAND ATRIUM" : "ONYX LOUNGE";
+    compass.title = inLounge ? "Return to the Grand Atrium" : "Return to the Onyx Lounge";
     document.body.classList.toggle("render-scene",
       next.classList.contains("render-titled") || next.hasAttribute("data-hide-mark"));
     sceneAmbience(id);
@@ -256,13 +261,15 @@
     });
   });
 
-  compass.addEventListener("click", () => go("onyx-lounge"));
+  compass.addEventListener("click", () => go(compass.dataset.dest || "onyx-lounge"));
 
   /* ---------- gemini discovery state ---------- */
 
   function revealGeminiInLounge() {
     document.getElementById("li-gemini").hidden = false;
     document.getElementById("li-gemini-link").hidden = false;
+    const mark = document.getElementById("onyx-gemini");
+    if (mark) { mark.hidden = false; layoutRenderScenes(); }
   }
   if (store.geminiFound) revealGeminiInLounge();
 
@@ -368,12 +375,18 @@
       const scene = bd.closest(".scene");
       const aspect = parseFloat(bd.dataset.aspect);
       const vw = window.innerWidth, vh = window.innerHeight;
+      const contain = bd.dataset.fit === "contain";
       let w = vw, h = vw / aspect;
-      if (h < vh) { h = vh; w = vh * aspect; }
+      if (contain ? h > vh : h < vh) { h = vh; w = vh * aspect; }
       const ox = (vw - w) / 2, oy = (vh - h) / 2;
       scene.querySelectorAll("[data-ix]").forEach(hs => {
         let x = ox + parseFloat(hs.dataset.ix) * w;
         let y = oy + parseFloat(hs.dataset.iy) * h;
+        /* hit areas sized in image space cover a baked sign and its marker */
+        if (hs.dataset.w) {
+          hs.style.width = (parseFloat(hs.dataset.w) * w) + "px";
+          hs.style.height = (parseFloat(hs.dataset.h) * h) + "px";
+        }
         if (hs.hasAttribute("data-clamp")) {
           /* critical navigation stays reachable even when the crop cuts
              its marker off — it slides to the nearest edge instead */
@@ -397,25 +410,39 @@
   /* locked hotspots — rooms the house declines to open */
   document.querySelectorAll("[data-locked]").forEach(btn => {
     const label = btn.querySelector(".label");
-    const original = label.innerHTML;
     let timer = null;
-    btn.addEventListener("click", () => {
-      label.textContent = btn.dataset.locked;
-      btn.classList.add("locked-flash");
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        label.innerHTML = original;
-        btn.classList.remove("locked-flash");
-      }, 2600);
-    });
+    if (label) {
+      const original = label.innerHTML;
+      btn.addEventListener("click", () => {
+        label.textContent = btn.dataset.locked;
+        btn.classList.add("locked-flash");
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          label.innerHTML = original;
+          btn.classList.remove("locked-flash");
+        }, 2600);
+      });
+    } else {
+      /* a bare marker over baked signage speaks beneath itself */
+      const word = document.createElement("span");
+      word.className = "locked-word";
+      word.textContent = btn.dataset.locked;
+      btn.appendChild(word);
+      btn.addEventListener("click", () => {
+        btn.classList.add("locked-flash");
+        clearTimeout(timer);
+        timer = setTimeout(() => btn.classList.remove("locked-flash"), 2600);
+      });
+    }
   });
 
   /* ---------- guest book ---------- */
 
   const guestbook = document.getElementById("guestbook");
-  document.getElementById("open-guestbook").addEventListener("click", () => {
-    guestbook.hidden = false;
-  });
+  const openGuestbook = () => { guestbook.hidden = false; };
+  document.getElementById("open-guestbook").addEventListener("click", openGuestbook);
+  document.querySelectorAll("[data-guestbook]").forEach(b =>
+    b.addEventListener("click", openGuestbook));
   guestbook.querySelector(".gb-close").addEventListener("click", () => {
     guestbook.hidden = true;
   });
