@@ -396,21 +396,26 @@ body.preload .scene { transition: none; }
     linear-gradient(#15131a, #09080c);
 }
 
-/* the crest slot — canonical asset only; placeholder until supplied */
+/* the crest slot — canonical asset only, never redrawn; placeholder until supplied.
+   screen blend lets the asset's black ground vanish into the Estate's darkness
+   so only the shield and gold read — the mark itself is untouched. */
 .crest-slot {
   background-image: url("../assets/crest/rsf-shield.png");
   background-size: contain; background-repeat: no-repeat; background-position: center;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 52%, transparent 76%);
+  mask-image: radial-gradient(ellipse at center, black 52%, transparent 76%);
 }
 .floor-crest {
-  position: absolute; left: 50%; top: 6%;
-  width: 22vmin; height: 11vmin;
-  transform: translateX(-50%) perspective(300px) rotateX(52deg);
-  opacity: 0.9;
+  position: absolute; left: 50%; top: 4%;
+  width: 26vmin; height: 15vmin;
+  transform: translateX(-50%) perspective(300px) rotateX(48deg);
+  opacity: 0.95;
 }
 .wall-crest {
-  left: 50%; top: 30%; width: 12vmin; height: 14vmin;
+  left: 50%; top: 34%; width: 15vmin; height: 17vmin;
   transform: translateX(-50%);
-  opacity: 0.9;
+  opacity: 0.95;
 }
 .crest-slot.placeholder {
   background-image: none;
