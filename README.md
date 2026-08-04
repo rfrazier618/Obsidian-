@@ -66,3 +66,21 @@ unambiguous.
 file — fonts, renders, and the discovery film all inlined, no network
 required. Rebuilt by hand when the prototype changes; not part of the
 deploy.
+
+## The GEMINI door film
+
+`playDoorSequence()` in `index.html` looks for:
+
+```
+assets/video/gemini-doors.mp4
+```
+
+Drop a film there and it plays in place of the hinged still — no code
+change needed. Nothing else has to match: the promise settles either
+way, so a missing, unplayable, or stalled film always falls back to the
+CSS swing rather than stranding a guest at the threshold.
+
+Suggested cut, matching what the still does now: doors shut · a latch ·
+light finding the seam · both leaves swinging inward · the room's warmth
+and music arriving. Portrait or landscape both work (the stage is
+`object-fit: contain`).
