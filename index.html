@@ -1360,176 +1360,250 @@ body::before {
 
 
 /* ══════════════════════════════════════
-   THE RECEPTION — admission to GEMINI
-   A hostess, a password, and a panel only
-   staff ever see. No keypad. No beeps.
+   THE RECEPTION LOBBY — District III
+   The render is the room and the interface.
+   Entry is earned, so the doors stay locked.
    ══════════════════════════════════════ */
 #reception {
   position: fixed; inset: 0; z-index: 900;
-  display: none; opacity: 0;
-  background: #050303;
-  transition: opacity 1.4s ease;
-  overflow: hidden;
+  display: none; opacity: 0; background: #050303;
+  transition: opacity 1.4s ease; overflow: hidden;
 }
 #reception.open { display: block; }
 #reception.visible { opacity: 1; }
 #reception.closing { opacity: 0; }
 
-/* the room behind the desk */
 .rc-room { position: absolute; inset: 0; }
-.rc-room::before {           /* lamp glow above the desk */
-  content: ''; position: absolute; left: 50%; top: -14%; z-index: 2;
-  width: min(70vw, 900px); height: 62vh; transform: translateX(-50%);
-  background: radial-gradient(ellipse at 50% 40%,
-    rgba(196,135,42,0.30) 0%, rgba(196,135,42,0.10) 38%, transparent 70%);
-}
-.rc-room::after {            /* the members-only corridor, held back in shadow */
-  content: ''; position: absolute; inset: 0;
-  background:
-    linear-gradient(rgba(5,3,3,0.72), rgba(5,3,3,0.86) 55%, rgba(5,3,3,0.97)),
-    url('assets/images/hw-hw_gemini.jpg') center 42% / cover no-repeat;
+.rc-lobby {
+  position: absolute; inset: 0;
+  background: #040303 url('assets/images/gemini-lobby.jpg') center / contain no-repeat;
 }
 
-/* the marble desk */
-.rc-desk {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 34vh;
-  background:
-    radial-gradient(ellipse 40% 115% at 50% 0%, rgba(196,135,42,0.13), transparent 62%),
-    linear-gradient(rgba(232,201,122,0.20), transparent 6%),
-    linear-gradient(#0d0a09, #070505 52%, #030202);
-  border-top: 1px solid rgba(201,168,76,0.42);
-  box-shadow: 0 -1px 22px rgba(196,135,42,0.14), 0 -30px 80px rgba(0,0,0,0.8);
-  box-shadow: 0 -30px 80px rgba(0,0,0,0.8);
+/* the render's cards answer to a hand, nothing more */
+.rc-nav { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.rc-nav .hotspot { pointer-events: auto; position: absolute; opacity: 1; }
+.rc-card { border: none; background: none; padding: 0; cursor: pointer; }
+.rc-card .halo {
+  display: block; width: 100%; height: 100%; border-radius: 4px;
+  background: radial-gradient(ellipse at center,
+    rgba(201,168,76,0.20), rgba(201,168,76,0.06) 58%, transparent 80%);
+  opacity: 0; transition: opacity 0.5s ease;
 }
-.rc-desk::before {           /* veining */
-  content: ''; position: absolute; inset: 0; opacity: 0.28;
-  background:
-    linear-gradient(102deg, transparent 42%, rgba(201,168,76,0.07) 43%, transparent 44%),
-    linear-gradient(88deg, transparent 66%, rgba(242,232,213,0.045) 67%, transparent 68%);
-}
+.rc-card:hover .halo, .rc-card:focus-visible .halo { opacity: 1; }
+.rc-card:focus-visible { outline: 1px solid rgba(201,168,76,0.5); outline-offset: 2px; }
 
-/* what the hostess says */
+/* the doors: shut until the password says otherwise */
+.rc-doors { cursor: not-allowed; }
+.rc-doors .halo {
+  background: radial-gradient(ellipse at center,
+    rgba(107,31,42,0.28), rgba(107,31,42,0.08) 58%, transparent 80%);
+}
+.rc-doors.unlocked { cursor: pointer; }
+.rc-doors.unlocked .halo {
+  background: radial-gradient(ellipse at center,
+    rgba(204,34,51,0.34), rgba(204,34,51,0.10) 58%, transparent 82%);
+  opacity: 0.55;
+  animation: rcDoorBreathe 3.6s ease-in-out infinite;
+}
+.rc-doors.unlocked:hover .halo { opacity: 1; animation: none; }
+@keyframes rcDoorBreathe { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+.rc-refuse {
+  position: absolute; left: 50%; bottom: 116%; transform: translateX(-50%);
+  width: max-content; max-width: 62vw;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 15px; color: var(--cream); opacity: 0;
+  text-shadow: 0 2px 16px #000; transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.rc-doors .rc-refuse { left: auto; right: 4%; transform: none; text-align: right; }
+.rc-doors.refusing .rc-refuse { opacity: 0.85; }
+
+/* what she says */
 .rc-stage {
-  position: absolute; left: 50%; top: 34%; transform: translate(-50%, -50%);
-  width: min(90vw, 640px); text-align: center; z-index: 3;
+  position: absolute; left: 50%; top: 47%; transform: translate(-50%, -50%);
+  width: min(90vw, 640px); text-align: center; z-index: 6; pointer-events: none;
 }
+.rc-stage .rc-ask { pointer-events: none; }
+.rc-stage .rc-ask.show { pointer-events: auto; }
 .rc-line {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(21px, 3.1vw, 34px);
-  font-style: italic; font-weight: 300;
-  color: var(--cream); line-height: 1.5;
-  opacity: 0; transition: opacity 1.5s ease;
-  text-shadow: 0 2px 30px rgba(0,0,0,0.9);
+  font-size: clamp(21px, 3vw, 33px); font-style: italic; font-weight: 300;
+  color: var(--cream); line-height: 1.5; opacity: 0;
+  transition: opacity 1.5s ease;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.8);
 }
-.rc-line.show { opacity: 0.94; }
-.rc-line.dim  { opacity: 0.4; }
-
-/* the password — a line, not a form */
-.rc-ask { margin-top: 40px; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; }
-.rc-ask.show { opacity: 1; pointer-events: auto; }
+.rc-line.show { opacity: 0.95; }
+.rc-line.dim  { opacity: 0.42; }
+.rc-ask { margin-top: 34px; opacity: 0; transition: opacity 1.2s ease; }
+.rc-ask.show { opacity: 1; }
 .rc-input {
-  width: min(78vw, 380px);
-  background: transparent; border: none;
-  border-bottom: 1px solid rgba(201,168,76,0.3);
+  width: min(78vw, 360px); background: rgba(5,3,3,0.5); border: none;
+  border-bottom: 1px solid rgba(201,168,76,0.34);
   padding: 10px 4px 12px; outline: none;
   font-family: 'Cormorant SC', 'Cormorant Garamond', serif;
   font-size: 17px; letter-spacing: 0.42em; text-align: center;
   color: var(--gold-light); caret-color: var(--gold);
   transition: border-color 0.6s ease;
 }
-.rc-input:focus { border-bottom-color: rgba(201,168,76,0.7); }
-.rc-input::placeholder { color: rgba(242,232,213,0.14); letter-spacing: 0.3em; }
+.rc-input:focus { border-bottom-color: rgba(201,168,76,0.75); }
+.rc-input::placeholder { color: rgba(242,232,213,0.16); letter-spacing: 0.3em; }
 .rc-hint {
-  margin-top: 16px; font-family: 'Cormorant SC', serif;
-  font-size: 9px; letter-spacing: 0.42em;
-  color: rgba(242,232,213,0.2); text-transform: uppercase;
+  margin-top: 14px; font-family: 'Cormorant SC', serif; font-size: 9px;
+  letter-spacing: 0.42em; color: rgba(242,232,213,0.26); text-transform: uppercase;
 }
-.rc-ask.wrong .rc-input { border-bottom-color: rgba(107,31,42,0.85); }
+.rc-ask.wrong .rc-input { border-bottom-color: rgba(107,31,42,0.9); }
 
-/* the panel beneath the marble — staff only */
+/* the panel under the marble */
 .rc-panel {
-  position: absolute; left: 50%; bottom: 12vh; transform: translateX(-50%);
-  width: min(74vw, 330px); z-index: 4;
-  opacity: 0; pointer-events: none;
-  transition: opacity 1s ease;
+  position: absolute; left: 50%; top: 62%; transform: translateX(-50%);
+  z-index: 6; opacity: 0; pointer-events: none; transition: opacity 1s ease;
 }
 .rc-panel.show { opacity: 1; }
 .rc-brass {
-  display: flex; justify-content: center; gap: clamp(16px, 4vw, 30px);
-  padding: 20px 26px;
-  background: linear-gradient(#161009, #0d0906);
-  border: 1px solid rgba(201,168,76,0.26);
-  border-radius: 3px;
-  box-shadow: inset 0 1px 0 rgba(201,168,76,0.16), 0 14px 40px rgba(0,0,0,0.75);
+  display: flex; justify-content: center; gap: clamp(15px, 3.4vw, 26px);
+  padding: 17px 24px;
+  background: linear-gradient(#161009, #0b0806);
+  border: 1px solid rgba(201,168,76,0.3); border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(201,168,76,0.18), 0 16px 44px rgba(0,0,0,0.85);
   clip-path: inset(0 0 100% 0);
   transition: clip-path 1.6s cubic-bezier(0.22,0.08,0.14,1);
 }
 .rc-panel.show .rc-brass { clip-path: inset(0 0 0 0); }
 .rc-btn {
-  width: clamp(30px, 7vw, 40px); height: clamp(30px, 7vw, 40px);
-  border-radius: 50%;
+  width: clamp(26px, 5.6vw, 34px); height: clamp(26px, 5.6vw, 34px); border-radius: 50%;
   background: radial-gradient(circle at 38% 32%, #8a6b32, #4a3819 62%, #2a2010);
-  box-shadow: inset 0 1px 1px rgba(232,201,122,0.4), 0 2px 5px rgba(0,0,0,0.7);
+  box-shadow: inset 0 1px 1px rgba(232,201,122,0.4), 0 2px 5px rgba(0,0,0,0.75);
   transition: transform 0.14s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 .rc-btn.press {
-  transform: translateY(2px) scale(0.965);
-  filter: brightness(1.5);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.55), 0 0 16px rgba(196,135,42,0.45);
+  transform: translateY(2px) scale(0.965); filter: brightness(1.55);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 18px rgba(196,135,42,0.5);
 }
-/* the amber tally */
-.rc-lights {
-  display: flex; justify-content: center; gap: 11px; margin-top: 20px; height: 7px;
-}
+.rc-lights { display: flex; justify-content: center; gap: 11px; margin-top: 17px; height: 7px; }
 .rc-lights i {
   width: 7px; height: 7px; border-radius: 50%;
-  background: rgba(196,135,42,0.13);
+  background: rgba(196,135,42,0.14);
   transition: background 0.5s ease, box-shadow 0.5s ease;
 }
-.rc-lights i.lit {
-  background: var(--amber);
-  box-shadow: 0 0 11px rgba(196,135,42,0.85);
-}
+.rc-lights i.lit { background: var(--amber); box-shadow: 0 0 11px rgba(196,135,42,0.9); }
 
 /* the reception monitor */
 .rc-monitor {
-  position: absolute; left: 50%; top: 33%; transform: translate(-50%, -50%);
-  width: min(86vw, 420px); z-index: 5;
-  text-align: center; padding: 30px 24px;
-  border: 1px solid rgba(201,168,76,0.18);
-  background: rgba(4,3,3,0.92);
-  opacity: 0; transition: opacity 1s ease;
-  pointer-events: none;
+  position: absolute; left: 50%; top: 41%; transform: translate(-50%, -50%);
+  width: min(86vw, 400px); z-index: 7; text-align: center; padding: 28px 24px;
+  border: 1px solid rgba(201,168,76,0.2); background: rgba(4,3,3,0.94);
+  opacity: 0; transition: opacity 1s ease; pointer-events: none;
 }
 .rc-monitor.show { opacity: 1; }
-.rc-monitor p {
-  font-family: 'Cormorant SC', serif; text-transform: uppercase;
-  margin: 0; line-height: 2.1;
-}
+.rc-monitor p { font-family: 'Cormorant SC', serif; text-transform: uppercase; margin: 0; line-height: 2.1; }
 .rc-m-estate { font-size: 9px; letter-spacing: 0.5em; color: rgba(242,232,213,0.34); }
-.rc-m-verified { font-size: 12px; letter-spacing: 0.44em; color: var(--gold); margin-top: 14px !important; }
-.rc-m-level { font-size: 8px; letter-spacing: 0.5em; color: rgba(242,232,213,0.28); margin-top: 12px !important; }
+.rc-m-verified { font-size: 12px; letter-spacing: 0.44em; color: var(--gold); margin-top: 13px !important; }
+.rc-m-level { font-size: 8px; letter-spacing: 0.5em; color: rgba(242,232,213,0.28); margin-top: 11px !important; }
 .rc-m-gemini { font-size: 20px; letter-spacing: 0.38em; color: var(--neon-red); }
-.rc-m-welcome { font-size: 9px; letter-spacing: 0.46em; color: rgba(242,232,213,0.4); margin-top: 16px !important; }
+.rc-m-welcome { font-size: 9px; letter-spacing: 0.46em; color: rgba(242,232,213,0.4); margin-top: 15px !important; }
 
-/* the doors give */
+/* what the walls hold */
+.rc-sheet {
+  position: absolute; inset: 0; z-index: 8;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4,3,3,0.86); backdrop-filter: blur(5px);
+  animation: rcFade 0.6s ease;
+}
+.rc-sheet[hidden] { display: none; }
+@keyframes rcFade { from { opacity: 0; } to { opacity: 1; } }
+.rc-sheet-inner {
+  width: min(92vw, 560px); max-height: 82vh; overflow-y: auto;
+  padding: 40px clamp(24px, 5vw, 46px) 34px;
+  border: 1px solid rgba(201,168,76,0.24);
+  background: linear-gradient(#0d0a08, #070505);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.85);
+}
+.rc-sheet-kicker {
+  font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 14px;
+}
+.rc-sheet-inner h3 {
+  font-family: 'Cormorant Garamond', serif; font-weight: 400;
+  font-size: clamp(24px, 4vw, 34px); letter-spacing: 0.06em;
+  color: var(--cream); margin-bottom: 22px;
+}
+.rc-sheet-inner p {
+  font-family: 'EB Garamond', Georgia, serif; font-size: 16px;
+  line-height: 1.75; color: rgba(242,232,213,0.72); margin-bottom: 15px;
+}
+.rc-sheet-inner p em { color: var(--gold-light); font-style: italic; }
+.rc-sheet-inner dl { margin: 4px 0 18px; }
+.rc-sheet-inner dt {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.75; margin-top: 16px;
+}
+.rc-sheet-inner dd {
+  font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.65;
+  color: rgba(242,232,213,0.62); margin: 5px 0 0;
+}
+.rc-sheet-inner .rc-quote {
+  border-left: 1px solid rgba(201,168,76,0.34); padding-left: 18px;
+  font-style: italic; color: rgba(242,232,213,0.6); margin: 20px 0 8px;
+}
+.rc-sheet-close {
+  margin-top: 26px; background: none; border: none; cursor: pointer;
+  font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: rgba(242,232,213,0.34); transition: color 0.4s ease;
+}
+.rc-sheet-close:hover { color: var(--gold); }
+
 .rc-blackout {
-  position: absolute; inset: 0; z-index: 6; background: #000;
+  position: absolute; inset: 0; z-index: 9; background: #000;
   opacity: 0; pointer-events: none; transition: opacity 1.6s ease;
 }
 .rc-blackout.show { opacity: 1; }
-
 .rc-leave {
-  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
-  z-index: 7; background: none; border: none; cursor: pointer;
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  z-index: 10; background: none; border: none; cursor: pointer;
   font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.4em;
-  color: rgba(242,232,213,0.22); transition: color 0.5s ease;
+  color: rgba(242,232,213,0.24); transition: color 0.5s ease;
 }
 .rc-leave:hover { color: var(--gold); }
 .rc-leave.gone { opacity: 0; pointer-events: none; }
 
+/* the written desk, for screens the lobby cannot fit */
+.rc-list { display: none; }
+.rc-list-head {
+  font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.44em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 22px;
+}
+.rc-list ul { list-style: none; padding: 0; margin: 0; }
+.rc-list li button {
+  background: none; border: none; cursor: pointer; padding: 9px 0;
+  font-family: 'Cormorant Garamond', serif; font-size: 18px;
+  color: rgba(242,232,213,0.72); transition: color 0.4s ease;
+}
+.rc-list li button:hover { color: var(--gold); }
+.rc-list-pw {
+  margin-top: 26px; padding: 13px 30px; cursor: pointer;
+  background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.34);
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--gold); transition: background 0.4s ease;
+}
+.rc-list-pw:hover { background: rgba(201,168,76,0.15); }
+
+@media (max-aspect-ratio: 11/10), (max-width: 760px) {
+  .rc-lobby {
+    background-size: cover;
+    filter: brightness(0.42) saturate(0.9) blur(3px);
+  }
+  .rc-nav { display: none; }
+  .rc-list {
+    display: block; position: absolute; left: 50%; top: 52%;
+    transform: translate(-50%, -50%); z-index: 5;
+    width: min(90vw, 420px); text-align: center;
+  }
+  .rc-stage { top: 24%; }
+  .rc-panel { top: 68%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  #reception *, .rc-brass { transition-duration: 0.3s !important; }
+  #reception *, .rc-brass { transition-duration: 0.3s !important; animation: none !important; }
 }
 </style>
 </head>
@@ -3346,6 +3420,167 @@ const roomDisplayNames = {
 };
 
 
+
+// ── what the walls of the lobby hold ──
+const RC_SHEETS = {
+  history: { kicker: 'The Left Wall', title: 'History of Gemini', body: `
+    <p>Gemini did not open with an announcement. It opened with a list, and
+    the list was short.</p>
+    <dl>
+      <dt>The Beginning</dt>
+      <dd>A room beneath the house, built for the nights the world was not
+      invited to.</dd>
+      <dt>Opening Night</dt>
+      <dd>Forty guests. One set. No photographs — a rule that has never been
+      relaxed.</dd>
+      <dt>The Original Cocktail Menu</dt>
+      <dd>Seven drinks, each named for a song that had not been released
+      yet. Six of them are still poured.</dd>
+      <dt>Legacy Moments</dt>
+      <dd>The performances the room agreed, without discussing it, not to
+      talk about.</dd>
+    </dl>
+    <p class="rc-quote">&ldquo;Discretion is the currency. Respect is the
+    code. Legacy is the destination.&rdquo;<br>&mdash; OE</p>` },
+
+  concierge: { kicker: 'The Desk', title: 'Reception &amp; Reservations', body: `
+    <p>The concierge holds the evening. Everything below is arranged here,
+    in person, at this desk.</p>
+    <dl>
+      <dt>Reservations</dt><dd>By name. The book is kept by hand.</dd>
+      <dt>Private Booths</dt><dd>Four of them. Two face the stage; two face
+      away, which is the point.</dd>
+      <dt>Wine Lockers &middot; Cigar Lockers</dt><dd>Yours, kept at
+      temperature, waiting.</dd>
+      <dt>Chef&rsquo;s Table &middot; Private Events</dt><dd>The kitchen
+      cooks for the room, or the room becomes yours entirely.</dd>
+      <dt>Estate Suites</dt><dd>For the nights that end too late to
+      travel.</dd>
+      <dt>Transportation &middot; Valet</dt><dd>Arrival and departure, both
+      handled before you think to ask.</dd>
+    </dl>
+    <p>Sign the Guest Book in the Onyx Lounge and the desk will know your
+    name before you give it.</p>` },
+
+  membership: { kicker: 'The Right Wall', title: 'Membership', body: `
+    <p>Gemini has never advertised a membership. It has only ever extended
+    one.</p>
+    <dl>
+      <dt>Founding Members</dt>
+      <dd>Present on opening night. The list is closed and will not
+      reopen.</dd>
+      <dt>Legacy Members</dt>
+      <dd>Membership that outlives the member and passes once, to one
+      person, by name.</dd>
+      <dt>Celebrity Guests</dt>
+      <dd>Admitted as guests, photographed as no one. What happens in the
+      room stays in the frame on this wall.</dd>
+    </dl>
+    <p>Members receive the password each month. Nothing else changes hands
+    &mdash; <em>that is the whole of the arrangement.</em></p>` },
+
+  wine: { kicker: 'Below the Room', title: 'Private Wine Lockers', body: `
+    <p>The cellar runs cold beneath the lounge. Each locker is a small iron
+    door with a number and no name.</p>
+    <dl>
+      <dt>The Locker</dt><dd>Held at 55&deg;F, in the dark, indefinitely.</dd>
+      <dt>Standing Pour</dt><dd>Tell the desk once what you drink. You will
+      not be asked again.</dd>
+      <dt>The Empty Bottle</dt><dd>Kept, labelled with the date, and shelved.
+      Some members come back years later just to look.</dd>
+    </dl>` },
+
+  cigar: { kicker: 'The Program', title: 'Cigar Program', body: `
+    <p>A humidor room off the lounge, walled in Spanish cedar, kept at
+    seventy and seventy.</p>
+    <dl>
+      <dt>Personal Lockers</dt><dd>Your own, cedar-lined, opened only by
+      you.</dd>
+      <dt>The House Selection</dt><dd>Rotated quarterly. Never listed
+      publicly.</dd>
+      <dt>The Rule</dt><dd>Cigars stay in the humidor room and on the
+      terrace. The lounge belongs to the music.</dd>
+    </dl>` },
+
+  tonight: { kicker: 'The Stage', title: 'Tonight&rsquo;s Entertainment', body: `
+    <p>One room. One night. One experience &mdash; and it is never the same
+    twice.</p>
+    <dl>
+      <dt>Early Set</dt><dd>Piano and standards. Conversation is
+      permitted.</dd>
+      <dt>Late Set</dt><dd>The room goes quiet by agreement, not by
+      instruction.</dd>
+      <dt>After</dt><dd>Whoever is still here, and whoever feels like
+      playing.</dd>
+    </dl>
+    <p><em>The programme is never printed in advance.</em> Ask the desk when
+    you arrive, or find out when the lights drop.</p>` },
+
+  rules: { kicker: 'The House', title: 'House Rules', body: `
+    <p>Four rules. They have not changed and they will not.</p>
+    <dl>
+      <dt>Nothing enters without intention</dt>
+      <dd>Not a guest, not a photograph, not a favour.</dd>
+      <dt>Performance ends at the Sitting Room</dt>
+      <dd>Past that door the mask comes off, and everyone is treated as
+      though theirs has too.</dd>
+      <dt>Gemini remembers everything</dt>
+      <dd>The room keeps what it is told. So does the staff.</dd>
+      <dt>The Vault protects more than valuables</dt>
+      <dd>Ask anyone who has needed it.</dd>
+    </dl>
+    <p class="rc-quote">&ldquo;Discretion is the currency. Respect is the
+    code. Legacy is the destination.&rdquo;<br>&mdash; OE</p>` }
+};
+
+function rcOpenSheet(key) {
+  const sheet = document.getElementById('rc-sheet');
+  const data = RC_SHEETS[key];
+  if (!sheet || !data) return;
+  document.getElementById('rc-sheet-kicker').innerHTML = data.kicker;
+  document.getElementById('rc-sheet-title').innerHTML = data.title;
+  document.getElementById('rc-sheet-body').innerHTML = data.body;
+  sheet.hidden = false;
+  sheet.querySelector('.rc-sheet-inner').scrollTop = 0;
+}
+function rcCloseSheet() {
+  const sheet = document.getElementById('rc-sheet');
+  if (sheet) sheet.hidden = true;
+}
+
+// the doors, and everything beyond them, stay shut until the password
+function rcRefuse(btn, words) {
+  let note = btn.querySelector('.rc-refuse');
+  if (!note) {
+    note = document.createElement('span');
+    note.className = 'rc-refuse';
+    btn.appendChild(note);
+  }
+  note.textContent = words;
+  btn.classList.add('refusing');
+  clearTimeout(btn._refuseTimer);
+  btn._refuseTimer = setTimeout(() => btn.classList.remove('refusing'), 2800);
+}
+
+function rcCardClick(key, btn) {
+  if (rcBusy) return;
+  if (RC_SHEETS[key]) { rcOpenSheet(key); return; }
+  if (key === 'password') {
+    if (geminiAdmitted()) { rcRefuse(btn, 'You have already been let in tonight.'); return; }
+    rcAskForPassword();
+    return;
+  }
+  if (key === 'elevator' || key === 'stair') {
+    if (!geminiAdmitted()) {
+      rcRefuse(btn, key === 'elevator'
+        ? 'The elevator answers to members.'
+        : 'The stair is for members only.');
+      return;
+    }
+    rcRefuse(btn, 'Those levels open later this year.');
+  }
+}
+
 // ══════════════════════════════════════
 // THE RECEPTION — admission to GEMINI
 // A hostess asks for the password. The guest only ever speaks it;
@@ -3445,20 +3680,37 @@ async function openReception() {
   document.getElementById('rc-monitor').classList.remove('show');
   document.getElementById('rc-blackout').classList.remove('show');
   document.getElementById('rc-leave').classList.remove('gone');
+  rcCloseSheet();
   ask.classList.remove('show', 'wrong');
   input.value = '';
+  input.disabled = true;
   document.getElementById('rc-line').classList.remove('show', 'dim');
+  document.getElementById('rc-enter').classList.toggle('unlocked', geminiAdmitted());
+  layoutRcLobby();
 
-  input.disabled = true;            // nothing to tab into before she asks
   requestAnimationFrame(() => rc.classList.add('visible'));
 
-  // she looks up, and takes her time about it
+  // she looks up. She does not ask for anything yet.
   const stale = () => my !== rcToken || rcBusy;
-  await rcWait(1400);                      if (stale()) return;
-  await rcSay('Good evening.');            if (stale()) return;
-  await rcWait(2600);                      if (stale()) return;
-  await rcSay('What\u2019s the password?');  if (stale()) return;
-  await rcWait(900);                       if (stale()) return;
+  await rcWait(1500);                        if (stale()) return;
+  await rcSay('Good evening.');              if (stale()) return;
+  await rcWait(4200);                        if (stale()) return;
+  if (!geminiAdmitted()) {
+    document.getElementById('rc-line').classList.add('dim');
+    document.getElementById('rc-line').classList.remove('show');
+  }
+}
+
+// the guest chooses to speak, by way of the ENTER PASSWORD card
+async function rcAskForPassword() {
+  const my = ++rcToken;
+  const ask = document.getElementById('rc-ask');
+  const input = document.getElementById('rc-input');
+  ask.classList.remove('wrong');
+  input.value = '';
+  const stale = () => my !== rcToken || rcBusy;
+  await rcSay('What’s the password?');   if (stale()) return;
+  await rcWait(700);                          if (stale()) return;
   ask.classList.add('show');
   input.disabled = false;
   input.focus();
@@ -3541,19 +3793,70 @@ async function rcSubmit() {
   await rcSay('Enjoy your evening.');
   await rcWait(2400);
 
+  admitGemini();
+  // the doors are open. She does not walk you through them.
+  const doors = document.getElementById('rc-enter');
+  doors.classList.add('unlocked');
+  await rcSay('The doors are open whenever you are.', 'dim');
+  document.getElementById('rc-leave').classList.remove('gone');
+  rcBusy = false;
+}
+
+async function rcEnterGemini() {
+  if (rcBusy) return;
+  const doors = document.getElementById('rc-enter');
+  if (!geminiAdmitted()) {
+    rcRefuse(doors, 'The doors will open once access is granted.');
+    return;
+  }
+  rcBusy = true;
+  ++rcToken;
+  document.getElementById('rc-ask').classList.remove('show');
+  document.getElementById('rc-leave').classList.add('gone');
+  rcSound('magnet');
+  await rcSay('Enjoy your evening.');
+  await rcWait(2300);
   document.getElementById('rc-blackout').classList.add('show');
   await rcWait(1700);
-
-  admitGemini();
-  // the doors are open; the members-only corridor is the walk you earned
   leaveReception(() => goTo('gemini'));
 }
+
+// the lobby render is the interface: put each card where the art drew it
+function layoutRcLobby() {
+  const bd = document.querySelector('#reception .rc-lobby');
+  if (!bd) return;
+  const aspect = parseFloat(bd.dataset.aspect) || 1.5;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let w = vw, h = vw / aspect;
+  if (h > vh) { h = vh; w = vh * aspect; }      // contain: every card stays reachable
+  const ox = (vw - w) / 2, oy = (vh - h) / 2;
+  document.querySelectorAll('#rc-nav [data-ix]').forEach(el => {
+    el.style.left   = (ox + parseFloat(el.dataset.ix) * w) + 'px';
+    el.style.top    = (oy + parseFloat(el.dataset.iy) * h) + 'px';
+    el.style.width  = (parseFloat(el.dataset.w) * w) + 'px';
+    el.style.height = (parseFloat(el.dataset.h) * h) + 'px';
+    el.style.transform = 'translate(-50%, -50%)';
+  });
+}
+window.addEventListener('resize', layoutRcLobby);
+
+document.addEventListener('click', function (e) {
+  const card = e.target.closest('[data-card]');
+  if (card) { rcCardClick(card.dataset.card, card); return; }
+  if (e.target.closest('#rc-enter')) { rcEnterGemini(); return; }
+  if (e.target.closest('.rc-sheet-close')) { rcCloseSheet(); return; }
+  const sheet = document.getElementById('rc-sheet');
+  if (sheet && !sheet.hidden && e.target === sheet) rcCloseSheet();
+});
 
 document.addEventListener('keydown', function (e) {
   const rc = document.getElementById('reception');
   if (!rc || !rc.classList.contains('open')) return;
-  if (e.key === 'Enter') { e.preventDefault(); rcSubmit(); }
-  else if (e.key === 'Escape' && !rcBusy) leaveReception();
+  const sheet = document.getElementById('rc-sheet');
+  if (e.key === 'Escape' && sheet && !sheet.hidden) { rcCloseSheet(); return; }
+  if (e.key === 'Enter' && document.getElementById('rc-ask').classList.contains('show')) {
+    e.preventDefault(); rcSubmit();
+  } else if (e.key === 'Escape' && !rcBusy) leaveReception();
 });
 
 function goTo(id) {
@@ -4208,18 +4511,72 @@ updateAudioBtn();
 
 
 <!-- BAR OVERLAY -->
-<!-- ══ THE RECEPTION — admission to GEMINI ══ -->
+<!-- ══ THE RECEPTION LOBBY — the only room before admission ══ -->
 <div id="reception" aria-hidden="true">
-  <div class="rc-room"></div>
-  <div class="rc-desk"></div>
+  <div class="rc-room">
+    <div class="rc-lobby" data-aspect="1.5" data-fit="contain"></div>
+  </div>
 
+  <!-- the render's own cards are the interface -->
+  <div class="rc-nav" id="rc-nav">
+      <button class="hotspot bare rc-card" data-card="history"
+              data-ix="0.045" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">History of Gemini</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="concierge"
+              data-ix="0.126" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Reception &amp; Reservations</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="password"
+              data-ix="0.207" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Enter Password</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="membership"
+              data-ix="0.288" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Membership Information</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="wine"
+              data-ix="0.368" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Private Wine Lockers</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="cigar"
+              data-ix="0.449" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Cigar Program</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="tonight"
+              data-ix="0.530" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Tonight&rsquo;s Entertainment</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="rules"
+              data-ix="0.610" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">House Rules</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="elevator"
+              data-ix="0.691" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">VIP Elevator</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="elevator"
+              data-ix="0.771" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">VIP Elevator</span>
+      </button>
+      <button class="hotspot bare rc-card" data-card="stair"
+              data-ix="0.851" data-iy="0.865" data-w="0.076" data-h="0.185">
+        <span class="halo"></span><span class="sr-only">Grand Stair</span>
+      </button>
+      <button class="hotspot bare rc-card rc-doors" id="rc-enter"
+              data-ix="0.939" data-iy="0.877" data-w="0.082" data-h="0.205">
+        <span class="halo"></span><span class="sr-only">Enter Gemini Speakeasy</span>
+      </button>
+  </div>
+
+  <!-- what she says, over the room -->
   <div class="rc-stage">
     <p class="rc-line" id="rc-line"></p>
     <div class="rc-ask" id="rc-ask">
       <input class="rc-input" id="rc-input" type="text" autocomplete="off"
              autocapitalize="off" spellcheck="false" aria-label="Password"
              placeholder="&middot; &middot; &middot; &middot;">
-      <p class="rc-hint" id="rc-hint">press enter</p>
+      <p class="rc-hint">press enter</p>
     </div>
   </div>
 
@@ -4229,9 +4586,7 @@ updateAudioBtn();
       <span class="rc-btn"></span><span class="rc-btn"></span>
       <span class="rc-btn"></span><span class="rc-btn"></span>
     </div>
-    <div class="rc-lights">
-      <i></i><i></i><i></i><i></i>
-    </div>
+    <div class="rc-lights"><i></i><i></i><i></i><i></i></div>
   </div>
 
   <div class="rc-monitor" id="rc-monitor">
@@ -4240,6 +4595,31 @@ updateAudioBtn();
     <p class="rc-m-level">Access Level</p>
     <p class="rc-m-gemini">Gemini</p>
     <p class="rc-m-welcome">Welcome Home</p>
+  </div>
+
+  <!-- narrow screens get the lobby as atmosphere and a written desk -->
+  <nav class="rc-list" id="rc-list" aria-label="Reception">
+    <p class="rc-list-head">Gemini Speakeasy &middot; District III</p>
+    <ul>
+      <li><button data-card="history">History of Gemini</button></li>
+      <li><button data-card="concierge">Reception &amp; Reservations</button></li>
+      <li><button data-card="membership">Membership</button></li>
+      <li><button data-card="wine">Wine Lockers</button></li>
+      <li><button data-card="cigar">Cigar Program</button></li>
+      <li><button data-card="tonight">Tonight&rsquo;s Entertainment</button></li>
+      <li><button data-card="rules">House Rules</button></li>
+    </ul>
+    <button class="rc-list-pw" data-card="password">Speak the password</button>
+  </nav>
+
+  <!-- what the walls hold -->
+  <div class="rc-sheet" id="rc-sheet" hidden>
+    <div class="rc-sheet-inner">
+      <p class="rc-sheet-kicker" id="rc-sheet-kicker"></p>
+      <h3 id="rc-sheet-title"></h3>
+      <div id="rc-sheet-body"></div>
+      <button class="rc-sheet-close" type="button">Return to the desk</button>
+    </div>
   </div>
 
   <div class="rc-blackout" id="rc-blackout"></div>
