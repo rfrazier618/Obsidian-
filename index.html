@@ -1541,6 +1541,12 @@ body::before {
   font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.65;
   color: rgba(242,232,213,0.62); margin: 5px 0 0;
 }
+.rc-sheet-inner .rc-sheet-note {
+  margin-top: 26px; padding-top: 18px;
+  border-top: 1px solid rgba(201,168,76,0.18);
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 16px; color: var(--gold-light); opacity: 0.78;
+}
 .rc-sheet-inner .rc-quote {
   border-left: 1px solid rgba(201,168,76,0.34); padding-left: 18px;
   font-style: italic; color: rgba(242,232,213,0.6); margin: 20px 0 8px;
@@ -3591,6 +3597,27 @@ const RC_SHEETS = {
     <p><em>The programme is never printed in advance.</em> Ask the desk when
     you arrive, or find out when the lights drop.</p>` },
 
+  suites: { kicker: 'Above the Room', title: 'Private Suites', body: `
+    <p>Reserved accommodations and private hospitality spaces for approved
+    members and guests.</p>
+    <p>The suites sit above Gemini and belong to the same night. A set
+    that runs long, a conversation that should not be finished in a car, a
+    guest who arrived from another city &mdash; the room downstairs assumes
+    none of it has to end at the door.</p>
+    <dl>
+      <dt>Accommodation</dt>
+      <dd>Prepared before you ask for it. The desk knows who is still
+      here.</dd>
+      <dt>Private Hospitality</dt>
+      <dd>Smaller rooms for smaller numbers, served from the same kitchen
+      and the same cellar.</dd>
+      <dt>Getting There</dt>
+      <dd>Only by the VIP Elevator. There is no stair to the suites and
+      there was never meant to be.</dd>
+    </dl>` , note: {
+      before: 'The suites are reserved for recognized guests.',
+      after:  'Your suite access has been acknowledged.' } },
+
   rules: { kicker: 'The House', title: 'House Rules', body: `
     <p>Four rules. They have not changed and they will not.</p>
     <dl>
@@ -3614,7 +3641,11 @@ function rcOpenSheet(key) {
   if (!sheet || !data) return;
   document.getElementById('rc-sheet-kicker').innerHTML = data.kicker;
   document.getElementById('rc-sheet-title').innerHTML = data.title;
-  document.getElementById('rc-sheet-body').innerHTML = data.body;
+  const note = data.note
+    ? '<p class="rc-sheet-note">' +
+      (geminiAdmitted() ? data.note.after : data.note.before) + '</p>'
+    : '';
+  document.getElementById('rc-sheet-body').innerHTML = data.body + note;
   sheet.hidden = false;
   sheet.querySelector('.rc-sheet-inner').scrollTop = 0;
 }
@@ -4710,9 +4741,9 @@ updateAudioBtn();
               data-ix="0.691" data-iy="0.865" data-w="0.076" data-h="0.185">
         <span class="halo"></span><span class="sr-only">VIP Elevator</span>
       </button>
-      <button class="hotspot bare rc-card" data-card="elevator"
+      <button class="hotspot bare rc-card" data-card="suites"
               data-ix="0.771" data-iy="0.865" data-w="0.076" data-h="0.185">
-        <span class="halo"></span><span class="sr-only">VIP Elevator</span>
+        <span class="halo"></span><span class="sr-only">Private Suites</span>
       </button>
       <button class="hotspot bare rc-card" data-card="stair"
               data-ix="0.851" data-iy="0.865" data-w="0.076" data-h="0.185">
@@ -4762,6 +4793,7 @@ updateAudioBtn();
       <li><button data-card="wine">Wine Lockers</button></li>
       <li><button data-card="cigar">Cigar Program</button></li>
       <li><button data-card="tonight">Tonight&rsquo;s Entertainment</button></li>
+      <li><button data-card="suites">Private Suites</button></li>
       <li><button data-card="rules">House Rules</button></li>
     </ul>
     <button class="rc-list-pw" data-card="password">Speak the password</button>
