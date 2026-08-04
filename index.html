@@ -1378,32 +1378,31 @@ body::before {
 /* the room behind the desk */
 .rc-room { position: absolute; inset: 0; }
 .rc-room::before {           /* lamp glow above the desk */
-  content: ''; position: absolute; left: 50%; top: -14%;
+  content: ''; position: absolute; left: 50%; top: -14%; z-index: 2;
   width: min(70vw, 900px); height: 62vh; transform: translateX(-50%);
   background: radial-gradient(ellipse at 50% 40%,
     rgba(196,135,42,0.30) 0%, rgba(196,135,42,0.10) 38%, transparent 70%);
 }
-.rc-room::after {            /* the dark panelled wall */
+.rc-room::after {            /* the members-only corridor, held back in shadow */
   content: ''; position: absolute; inset: 0;
   background:
-    repeating-linear-gradient(90deg, transparent 0 7%,
-      rgba(201,168,76,0.05) 7% 7.4%, transparent 7.4% 14%),
-    linear-gradient(#100b08 0%, #0a0706 55%, #050303 100%);
+    linear-gradient(rgba(5,3,3,0.72), rgba(5,3,3,0.86) 55%, rgba(5,3,3,0.97)),
+    url('assets/images/hw-hw_gemini.jpg') center 42% / cover no-repeat;
 }
 
 /* the marble desk */
 .rc-desk {
   position: absolute; left: 0; right: 0; bottom: 0; height: 34vh;
   background:
-    radial-gradient(ellipse 46% 130% at 50% 0%, rgba(196,135,42,0.20), transparent 68%),
-    linear-gradient(rgba(232,201,122,0.16), transparent 9%),
-    linear-gradient(#181312, #0c0908 58%, #070505);
+    radial-gradient(ellipse 40% 115% at 50% 0%, rgba(196,135,42,0.13), transparent 62%),
+    linear-gradient(rgba(232,201,122,0.20), transparent 6%),
+    linear-gradient(#0d0a09, #070505 52%, #030202);
   border-top: 1px solid rgba(201,168,76,0.42);
   box-shadow: 0 -1px 22px rgba(196,135,42,0.14), 0 -30px 80px rgba(0,0,0,0.8);
   box-shadow: 0 -30px 80px rgba(0,0,0,0.8);
 }
 .rc-desk::before {           /* veining */
-  content: ''; position: absolute; inset: 0; opacity: 0.5;
+  content: ''; position: absolute; inset: 0; opacity: 0.28;
   background:
     linear-gradient(102deg, transparent 42%, rgba(201,168,76,0.07) 43%, transparent 44%),
     linear-gradient(88deg, transparent 66%, rgba(242,232,213,0.045) 67%, transparent 68%);
@@ -3546,9 +3545,8 @@ async function rcSubmit() {
   await rcWait(1700);
 
   admitGemini();
-  // straight in: the Reception was the passage, so no corridor to
-  // click through after the doors have already been opened for you
-  leaveReception(() => executeGoTo('gemini'));
+  // the doors are open; the members-only corridor is the walk you earned
+  leaveReception(() => goTo('gemini'));
 }
 
 document.addEventListener('keydown', function (e) {
