@@ -49,6 +49,22 @@ The live site currently goes **entrance → hall**, so Founder's Way,
 Legacy Circle, and the Central Fountain Court do not exist as rooms
 yet. All three are rendered and ready to add.
 
+## The crests
+
+Two canonical marks live in `assets/crest/`, and neither is ever
+redrawn:
+
+| File | Mark | Where it belongs |
+|---|---|---|
+| `rsf-shield.png` | VL-001A &mdash; RSF Founder's Seal | the founder's ground and his own rooms |
+| `oe-shield.png` | VL-001B &mdash; OE Shield Only | the institution: perimeter, building, house objects |
+
+`oe-shield.png` carries VL-001's protected characteristics exactly —
+the OE letterform, a small crown above the monogram, an eight-point
+star beneath, black marble ground, gold linework only, no lions or
+banner. It is the variant ARCH-002 reserves for medallions, hardware,
+and smaller signage, which is what the site needs it for.
+
 ## The RSF crest
 
 Never redrawn. `assets/crest/rsf-shield.png` is the canonical asset;
