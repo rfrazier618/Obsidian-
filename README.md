@@ -65,16 +65,11 @@ star beneath, black marble ground, gold linework only, no lions or
 banner. It is the variant ARCH-002 reserves for medallions, hardware,
 and smaller signage, which is what the site needs it for.
 
-## The RSF crest
-
-Never redrawn. `assets/crest/rsf-shield.png` is the canonical asset;
-where a render arrived with the wrong letterform, the real asset was
-composited in rather than regenerated.
-
-Mark convention observed so far: **OE** on the perimeter and the
-building itself (institution), **RSF** on the founder's ground and in
-his rooms. Worth a Canon Keeper ruling so future renders are
-unambiguous.
+Where a render arrived with the wrong letterform baked in, the real
+asset was composited in rather than regenerated. Mark convention
+observed so far: **OE** on the perimeter and the building itself
+(institution), **RSF** on the founder's ground and in his rooms.
+Worth a Canon Keeper ruling so future renders are unambiguous.
 
 ## Clickable preview
 
