@@ -1453,32 +1453,48 @@ body::before {
 }
 .rc-ask.wrong .rc-input { border-bottom-color: rgba(107,31,42,0.9); }
 
-/* the panel under the marble */
+/* the panel under the marble — real brass, photographed, not drawn */
 .rc-panel {
   position: absolute; left: 50%; top: 62%; transform: translateX(-50%);
+  width: min(84vw, 420px);
   z-index: 6; opacity: 0; pointer-events: none; transition: opacity 1s ease;
 }
 .rc-panel.show { opacity: 1; }
-.rc-brass {
-  display: flex; justify-content: center; gap: clamp(15px, 3.4vw, 26px);
-  padding: 17px 24px;
-  background: linear-gradient(#161009, #0b0806);
-  border: 1px solid rgba(201,168,76,0.3); border-radius: 3px;
-  box-shadow: inset 0 1px 0 rgba(201,168,76,0.18), 0 16px 44px rgba(0,0,0,0.85);
+.rc-panel-frame {
+  position: relative; width: 100%; aspect-ratio: 900 / 378;
+  border-radius: 3px; overflow: hidden;
+  box-shadow: 0 16px 44px rgba(0,0,0,0.85);
   clip-path: inset(0 0 100% 0);
   transition: clip-path 1.6s cubic-bezier(0.22,0.08,0.14,1);
 }
-.rc-panel.show .rc-brass { clip-path: inset(0 0 0 0); }
+.rc-panel.show .rc-panel-frame { clip-path: inset(0 0 0 0); }
+.rc-panel-layer {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 0.9s ease;
+}
+.rc-panel-hand { background-image: url('assets/images/gemini-panel-hand.jpg'); }
+.rc-panel-plate { background-image: url('assets/images/gemini-panel-plate.jpg'); }
+.rc-panel-layer.on { opacity: 1; }
+
+/* invisible hit circles set exactly on the photographed buttons — the
+   press state is a glow overlay, never a redrawn button */
 .rc-btn {
-  width: clamp(26px, 5.6vw, 34px); height: clamp(26px, 5.6vw, 34px); border-radius: 50%;
-  background: radial-gradient(circle at 38% 32%, #8a6b32, #4a3819 62%, #2a2010);
-  box-shadow: inset 0 1px 1px rgba(232,201,122,0.4), 0 2px 5px rgba(0,0,0,0.75);
-  transition: transform 0.14s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  position: absolute; width: 11%; aspect-ratio: 1;
+  transform: translate(-50%, -50%); border-radius: 50%;
 }
-.rc-btn.press {
-  transform: translateY(2px) scale(0.965); filter: brightness(1.55);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 18px rgba(196,135,42,0.5);
+.rc-btn-1 { left: 23.3%; top: 47.3%; }
+.rc-btn-2 { left: 41.1%; top: 46.0%; }
+.rc-btn-3 { left: 58.5%; top: 46.6%; }
+.rc-btn-4 { left: 76.2%; top: 47.6%; }
+.rc-btn i {
+  position: absolute; inset: -35%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,206,130,0.85) 0%, rgba(196,135,42,0.4) 45%, transparent 75%);
+  opacity: 0; transform: scale(0.7);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.22,0.08,0.14,1);
+  filter: blur(1px);
 }
+.rc-btn.press i { opacity: 1; transform: scale(1.15); }
 .rc-lights { display: flex; justify-content: center; gap: 11px; margin-top: 17px; height: 7px; }
 .rc-lights i {
   width: 7px; height: 7px; border-radius: 50%;
@@ -1631,7 +1647,7 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #reception *, .rc-brass { transition-duration: 0.3s !important; animation: none !important; }
+  #reception *, .rc-panel-frame { transition-duration: 0.3s !important; animation: none !important; }
 }
 /* ══════════════════════════════════════
    THE DOORS — the last thing between you
@@ -3929,11 +3945,17 @@ async function rcSubmit() {
   await rcWait(1900);
 
   const panel = document.getElementById('rc-panel');
+  const hand = panel.querySelector('.rc-panel-hand');
+  const plate = panel.querySelector('.rc-panel-plate');
   const btns = panel.querySelectorAll('.rc-btn');
   const lights = panel.querySelectorAll('.rc-lights i');
   document.getElementById('rc-line').classList.remove('show');
   panel.classList.add('show');            // the brass panel slides open
+  hand.classList.add('on');               // she reaches for it first
   await rcWait(1700);
+  hand.classList.remove('on');
+  plate.classList.add('on');              // then the plate itself, buttons clear
+  await rcWait(900);
 
   const rhythm = GEMINI_RHYTHM[new Date().getMonth()];
   const gaps = [520, 300, 660, 380];      // muscle memory, not a metronome
@@ -4853,9 +4875,14 @@ updateAudioBtn();
 
   <!-- she reaches under the marble; guests never see this -->
   <div class="rc-panel" id="rc-panel" aria-hidden="true">
-    <div class="rc-brass">
-      <span class="rc-btn"></span><span class="rc-btn"></span>
-      <span class="rc-btn"></span><span class="rc-btn"></span>
+    <div class="rc-panel-frame">
+      <div class="rc-panel-layer rc-panel-hand"></div>
+      <div class="rc-panel-layer rc-panel-plate">
+        <span class="rc-btn rc-btn-1"><i></i></span>
+        <span class="rc-btn rc-btn-2"><i></i></span>
+        <span class="rc-btn rc-btn-3"><i></i></span>
+        <span class="rc-btn rc-btn-4"><i></i></span>
+      </div>
     </div>
     <div class="rc-lights"><i></i><i></i><i></i><i></i></div>
   </div>
