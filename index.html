@@ -3663,7 +3663,11 @@ const GEMINI_POSTERS = [
   { n: 7,  slug: 'cinnamon',         title: 'Cinnamon' },
   { n: 8,  slug: 'clock-it',         title: 'Clock It' },
   { n: 9,  slug: 'driver',           title: 'Driver' },
-  { n: 10, slug: 'mine',             title: 'Mine' }
+  { n: 10, slug: 'mine',             title: 'Mine' },
+  { n: 11, slug: 'what-are-we-doin', title: 'What Are We Doin’?' },
+  { n: 12, slug: 'fixation',         title: 'Fixation' }
+  // Track 13, GHOST, is deliberately withheld from this wall — see the
+  // Grief room, which is what the ghostClick() easter egg already leads to.
 ];
 
 function rcBuildPosterWall() {
@@ -4739,7 +4743,14 @@ updateAudioBtn();
       <div style="width:40px; height:1px; background:rgba(242,232,213,0.1); margin-bottom:40px;"></div>
 
       <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.4em; color:rgba(242,232,213,0.15); margin-bottom:8px;">For her.</p>
-      <p style="font-family:Cormorant Garamond,serif; font-size:16px; font-style:italic; color:rgba(242,232,213,0.2);">Someday we'll all be free.</p>
+      <p style="font-family:Cormorant Garamond,serif; font-size:16px; font-style:italic; color:rgba(242,232,213,0.2); margin-bottom:60px;">Someday we'll all be free.</p>
+
+      <img src="assets/posters/track-13-ghost.jpg" alt="Track Thirteen — GHOST, poster"
+           onclick="openLightboxImage(this.src, this.alt)"
+           style="display:block; width:100%; max-width:220px; opacity:0.22; cursor:zoom-in;
+                  filter:grayscale(0.3); transition:opacity 0.8s ease;"
+           onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=0.22">
+      <p style="font-family:Cormorant SC,serif; font-size:8px; letter-spacing:0.4em; color:rgba(242,232,213,0.12); margin-top:14px; text-transform:uppercase;">Track Thirteen</p>
 
     </div>
   </div>
