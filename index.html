@@ -1541,6 +1541,23 @@ body::before {
   font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.65;
   color: rgba(242,232,213,0.62); margin: 5px 0 0;
 }
+.rc-posters {
+  display: grid; gap: 14px; margin: 22px 0 26px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.rc-poster {
+  padding: 0; border: 1px solid rgba(201,168,76,0.16); background: #0a0807;
+  cursor: pointer; overflow: hidden; text-align: left;
+  transition: border-color 0.4s ease, transform 0.3s ease;
+}
+.rc-poster:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+.rc-poster img { display: block; width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+.rc-poster span {
+  display: block; padding: 8px 9px 10px;
+  font-family: 'Cormorant SC', serif; font-size: 9.5px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: rgba(242,232,213,0.55); line-height: 1.4;
+}
+
 .rc-sheet-inner .rc-plaque {
   display: block; width: min(100%, 340px); margin: 0 auto 26px;
   border: 1px solid rgba(201,168,76,0.16);
@@ -3590,15 +3607,8 @@ const RC_SHEETS = {
 
   tonight: { kicker: 'The Stage', title: 'Tonight&rsquo;s Entertainment', body: `
     <p>One room. One night. One experience &mdash; and it is never the same
-    twice.</p>
-    <dl>
-      <dt>Early Set</dt><dd>Piano and standards. Conversation is
-      permitted.</dd>
-      <dt>Late Set</dt><dd>The room goes quiet by agreement, not by
-      instruction.</dd>
-      <dt>After</dt><dd>Whoever is still here, and whoever feels like
-      playing.</dd>
-    </dl>
+    twice. Thirteen scenes, and a poster on the wall for each one.</p>
+    <div class="rc-posters" id="rc-posters"></div>
     <p><em>The programme is never printed in advance.</em> Ask the desk when
     you arrive, or find out when the lights drop.</p>` },
 
@@ -3641,6 +3651,36 @@ const RC_SHEETS = {
     code. Legacy is the destination.&rdquo;<br>&mdash; OE</p>` }
 };
 
+
+// ── the poster wall: extend as more tracks arrive ──
+const GEMINI_POSTERS = [
+  { n: 1,  slug: 'gemini-speakeasy', title: 'The Gemini Speakeasy' },
+  { n: 3,  slug: 'untouchable',      title: 'Untouchable' },
+  { n: 4,  slug: 'bad-way',          title: 'Bad Way' },
+  { n: 9,  slug: 'driver',           title: 'Driver' },
+  { n: 10, slug: 'mine',             title: 'Mine' }
+];
+
+function rcBuildPosterWall() {
+  const wall = document.getElementById('rc-posters');
+  if (!wall || wall.childElementCount) return;   // build once
+  GEMINI_POSTERS.slice().sort((a, b) => a.n - b.n).forEach(t => {
+    const fig = document.createElement('button');
+    fig.type = 'button';
+    fig.className = 'rc-poster';
+    fig.innerHTML =
+      '<img src="assets/posters/track-' + String(t.n).padStart(2, '0') + '-' + t.slug + '.jpg" ' +
+      'alt="' + t.title + ' — poster" loading="lazy">' +
+      '<span>Track ' + t.n + ' &middot; ' + t.title + '</span>';
+    fig.addEventListener('click', () => openPoster(fig.querySelector('img').src, t.title, t.n));
+    wall.appendChild(fig);
+  });
+}
+
+function openPoster(url, title, n) {
+  openLightboxImage(url, 'Track ' + n + ' \u2014 ' + title + ', poster');
+}
+
 function rcOpenSheet(key) {
   const sheet = document.getElementById('rc-sheet');
   const data = RC_SHEETS[key];
@@ -3656,6 +3696,7 @@ function rcOpenSheet(key) {
       (geminiAdmitted() ? data.note.after : data.note.before) + '</p>'
     : '';
   document.getElementById('rc-sheet-body').innerHTML = plaque + data.body + note;
+  if (key === 'tonight') rcBuildPosterWall();
   sheet.hidden = false;
   sheet.querySelector('.rc-sheet-inner').scrollTop = 0;
 }
@@ -4230,10 +4271,16 @@ function closeBar() {
 }
 
 function openCard(url, name) {
+  openLightboxImage(url, name + ' cocktail card');
+}
+
+// shared by the cocktail cards and the poster wall — same lightbox,
+// each caller supplies its own complete alt text
+function openLightboxImage(url, alt) {
   const lb = document.getElementById('card-lightbox');
   const img = document.getElementById('card-lightbox-img');
   img.src = url;
-  img.alt = name + ' cocktail card';
+  img.alt = alt;
   lb.style.display = 'block';
   lb.scrollTop = 0;
   document.body.style.overflow = 'hidden';
