@@ -4019,8 +4019,20 @@ function playDoorSequence() {
     };
 
     video.addEventListener('error', swingOnStill, { once: true });
+
+    // the film carries its own sound — the latch, the murmur beyond the
+    // glass. Try it with audio; browsers that block unmuted autoplay
+    // outside a direct gesture still get the film, just silent, rather
+    // than losing it to the CSS swing over a muting technicality.
+    video.muted = false;
     const attempt = video.play();
-    if (attempt && attempt.catch) attempt.catch(swingOnStill);
+    if (attempt && attempt.catch) {
+      attempt.catch(() => {
+        video.muted = true;
+        const retry = video.play();
+        if (retry && retry.catch) retry.catch(swingOnStill);
+      });
+    }
     // if nothing is rendering shortly, treat it as absent
     setTimeout(() => { if (!filmPlaying) swingOnStill(); }, 1200);
     // last-ditch guard in case a film stalls mid-play
@@ -4766,7 +4778,7 @@ updateAudioBtn();
     <div class="gd-leaf left"><i></i></div>
     <div class="gd-leaf right"><i></i></div>
     <div class="gd-seam"></div>
-    <video id="gd-video" class="gd-video" muted playsinline preload="none" hidden></video>
+    <video id="gd-video" class="gd-video" playsinline preload="none" hidden></video>
   </div>
 </div>
 
