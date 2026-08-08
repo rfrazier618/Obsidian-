@@ -4196,38 +4196,38 @@ document.addEventListener('keydown', function (e) {
 // ══ GEMINI HALL ARRIVAL — the render is the room ══
 const GEMINI_HERO_SPOTS = [
   { key:'vip',      label:'VIP Mezzanine — III-601',
-    ix:0.500, iy:0.222, w:0.175, h:0.052, action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.500, iy:0.243, w:0.175, h:0.052, action:'lock', msg:'The Mezzanine is reserved for members above.' },
   { key:'perf',     label:'Main Performance Stage — Tonight’s Entertainment',
-    ix:0.500, iy:0.298, w:0.175, h:0.052, action:'scroll' },
+    ix:0.500, iy:0.352, w:0.175, h:0.052, action:'scroll' },
   { key:'piano',    label:'Piano Lounge',
-    ix:0.173, iy:0.322, w:0.155, h:0.052, action:'lock', msg:'The Piano Lounge opens later this year.' },
+    ix:0.173, iy:0.352, w:0.155, h:0.052, action:'lock', msg:'The Piano Lounge opens later this year.' },
   { key:'vinyl',    label:'Vinyl Lounge',
-    ix:0.827, iy:0.322, w:0.155, h:0.052, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.827, iy:0.352, w:0.155, h:0.052, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
   { key:'cigar',    label:'Cigar & Whiskey',
-    ix:0.173, iy:0.555, w:0.155, h:0.045, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.173, iy:0.595, w:0.155, h:0.048, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'wine',     label:'DEPMG Wine Bar',
-    ix:0.827, iy:0.555, w:0.155, h:0.045, action:'lock', msg:'The Wine Bar opens later this year.' },
+    ix:0.827, iy:0.595, w:0.155, h:0.048, action:'lock', msg:'The Wine Bar opens later this year.' },
   { key:'core',     label:'Gemini Core — Center Bar',
-    ix:0.500, iy:0.555, w:0.165, h:0.045, action:'bar' },
+    ix:0.500, iy:0.598, w:0.165, h:0.048, action:'bar' },
   { key:'doors',    label:'Gemini Doors — Return to the Estate',
-    ix:0.500, iy:0.705, w:0.165, h:0.045, action:'hall' },
+    ix:0.500, iy:0.735, w:0.165, h:0.048, action:'hall' },
   // the bottom rail repeats the same destinations across a single wide row
   { key:'piano2',   label:'Piano Lounge',
-    ix:0.1194, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'The Piano Lounge opens later this year.' },
+    ix:0.1194, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Piano Lounge opens later this year.' },
   { key:'vinyl2',   label:'Vinyl Lounge',
-    ix:0.2280, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.2280, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
   { key:'cigar2',   label:'Cigar & Whiskey',
-    ix:0.3370, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.3370, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'wine2',    label:'DEPMG Wine Bar',
-    ix:0.4460, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'The Wine Bar opens later this year.' },
+    ix:0.4460, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Wine Bar opens later this year.' },
   { key:'perf2',    label:'Tonight’s Performance',
-    ix:0.5540, iy:0.910, w:0.109, h:0.10, action:'scroll' },
+    ix:0.5540, iy:0.900, w:0.109, h:0.11, action:'scroll' },
   { key:'vip2',     label:'VIP Mezzanine',
-    ix:0.6630, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.6630, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Mezzanine is reserved for members above.' },
   { key:'private',  label:'Private Events',
-    ix:0.7720, iy:0.910, w:0.109, h:0.10, action:'lock', msg:'Private events are arranged through the concierge.' },
+    ix:0.7720, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'Private events are arranged through the concierge.' },
   { key:'estate',   label:'Return to Estate',
-    ix:0.8800, iy:0.910, w:0.109, h:0.10, action:'hall' },
+    ix:0.8800, iy:0.900, w:0.109, h:0.11, action:'hall' },
 ];
 
 function ghAction(spot, btn) {
@@ -4294,7 +4294,7 @@ function layoutGeminiHero() {
   const frame = document.getElementById('gh-frame');
   const nav = document.getElementById('gh-nav');
   if (!frame || !nav || !nav.childElementCount) return;
-  const aspect = 1717 / 916;
+  const aspect = 1672 / 941;
   const vw = window.innerWidth, vh = window.innerHeight;
   let w = vw, h = vw / aspect;
   if (h > vh) { h = vh; w = vh * aspect; }   // contain: every hotspot stays reachable
