@@ -1984,6 +1984,13 @@ body::before {
       <p>In March 2022 his grandmother passed away. He went home. He brought back the notebooks. The singer he had put down in 2007 picked himself back up.</p>
       <p>RichFraz is the MC. Richard S. Frazier is the novelist. R.S. Frazier is who both of them are when nobody's watching.</p>
     </div>
+
+    <div class="fade-up delay-2" style="max-width:640px; margin-top:8px; margin-bottom:40px;">
+      <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.4em; color:var(--gold); opacity:0.4; margin-bottom:16px;">What&rsquo;s On The Desk Tonight</p>
+      <div id="ai-content-study" class="ai-content-block">
+        <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+      </div>
+    </div>
     <div class="gold-rule"></div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:48px;" class="fade-up">
       <img src="assets/images/img-richard-s-frazier-press-photo.jpg" style="width:100%; filter:brightness(0.9) saturate(0.85);" alt="Richard S. Frazier Press Photo">
@@ -2427,6 +2434,13 @@ body::before {
     <div class="fade-up delay-1" style="max-width:640px;">
       <p style="font-family:Cormorant Garamond,serif; font-size:clamp(18px,2.5vw,26px); font-style:italic; color:var(--cream); line-height:1.6; margin-bottom:20px;">Context, not an ego wall.</p>
       <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">Framed album art. Manuscript pages. DEPMG milestones. Obsidian Magazine issues. Concept sketches that never left this room until now. The Founder Gallery doesn't ask you to admire the work — it asks you to understand why it exists, before you ever reach the Speakeasy or the Headquarters beyond.</p>
+    </div>
+
+    <div class="fade-up delay-2" style="max-width:640px; margin-top:8px; margin-bottom:8px;">
+      <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.4em; color:var(--gold); opacity:0.4; margin-bottom:16px;">Tonight&rsquo;s Featured Piece</p>
+      <div id="ai-content-founder" class="ai-content-block">
+        <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+      </div>
     </div>
     <div class="gold-rule fade-up delay-2"></div>
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
@@ -3199,6 +3213,13 @@ body::before {
         <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.3em; color:#9966cc; opacity:0.4;">— Confidential · RS</p>
       </div>
       <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.4em; color:#9966cc; opacity:0.25; margin-top:40px;">You found The Vault. Very few do.</p>
+
+      <div style="margin-top:48px;">
+        <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.4em; color:#9966cc; opacity:0.4; margin-bottom:20px;">Tonight&rsquo;s Protected Artifact</p>
+        <div id="ai-content-vault" class="ai-content-block">
+          <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+        </div>
+      </div>
     </div>
 
     <!-- THE FOUR RULES -->
@@ -4767,6 +4788,9 @@ function executeGoTo(id) {
       if (id === 'garage') setTimeout(() => loadGarage(), 400);
       if (id === 'rooftop') setTimeout(() => loadRooftop(), 400);
       if (id === 'cellar') setTimeout(() => loadCellar(), 400);
+      if (id === 'vault') setTimeout(() => loadVault(), 400);
+      if (id === 'study') setTimeout(() => loadStudyDesk(), 400);
+      if (id === 'founder') setTimeout(() => loadFounderPiece(), 400);
 
     }, 400);
   }, 500);
@@ -4947,6 +4971,30 @@ function loadRooftop() {
   fetchEstateContent('rooftop',
     `You are the voice of The Rooftop of The Obsidian Estate — the highest public room, above everything. This is where R.S. Frazier goes to think about the long game. The city below. The sky above. The track Fixation lives here. Write something short and true about what he is thinking about from up here tonight.`,
     `Today is ${CURRENT_DATE}, ${TIME_OF_DAY}, ${CURRENT_SEASON}. Write 80-120 words from R.S. Frazier on the Rooftop tonight — what he sees, what he's thinking. Could be about the album, the novels, legacy, perspective from up here. Write it as natural prose. End with ONE single line that people will screenshot — the kind of line that lands different. That final line should stand alone.`
+  );
+}
+
+// ── THE VAULT ──
+function loadVault() {
+  fetchEstateContent('vault',
+    `You are the voice of The Vault — the deepest room in the Estate, where "Protect what builds legacy" is not a slogan but a job description. This room holds masters, manuscripts, unfinished songs, letters never sent, journals. Never quote or reproduce actual lyrics, manuscript text, or song titles as if they were real excerpts — describe artifacts and why they're protected, never their literal contents. Write like a confidential inventory note, not a public press release.`,
+    `Today is ${CURRENT_DATE}. Describe ONE specific artifact being protected in The Vault tonight — invent it (a notebook, a demo, a letter, a sketch, a masters reel; be specific about what it is, not what it says). In 60-90 words: what it is, roughly when it's from, and one sentence on why it's protected rather than released or shown. End with a short unattributed line in italics, the way a confidential file might be stamped. No brackets, no headers — just the note.`
+  );
+}
+
+// ── THE STUDY ──
+function loadStudyDesk() {
+  fetchEstateContent('study',
+    `You are the voice of The Study — where Richard S. Frazier actually works, between the MC, the crooner, and the novelist. This is a working note, not a finished piece — the mess before the polish. Never write actual lyrics, song titles as quoted lines, or manuscript excerpts; describe what he's wrestling with, not the text itself.`,
+    `Today is ${CURRENT_DATE}, ${TIME_OF_DAY}. Write a short working note (70-100 words) as if left on the desk tonight — a problem he's chewing on in a current project (an album track, a novel chapter, a title, a structure decision). First person, unfinished-feeling, like a real note to himself rather than a public statement. It can be uncertain or self-critical. No resolution required — end mid-thought if that feels true. No brackets or headers, just the note.`
+  );
+}
+
+// ── THE FOUNDER GALLERY ──
+function loadFounderPiece() {
+  fetchEstateContent('founder',
+    `You are the curator's voice for The Founder Gallery — a museum placard, not a biography. Each visit highlights one piece on the wall: framed album art, a manuscript page, a DEPMG milestone, a magazine cover, a concept sketch. Never quote actual lyrics or manuscript text as if real — describe the piece and its context only.`,
+    `Today is ${CURRENT_DATE}. Write ONE museum-style placard (50-80 words) for a single piece currently on display in the Founder Gallery — invent it, but make it specific (medium, rough date, what it depicts or documents). Third person, plain curatorial voice, no flourish. End with a one-line dated attribution like a real gallery card, e.g. an item title and a year. No brackets or headers.`
   );
 }
 
