@@ -1929,6 +1929,215 @@ body::before {
 .pl-arr-pill.available { color: var(--gold); border-color: rgba(201,168,76,0.5); }
 .pl-arr-pill.playing { background: rgba(201,168,76,0.18); color: var(--gold); }
 
+/* ══ THE VINYL LOUNGE — placeholder build, no render yet ══
+   Same architecture as the Piano Lounge's first pass: a CSS hero (a
+   record-groove treatment instead of the Piano Lounge's paneled-wall
+   one, so the two rooms don't feel copy-pasted) plus real scrolling
+   content and a fixed tab bar. Swap for real photography using the
+   same rebuild playbook the Piano Lounge went through. ══ */
+.vl-room[hidden] { display: none !important; }
+.vl-room { position: relative; background: #0d0805; }
+.vl-hero {
+  position: relative; min-height: 92vh; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding-top: 90px; overflow: hidden; text-align: center;
+}
+.vl-frame {
+  position: absolute; inset: 0;
+  background:
+    repeating-radial-gradient(circle at 78% 38%, rgba(201,168,76,0.05) 0 2px, transparent 2px 14px),
+    radial-gradient(ellipse at 50% 15%, rgba(107,31,42,0.16), transparent 55%),
+    linear-gradient(180deg, #150d08 0%, #0a0603 75%);
+}
+.vl-disc {
+  position: absolute; right: 6%; top: 42%; width: min(320px, 26vw); aspect-ratio: 1;
+  border-radius: 50%; transform: translateY(-50%);
+  background: repeating-radial-gradient(circle, #1a1210 0 3px, #0d0805 3px 7px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.15);
+  animation: vlSpin 6s linear infinite;
+}
+.vl-disc::after {
+  content: ''; position: absolute; inset: 38%; border-radius: 50%;
+  background: radial-gradient(circle, var(--burgundy) 0%, #3a0f16 70%, #1a0509 100%);
+  border: 1px solid rgba(201,168,76,0.3);
+}
+.vl-disc::before {
+  content: ''; position: absolute; inset: 47%; border-radius: 50%; background: #0a0603;
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.4); z-index: 1;
+}
+@keyframes vlSpin { from { transform: translateY(-50%) rotate(0); } to { transform: translateY(-50%) rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .vl-disc, .vl-mini-disc { animation: none; } }
+
+.vl-title-block { position: relative; z-index: 2; }
+.vl-eyebrow {
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin-bottom: 14px;
+}
+.vl-title {
+  font-family: 'Cormorant SC', serif; font-size: clamp(40px,7vw,84px); letter-spacing: 0.12em;
+  color: var(--cream); margin: 0 0 14px;
+}
+.vl-sub {
+  font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase;
+  color: rgba(242,232,213,0.45);
+}
+
+.vl-now-card {
+  position: relative; z-index: 2; margin-top: 56px;
+  width: min(360px, 88vw); background: rgba(8,4,2,0.72); border: 1px solid rgba(201,168,76,0.22);
+  padding: 24px 26px 28px; backdrop-filter: blur(6px); text-align: left;
+}
+.vl-now-label {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.38em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.8; margin: 0 0 14px; display: flex; align-items: center; gap: 10px;
+}
+.vl-mini-disc {
+  width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+  background: repeating-radial-gradient(circle, #1a1210 0 1.5px, #0d0805 1.5px 3.5px);
+  animation: vlSpin 4s linear infinite;
+}
+.vl-now-field {
+  display: flex; justify-content: space-between; gap: 14px; padding: 7px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+  font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--cream);
+}
+.vl-now-field:last-child { border-bottom: none; }
+.vl-now-field-label { opacity: 0.45; font-style: italic; font-size: 12px; letter-spacing: 0.05em; white-space: nowrap; }
+.vl-now-field-val { text-align: right; opacity: 0.85; }
+
+.vl-content { max-width: 1150px; margin: 0 auto; padding: 10px 32px 150px; }
+.vl-section { padding: 70px 0; border-top: 1px solid rgba(201,168,76,0.1); }
+.vl-section:first-child { border-top: none; }
+.vl-section-head {
+  font-family: 'Cormorant SC', serif; font-size: 13px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+}
+.vl-section-sub {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+  color: rgba(242,232,213,0.5); margin-bottom: 34px; max-width: 640px;
+}
+
+.vl-genre-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+.vl-genre-tab {
+  background: none; border: 1px solid rgba(201,168,76,0.28); color: rgba(242,232,213,0.7);
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer; transition: all 0.3s ease;
+}
+.vl-genre-tab:hover { border-color: var(--gold); color: var(--gold); }
+.vl-genre-tab.on { background: rgba(201,168,76,0.14); border-color: var(--gold); color: var(--gold); }
+
+.vl-album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 18px; }
+.vl-album-card {
+  position: relative; border: 1px solid rgba(201,168,76,0.14); padding: 20px; cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease; background: none; text-align: left; width: 100%;
+}
+.vl-album-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.03); }
+.vl-album-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); margin-bottom: 3px; }
+.vl-album-artist { font-size: 13px; opacity: 0.6; font-style: italic; margin-bottom: 6px; }
+.vl-album-meta { font-size: 11px; opacity: 0.4; letter-spacing: 0.05em; }
+.vl-seal {
+  position: absolute; top: 14px; right: 14px; font-family: 'Cormorant SC', serif; font-size: 8px;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.4); padding: 4px 7px; opacity: 0.85;
+}
+
+.vl-sessions-list { display: flex; flex-direction: column; }
+.vl-session-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  padding: 22px 0; border-bottom: 1px solid rgba(201,168,76,0.08); flex-wrap: wrap;
+}
+.vl-session-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--cream); }
+.vl-session-when { font-size: 12px; opacity: 0.45; font-style: italic; margin-top: 3px; }
+.vl-session-desc { font-size: 13px; opacity: 0.55; margin-top: 6px; max-width: 520px; }
+.vl-reserve-btn {
+  background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.vl-reserve-btn:hover { background: rgba(201,168,76,0.14); }
+.vl-reserve-btn:disabled { opacity: 0.4; cursor: default; }
+
+.vl-influence-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.vl-song-tab {
+  background: none; border: 1px solid rgba(201,168,76,0.22); color: rgba(242,232,213,0.65);
+  font-family: 'Cormorant Garamond', serif; font-size: 13px; padding: 8px 14px; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.vl-song-tab:hover { border-color: var(--gold); color: var(--gold); }
+.vl-song-tab.on { background: rgba(201,168,76,0.14); border-color: var(--gold); color: var(--gold); }
+.vl-influence-trail { border: 1px solid rgba(201,168,76,0.14); padding: 26px 28px; }
+.vl-influence-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.vl-influence-tag {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 6px 12px; opacity: 0.9;
+}
+.vl-influence-note {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+  color: rgba(242,232,213,0.7); line-height: 1.6;
+}
+
+#vl-modal {
+  display: none; position: fixed; inset: 0; z-index: 750; background: rgba(3,1,1,0.92);
+  backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px;
+}
+#vl-modal.open { display: flex; }
+.vl-modal-card {
+  max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto;
+  background: #0d0805; border: 1px solid rgba(201,168,76,0.25); padding: 44px 40px 40px; position: relative;
+}
+.vl-modal-close {
+  position: absolute; top: 16px; right: 20px; background: none; border: none;
+  color: rgba(242,232,213,0.5); font-family: 'Cormorant SC', serif; font-size: 11px;
+  letter-spacing: 0.2em; cursor: pointer;
+}
+.vl-modal-close:hover { color: var(--gold); }
+.vl-modal-seal {
+  display: inline-block; font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4);
+  padding: 5px 10px; margin-bottom: 16px;
+}
+.vl-modal-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; color: var(--cream); margin: 0 0 4px; }
+.vl-modal-artist { font-size: 16px; opacity: 0.6; font-style: italic; margin-bottom: 6px; }
+.vl-modal-meta { font-size: 12px; opacity: 0.4; letter-spacing: 0.05em; margin-bottom: 26px; }
+.vl-modal-label {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin: 24px 0 10px;
+}
+.vl-modal-body-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.6; color: rgba(242,232,213,0.8); }
+.vl-modal-tracklist { display: flex; flex-direction: column; }
+.vl-modal-track { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px solid rgba(201,168,76,0.06); font-size: 14px; color: rgba(242,232,213,0.75); }
+.vl-modal-track span:first-child { opacity: 0.4; min-width: 20px; }
+
+.vl-toast {
+  position: fixed; bottom: 94px; left: 50%; transform: translateX(-50%) translateY(10px);
+  background: rgba(8,4,2,0.95); border: 1px solid rgba(201,168,76,0.35); color: var(--gold);
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+  padding: 12px 24px; z-index: 800; opacity: 0; pointer-events: none; transition: all 0.4s ease;
+  max-width: 80vw; text-align: center;
+}
+.vl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.vl-tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 52;
+  display: flex; overflow-x: auto;
+  background: linear-gradient(0deg, rgba(10,6,3,0.98) 60%, rgba(10,6,3,0.85));
+  border-top: 1px solid rgba(201,168,76,0.16);
+}
+.vl-tab {
+  flex: 1 0 auto; background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 14px; font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(242,232,213,0.5); white-space: nowrap; transition: color 0.3s ease;
+}
+.vl-tab-icon { font-size: 16px; }
+.vl-tab:hover, .vl-tab.on { color: var(--gold); }
+
+@media (max-width: 900px) {
+  .vl-disc { display: none; }
+  .vl-hero { padding: 110px 20px 40px; min-height: auto; }
+}
+
 </style>
 </head>
 <body>
@@ -2611,6 +2820,82 @@ body::before {
     <div id="pl-now-fields"></div>
     <nav class="gh-list" id="pl-list" aria-label="Piano Lounge"></nav>
   </section>
+
+  <!-- ══ THE VINYL LOUNGE — discover: browse, dig, learn ══
+       Placeholder build, same architecture as the Piano Lounge's first
+       pass (real scrolling content + fixed tab bar, no render yet).
+       When real photography arrives, this gets the same rebuild the
+       Piano Lounge got — replace .vl-frame with a real image and the
+       tab bar with grid-measured hotspots on the artwork itself. ══ -->
+  <section class="vl-room" id="vl-lounge" hidden>
+    <div class="vl-hero">
+      <div class="vl-frame"></div>
+      <div class="vl-disc" aria-hidden="true"></div>
+      <div class="vl-title-block">
+        <p class="vl-eyebrow">The Vinyl Lounge</p>
+        <h1 class="vl-title">Vinyl Lounge</h1>
+        <p class="vl-sub">Curated Sound &middot; Deep Cuts &middot; Musical History</p>
+      </div>
+      <div class="vl-now-card">
+        <p class="vl-now-label"><span class="vl-mini-disc"></span>Now Spinning</p>
+        <div id="vl-now-fields">
+          <div class="vl-now-field"><span class="vl-now-field-label">Album</span><span class="vl-now-field-val" id="vl-now-album">&mdash;</span></div>
+          <div class="vl-now-field"><span class="vl-now-field-label">Artist</span><span class="vl-now-field-val" id="vl-now-artist">&mdash;</span></div>
+          <div class="vl-now-field"><span class="vl-now-field-label">Year</span><span class="vl-now-field-val" id="vl-now-year">&mdash;</span></div>
+          <div class="vl-now-field"><span class="vl-now-field-label">Label</span><span class="vl-now-field-val" id="vl-now-label">&mdash;</span></div>
+          <div class="vl-now-field"><span class="vl-now-field-label">Side / Track</span><span class="vl-now-field-val" id="vl-now-track">&mdash;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vl-content">
+      <section class="vl-section" id="vl-sec-collection">
+        <p class="vl-section-head">Browse the Collection</p>
+        <p class="vl-section-sub">Thousands of records, sorted the way a real collection gets sorted — by ear, not algorithm. Tap a cover to open its liner notes.</p>
+        <div class="vl-genre-tabs" id="vl-genre-tabs"></div>
+        <div class="vl-album-grid" id="vl-album-grid"></div>
+      </section>
+
+      <section class="vl-section" id="vl-sec-selections">
+        <p class="vl-section-head">The Estate Collection</p>
+        <p class="vl-section-sub">Records that carry the Rose &amp; Pearl seal weren’t just collected — they shaped the music, the writing, the aesthetic, or the worldview behind this Estate.</p>
+        <div class="vl-album-grid" id="vl-selection-grid"></div>
+      </section>
+
+      <section class="vl-section" id="vl-sec-liner">
+        <p class="vl-section-head">Liner Notes &amp; Influences</p>
+        <p class="vl-section-sub">Pick a RichFraz track and follow its creative lineage — not samples, not legal claims, just the musical DNA the Estate hears in it.</p>
+        <div class="vl-influence-picker" id="vl-influence-picker"></div>
+        <div class="vl-influence-trail" id="vl-influence-trail"></div>
+      </section>
+
+      <section class="vl-section" id="vl-sec-sessions">
+        <p class="vl-section-head">Listening Sessions</p>
+        <p class="vl-section-sub">Reserve a station or join the room for a scheduled session — the Lounge picks the theme, you pick the chair.</p>
+        <div class="vl-sessions-list" id="vl-sessions-list"></div>
+      </section>
+    </div>
+
+    <nav class="vl-tabbar" id="vl-tabbar" aria-label="Vinyl Lounge">
+      <button class="vl-tab" data-vl-tab="hero"><span class="vl-tab-icon">&#128191;</span>Now Spinning</button>
+      <button class="vl-tab" data-vl-tab="vl-sec-collection"><span class="vl-tab-icon">&#9707;</span>Collection</button>
+      <button class="vl-tab" data-vl-tab="vl-sec-selections"><span class="vl-tab-icon">&#9835;</span>Estate Selections</button>
+      <button class="vl-tab" data-vl-tab="vl-sec-liner"><span class="vl-tab-icon">&#128214;</span>Liner Notes</button>
+      <button class="vl-tab" data-vl-tab="vl-sec-sessions"><span class="vl-tab-icon">&#9673;</span>Listening Sessions</button>
+      <button class="vl-tab" data-vl-tab="random"><span class="vl-tab-icon">&#10022;</span>Random Pull</button>
+      <button class="vl-tab" data-vl-tab="core"><span class="vl-tab-icon">&#9671;</span>Gemini Core</button>
+      <button class="vl-tab" data-vl-tab="return"><span class="vl-tab-icon">&#8617;</span>Return to Gemini</button>
+    </nav>
+
+    <div class="vl-toast" id="vl-toast"></div>
+  </section>
+
+  <div id="vl-modal">
+    <div class="vl-modal-card">
+      <button class="vl-modal-close" onclick="vlCloseModal()">&times; Close</button>
+      <div id="vl-modal-body"></div>
+    </div>
+  </div>
 
   <div class="room-content" id="gemini-content">
     <div class="gemini-sign fade-up">
@@ -4400,7 +4685,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'piano',    label:'Piano Lounge',
     ix:0.173, iy:0.352, w:0.155, h:0.052, action:'piano' },
   { key:'vinyl',    label:'Vinyl Lounge',
-    ix:0.827, iy:0.352, w:0.155, h:0.052, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.827, iy:0.352, w:0.155, h:0.052, action:'vinyl' },
   { key:'cigar',    label:'Cigar & Whiskey',
     ix:0.173, iy:0.595, w:0.155, h:0.048, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'wine',     label:'DEPMG Wine Bar',
@@ -4413,7 +4698,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'piano2',   label:'Piano Lounge',
     ix:0.1194, iy:0.900, w:0.109, h:0.11, action:'piano' },
   { key:'vinyl2',   label:'Vinyl Lounge',
-    ix:0.2280, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.2280, iy:0.900, w:0.109, h:0.11, action:'vinyl' },
   { key:'cigar2',   label:'Cigar & Whiskey',
     ix:0.3370, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'wine2',    label:'DEPMG Wine Bar',
@@ -4454,7 +4739,7 @@ const GEMINI_CORE_SPOTS = [
   { key:'r-piano',  label:'Piano Lounge',
     ix:0.075, iy:0.910, w:0.105, h:0.090, action:'piano' },
   { key:'r-vinyl',  label:'Vinyl Lounge',
-    ix:0.185, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.185, iy:0.910, w:0.105, h:0.090, action:'vinyl' },
   { key:'r-cigar',  label:'Cigar & Whiskey',
     ix:0.298, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'r-wine',   label:'DEPMG Wine Bar',
@@ -4473,6 +4758,7 @@ function gcAction(spot) {
   if (spot.action === 'hero') { ghShowHero(); return; }
   if (spot.action === 'menu') { openBar(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
+  if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'scroll') { ghShowHero(); setTimeout(() => ghAction({ action:'scroll' }), 650); return; }
   if (spot.action === 'lock') { ghShowHero(); setTimeout(() => ghAction(spot), 650); return; }
 }
@@ -4822,7 +5108,7 @@ const PL_SPOTS = [
   { key:'map-cigar',  label:'Cigar & Whiskey Room',
     ix:0.0625, iy:0.552, w:0.11,  h:0.038, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
   { key:'map-vinyl',  label:'Vinyl Lounge',
-    ix:0.175,  iy:0.547, w:0.065, h:0.028, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
+    ix:0.175,  iy:0.547, w:0.065, h:0.028, action:'vinyl' },
   { key:'map-core',   label:'Gemini Core — Center Bar',
     ix:0.11,   iy:0.582, w:0.075, h:0.038, action:'core' },
   { key:'map-main',   label:'Main Cocktail Lounge III-201',
@@ -4885,6 +5171,7 @@ const PL_NOW_FIELDS = [
 function plAction(spot, btn) {
   if (spot.action === 'hero') { ghShowHero(); return; }
   if (spot.action === 'core') { ghShowCore(); return; }
+  if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'now-refresh') { loadPianoNowPlaying(); plToast('Refreshing what’s playing now…'); return; }
   if (spot.action === 'lyrics') { plToast('The Estate doesn’t reproduce lyrics on screen — ask your pianist to play it live.'); return; }
   if (spot.action === 'lock') {
@@ -5038,18 +5325,351 @@ function plShowLounge() {
   buildPianoLounge();
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = true;
+  const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   document.getElementById('pl-lounge').hidden = false;
   layoutPianoLounge();
 }
 
+// ══ THE VINYL LOUNGE — discover: browse, dig, learn ══
+// Real discography facts (title/artist/year/label) for well-known
+// records; "why it's here" is explicitly the Estate's own curatorial
+// voice, never presented as historical fact. Genuine credits/liner
+// notes/tracklists are only shown for the one record the Estate
+// actually made — everything else gets an honest "being catalogued."
+const VL_CATALOG = [
+  { title:"What's Going On", artist:'Marvin Gaye', year:1971, label:'Tamla', genre:'R&B', estate:true,
+    note:'The record that proved a soul album could ask real questions and still move a room. Required listening for anyone writing about consequence.' },
+  { title:'Songs in A Minor', artist:'Alicia Keys', year:2001, label:'J Records', genre:'R&B',
+    note:'Piano-first R&B built like a conservatory kid who also knew how to write a hook.' },
+  { title:'The Miseducation of Lauryn Hill', artist:'Lauryn Hill', year:1998, label:'Ruffhouse/Columbia', genre:'R&B', estate:true,
+    note:'Confessional, unguarded, and still the record every neo-soul vocalist gets measured against.' },
+
+  { title:'Innervisions', artist:'Stevie Wonder', year:1973, label:'Tamla', genre:'Soul', estate:true,
+    note:'One writer, every instrument, a whole worldview. The template for doing it all yourself.' },
+  { title:'Otis Blue', artist:'Otis Redding', year:1965, label:'Volt', genre:'Soul',
+    note:'Recorded in a single marathon session. Kept for the urgency in the vocal.' },
+  { title:'I Never Loved a Man the Way I Love You', artist:'Aretha Franklin', year:1967, label:'Atlantic', genre:'Soul',
+    note:'The sound of an artist finally being recorded like she meant it.' },
+
+  { title:'Voodoo', artist:"D'Angelo", year:2000, label:'Virgin', genre:'Neo-Soul', estate:true,
+    note:'Behind-the-beat, live-band neo-soul at its most patient. The blueprint for taking your time.' },
+  { title:'Baduizm', artist:'Erykah Badu', year:1997, label:'Kedar/Universal', genre:'Neo-Soul',
+    note:'Jazz phrasing inside a hip-hop pocket, delivered like she already knew it would last.' },
+  { title:'Brown Sugar', artist:"D'Angelo", year:1995, label:'EMI', genre:'Neo-Soul',
+    note:"The quieter, rawer cousin to Voodoo — kept here for the demo-tape honesty in the mix." },
+
+  { title:'Illmatic', artist:'Nas', year:1994, label:'Columbia', genre:'Hip-Hop', estate:true,
+    note:'Ten tracks, no filler, a whole borough rendered in verse. The bar for economy in songwriting.' },
+  { title:'The Chronic', artist:'Dr. Dre', year:1992, label:'Death Row/Interscope', genre:'Hip-Hop',
+    note:'Kept for the production, not the persona — the low end that rebuilt West Coast rap.' },
+  { title:'Late Registration', artist:'Kanye West', year:2005, label:'Roc-A-Fella/Def Jam', genre:'Hip-Hop',
+    note:'Orchestral samples treated like they belonged in hip-hop all along.' },
+
+  { title:'Kind of Blue', artist:'Miles Davis', year:1959, label:'Columbia', genre:'Jazz', estate:true,
+    note:"Modal jazz, first takes, almost no rehearsal. A reminder that restraint is a technique." },
+  { title:'A Love Supreme', artist:'John Coltrane', year:1965, label:'Impulse!', genre:'Jazz',
+    note:'Four movements of devotion, made in one sitting because it had to be.' },
+  { title:'Time Out', artist:'The Dave Brubeck Quartet', year:1959, label:'Columbia', genre:'Jazz',
+    note:'Odd time signatures that never once feel odd. A lesson in making complexity sound easy.' },
+
+  { title:'Maggot Brain', artist:'Funkadelic', year:1971, label:'Westbound', genre:'Funk',
+    note:'Ten minutes of guitar on the title track alone. Proof a single take can be the whole song.' },
+  { title:'Off the Wall', artist:'Michael Jackson', year:1979, label:'Epic', genre:'Funk', estate:true,
+    note:'Disco, funk, and ballad craft in one sequence — the pop voice everything after it borrowed from.' },
+  { title:'The Payback', artist:'James Brown', year:1973, label:'Polydor', genre:'Funk',
+    note:'The rhythm section as the actual lead instrument. Foundational for anything built on a pocket.' },
+
+  { title:'Rumours', artist:'Fleetwood Mac', year:1977, label:'Warner Bros.', genre:'Rock',
+    note:'Proof a breakup album can still sound like a band having the time of their lives.' },
+  { title:'Abbey Road', artist:'The Beatles', year:1969, label:'Apple', genre:'Rock',
+    note:'Kept for the second-side medley — a lesson in how songs can talk to each other.' },
+  { title:'Purple Rain', artist:'Prince and the Revolution', year:1984, label:'Warner Bros.', genre:'Rock', estate:true,
+    note:'One artist, every genre in the building at once. The Estate’s north star for range without losing identity.' },
+
+  { title:'Thriller', artist:'Michael Jackson', year:1982, label:'Epic', genre:'Pop', estate:true,
+    note:'Nine tracks, seven singles. The ceiling for what a pop sequence can do.' },
+  { title:'1989', artist:'Taylor Swift', year:2014, label:'Big Machine', genre:'Pop',
+    note:'Kept for the songwriting discipline underneath the gloss — hooks built to survive any production.' },
+  { title:'Confessions', artist:'Usher', year:2004, label:'LaFace/Arista', genre:'Pop',
+    note:'R&B as a diary set to a metronome. Kept for the nerve of naming the thing you did wrong.' },
+
+  { title:'Black Panther: The Album', artist:'Kendrick Lamar & Various', year:2018, label:'Interscope/TDE', genre:'Soundtracks',
+    note:"A soundtrack that plays like its own concept album — proof a compilation can still have a spine." },
+  { title:'Above the Rim', artist:'Various Artists', year:1994, label:'Death Row/Interscope', genre:'Soundtracks',
+    note:'Kept for the era it bottled — West Coast R&B and rap sharing the same room.' },
+  { title:'Waiting to Exhale', artist:'Various Artists', year:1995, label:'Arista', genre:'Soundtracks',
+    note:"An entire soundtrack built around one songwriter's voice for other women's stories." },
+
+  { title:'Lost in the Mind of R.S. Frazier', artist:'RichFraz', year:2026, label:'DEPMG', genre:'DEPMG', estate:true, isEstateAlbum:true,
+    note:'The reason this room exists. Every other record on these shelves is here because it led somewhere close to this one.' },
+];
+const VL_GENRES = ['R&B','Soul','Neo-Soul','Hip-Hop','Jazz','Funk','Rock','Pop','Soundtracks','DEPMG'];
+const VL_TRACKLIST = [
+  '01 Speakeasy — Intro · Instrumental Neo-Soul', '02 Potentially — Contemporary R&B',
+  '03 Untouchable — Neo-Soul/Hip-Hop', '04 Bad Way — Contemporary R&B · Single',
+  '05 4 the Night — Modern R&B', '06 Sticky — Neo-Soul', '07 Cinnamon — Neo-Soul · Single',
+  '08 Clock It — R&B House', '09 DRIVER — Afrobeats/Amapiano · Single', '10 Mine — Modern R&B',
+  '11 What Are We Doing? — Contemporary R&B Ballad', '12 Fixation — TrapSoul',
+  '13 GHOST — Contemporary R&B Ballad · Single',
+];
+
+const VL_INFLUENCES = [
+  { song:'Speakeasy', tags:['Neo-Soul','Lounge Jazz','Ambient Texture'],
+    note:'An overture, not a song — built from the same slow-burn neo-soul intros that let a record announce its mood before anyone sings a word.' },
+  { song:'Potentially', tags:['Contemporary R&B','Vocal Layering','Ballad Craft'],
+    note:'Sits closer to the modern R&B lineage of restraint — space left in the arrangement for the vocal to carry the weight.' },
+  { song:'Untouchable', tags:['Neo-Soul','Boom-Bap','Confidence Anthems'],
+    note:"Neo-soul's behind-the-beat pocket crossed with hip-hop swagger — the trail runs straight through Voodoo-era D'Angelo." },
+  { song:'Bad Way', tags:['Contemporary R&B','Narrative Songwriting'],
+    note:'Built like a scene, not a hook — the same instinct for storytelling-first R&B that runs through confessional records.' },
+  { song:'4 the Night', tags:['Modern R&B','Room-Working Confidence'],
+    note:"The strut of a record that knows exactly what it's walking into — an arrival song in the classic sense." },
+  { song:'Sticky', tags:['Neo-Soul','Funk','Bass-Driven R&B','Live Instrumentation'],
+    note:'The clearest influence trail on the album — deep-pocket bass, live-feeling drums, and vocal phrasing indebted to funk and neo-soul both.' },
+  { song:'Cinnamon', tags:['Neo-Soul','Slow Jam Tradition'],
+    note:'A quiet-storm descendant — the kind of late-night, low-tempo intimacy that built an entire radio format.' },
+  { song:'Clock It', tags:['R&B House','Club Soul','Uptempo Groove'],
+    note:"R&B built for a dance floor rather than a bedroom — the trail runs toward house music's four-on-the-floor discipline." },
+  { song:'DRIVER', tags:['Afrobeats','Amapiano','Log Drum Rhythm'],
+    note:"A direct nod to the Amapiano log-drum sound and Afrobeats' rhythmic patience — built to move, not just to be heard." },
+  { song:'Mine', tags:['Modern R&B','Possessive Ballad Tradition'],
+    note:"Sits in the lineage of R&B's classic possessive love song — intimate, direct, unhurried." },
+  { song:'What Are We Doing?', tags:['Contemporary R&B','Ballad Craft','Ambiguity in Songwriting'],
+    note:'A ballad that refuses to resolve — the trail is less musical than emotional, closer to the unresolved confessional tradition.' },
+  { song:'Fixation', tags:['TrapSoul','808-Driven R&B','Moody Production'],
+    note:'Sits squarely in the TrapSoul lineage — 808s and R&B melody sharing the same dark room.' },
+  { song:'GHOST', tags:['Contemporary R&B','Grief Balladry','Orchestral Undertone'],
+    note:"The album's most exposed moment — closer to orchestral balladry than anything else on the record, built for a single voice and a lot of empty space." },
+];
+
+const VL_SESSIONS = [
+  { name:'Neo-Soul After Dark', when:'Thursdays · 10:00 PM', desc:'Low light, deep pocket. A rotating crate of Voodoo-era neo-soul and its modern descendants.' },
+  { name:'The Quiet Storm', when:'Sundays · 9:00 PM', desc:'Slow jams and quiet-storm radio staples, played the way they were meant to be heard — start to finish, no skips.' },
+  { name:'90s R&B Deep Cuts', when:'Fridays · 11:00 PM', desc:'Album tracks, not just the singles. The songs that never made radio but never left the crate either.' },
+  { name:'Jazz at Midnight', when:'Saturdays · 12:00 AM', desc:'Straight-ahead and modal jazz for the hour when the rest of the Estate goes quiet.' },
+  { name:'Producer Spotlight', when:'Monthly · First Tuesday', desc:"One producer's catalog, start to finish — the ear behind the records, not just the artist on the cover." },
+  { name:'The Records That Built Lost in the Mind', when:'By Request', desc:"The Estate Selections that shaped RichFraz's own album, played in the order they influenced it." },
+];
+
+let vlReservations = [];
+try { vlReservations = JSON.parse(localStorage.getItem('vlReservations') || '[]'); } catch(e) {}
+
+function vlBuildCollection() {
+  const tabsEl = document.getElementById('vl-genre-tabs');
+  if (!tabsEl || tabsEl.childElementCount) return;
+  VL_GENRES.forEach((g, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'vl-genre-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = g;
+    btn.addEventListener('click', () => vlShowGenre(g, btn));
+    tabsEl.appendChild(btn);
+  });
+  vlShowGenre(VL_GENRES[0]);
+}
+
+function vlAlbumCard(album) {
+  const card = document.createElement('button');
+  card.className = 'vl-album-card';
+  card.innerHTML =
+    (album.estate ? '<span class="vl-seal">Estate Selection</span>' : '') +
+    '<div class="vl-album-title"></div><div class="vl-album-artist"></div><div class="vl-album-meta"></div>';
+  card.querySelector('.vl-album-title').textContent = album.title;
+  card.querySelector('.vl-album-artist').textContent = album.artist;
+  card.querySelector('.vl-album-meta').textContent = album.year + ' · ' + album.label;
+  card.addEventListener('click', () => vlOpenAlbum(album));
+  return card;
+}
+
+function vlShowGenre(genre, btnEl) {
+  document.querySelectorAll('.vl-genre-tab').forEach(b => b.classList.remove('on'));
+  if (btnEl) btnEl.classList.add('on');
+  const grid = document.getElementById('vl-album-grid');
+  grid.innerHTML = '';
+  VL_CATALOG.filter(a => a.genre === genre).forEach(a => grid.appendChild(vlAlbumCard(a)));
+}
+
+function vlBuildSelections() {
+  const grid = document.getElementById('vl-selection-grid');
+  if (!grid || grid.childElementCount) return;
+  VL_CATALOG.filter(a => a.estate).forEach(a => grid.appendChild(vlAlbumCard(a)));
+}
+
+function vlOpenAlbum(album) {
+  const body = document.getElementById('vl-modal-body');
+  let html = '';
+  if (album.estate) html += '<span class="vl-modal-seal">✦ Estate Selection</span><br>';
+  html += '<h3 class="vl-modal-title"></h3><p class="vl-modal-artist"></p><p class="vl-modal-meta"></p>';
+  html += '<p class="vl-modal-label">Estate Commentary — Why It’s Here</p><p class="vl-modal-body-text"></p>';
+  if (album.isEstateAlbum) {
+    html += '<p class="vl-modal-label">Track Listing</p><div class="vl-modal-tracklist" id="vl-modal-tracks"></div>';
+  } else {
+    html += '<p class="vl-modal-label">Track Listing &amp; Credits</p><p class="vl-modal-body-text" style="opacity:0.5; font-style:italic;">Full tracklist, credits, and production notes for this record are still being catalogued for the Estate archive.</p>';
+  }
+  body.innerHTML = html;
+  body.querySelector('.vl-modal-title').textContent = album.title;
+  body.querySelector('.vl-modal-artist').textContent = album.artist;
+  body.querySelector('.vl-modal-meta').textContent = album.year + ' · ' + album.label + ' · ' + album.genre;
+  body.querySelector('.vl-modal-body-text').textContent = album.note;
+  if (album.isEstateAlbum) {
+    const tl = document.getElementById('vl-modal-tracks');
+    VL_TRACKLIST.forEach(line => {
+      const parts = line.split(' — ');
+      const row = document.createElement('div');
+      row.className = 'vl-modal-track';
+      row.innerHTML = '<span></span><span></span>';
+      row.children[0].textContent = parts[0].split(' ')[0];
+      row.children[1].textContent = parts[0].replace(/^\d+\s/, '') + (parts[1] ? ' — ' + parts[1] : '');
+      tl.appendChild(row);
+    });
+  }
+  document.getElementById('vl-modal').classList.add('open');
+}
+function vlCloseModal() {
+  document.getElementById('vl-modal').classList.remove('open');
+}
+
+function vlBuildInfluences() {
+  const picker = document.getElementById('vl-influence-picker');
+  if (!picker || picker.childElementCount) return;
+  VL_INFLUENCES.forEach((entry, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'vl-song-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = entry.song;
+    btn.addEventListener('click', () => vlShowInfluence(entry, btn));
+    picker.appendChild(btn);
+  });
+  vlShowInfluence(VL_INFLUENCES[0]);
+}
+function vlShowInfluence(entry, btnEl) {
+  document.querySelectorAll('.vl-song-tab').forEach(b => b.classList.remove('on'));
+  if (btnEl) btnEl.classList.add('on');
+  const trail = document.getElementById('vl-influence-trail');
+  trail.innerHTML = '<div class="vl-influence-tags"></div><p class="vl-influence-note"></p>';
+  const tagsEl = trail.querySelector('.vl-influence-tags');
+  entry.tags.forEach(t => {
+    const tag = document.createElement('span');
+    tag.className = 'vl-influence-tag';
+    tag.textContent = t;
+    tagsEl.appendChild(tag);
+  });
+  trail.querySelector('.vl-influence-note').textContent = entry.note;
+}
+
+function vlBuildSessions() {
+  const list = document.getElementById('vl-sessions-list');
+  if (!list || list.childElementCount) return;
+  VL_SESSIONS.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'vl-session-row';
+    row.innerHTML =
+      '<div><div class="vl-session-name"></div><div class="vl-session-when"></div><div class="vl-session-desc"></div></div>';
+    row.querySelector('.vl-session-name').textContent = s.name;
+    row.querySelector('.vl-session-when').textContent = s.when;
+    row.querySelector('.vl-session-desc').textContent = s.desc;
+    const btn = document.createElement('button');
+    btn.className = 'vl-reserve-btn';
+    const already = vlReservations.includes(s.name);
+    btn.textContent = already ? 'Reserved' : 'Reserve a Station';
+    btn.disabled = already;
+    btn.addEventListener('click', () => vlReserveSession(s.name, btn));
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+}
+function vlReserveSession(name, btn) {
+  if (!vlReservations.includes(name)) vlReservations.push(name);
+  try { localStorage.setItem('vlReservations', JSON.stringify(vlReservations)); } catch(e) {}
+  btn.disabled = true; btn.textContent = 'Reserved';
+  vlToast('A station is held for you at “' + name + '.”');
+}
+
+function vlRandomPull() {
+  const pick = VL_CATALOG[Math.floor(Math.random() * VL_CATALOG.length)];
+  vlToast('The needle drops on something unexpected…');
+  setTimeout(() => vlOpenAlbum(pick), 350);
+}
+
+let vlToastTimer;
+function vlToast(msg) {
+  const t = document.getElementById('vl-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(vlToastTimer);
+  vlToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function vlGoTab(target) {
+  if (target === 'hero') { document.getElementById('vl-lounge').scrollIntoView({ behavior:'smooth', block:'start' }); loadVinylNowSpinning(); return; }
+  if (target === 'random') { vlRandomPull(); return; }
+  if (target === 'core') { ghShowCore(); return; }
+  if (target === 'return') { ghShowHero(); return; }
+  const sec = document.getElementById(target);
+  if (sec) sec.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// structured, not prose — five specific fields, same convention as the
+// Piano Lounge's Now Playing card. A field that fails to parse just
+// keeps its own "—" placeholder rather than showing an error.
+async function loadVinylNowSpinning() {
+  try {
+    const response = await fetch('/.netlify/functions/estate-ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: ESTATE_LORE + '\n\nYou are the voice of The Vinyl Lounge\'s Now Spinning display. This room is a real record collection — soul, funk, neo-soul, jazz, hip-hop, rock, and the RichFraz/DEPMG catalog, all on physical vinyl. Never write actual quotable lyrics.',
+        prompt: `Today is ${CURRENT_DATE}, ${TIME_OF_DAY}. Invent ONE record currently spinning in The Vinyl Lounge right now — it can be a real classic album (soul, funk, neo-soul, jazz, hip-hop, rock) or a RichFraz/DEPMG record. Reply with EXACTLY five lines, nothing else, in this literal format:\nAlbum: ...\nArtist: ...\nYear: ...\nLabel: ...\nTrack: ...\nTrack should read like "Side A, Track 3 — Song Title". No other text.`
+      })
+    });
+    const data = await response.json();
+    const text = (data.text || '');
+    const fields = {};
+    text.split('\n').forEach(line => {
+      const m = line.match(/^\s*(Album|Artist|Year|Label|Track)\s*:\s*(.+?)\s*$/i);
+      if (m) fields[m[1].toLowerCase()] = m[2];
+    });
+    ['album','artist','year','label','track'].forEach(k => {
+      const el = document.getElementById('vl-now-' + k);
+      if (el && fields[k]) el.textContent = fields[k];
+    });
+  } catch (e) { /* fields keep their own "—" placeholder */ }
+}
+
+function buildVinylLounge() {
+  const root = document.getElementById('vl-lounge');
+  if (!root || root.dataset.built) return;
+  root.dataset.built = '1';
+
+  document.querySelectorAll('#vl-tabbar .vl-tab').forEach(btn => {
+    btn.addEventListener('click', () => vlGoTab(btn.dataset.vlTab));
+  });
+
+  vlBuildCollection();
+  vlBuildSelections();
+  vlBuildInfluences();
+  vlBuildSessions();
+  loadVinylNowSpinning();
+}
+
+function vlShowLounge() {
+  buildVinylLounge();
+  document.getElementById('gh-hero').hidden = true;
+  document.getElementById('gc-core').hidden = true;
+  const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  document.getElementById('vl-lounge').hidden = false;
+  window.scrollTo(0, 0);
+}
+
 function ghShowHero() {
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   document.getElementById('gc-core').hidden = true;
   document.getElementById('gh-hero').hidden = false;
 }
 function ghShowCore() {
   buildGeminiCore();
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = false;
   layoutGeminiCore();
@@ -5059,6 +5679,7 @@ function ghAction(spot, btn) {
   if (spot.action === 'bar') { openBar(); return; }
   if (spot.action === 'gc') { ghShowCore(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
+  if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'hall') { goTo('hall'); return; }
   if (spot.action === 'scroll') {
     const target = document.getElementById('gemini-content');
