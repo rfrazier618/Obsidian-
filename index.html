@@ -1838,6 +1838,156 @@ body::before {
 }
 .gc-dots i.on { background: #c9a84c; box-shadow: 0 0 6px rgba(201,168,76,0.8); }
 
+/* ══ THE PIANO LOUNGE — reached from Gemini Hall / Gemini Core ══
+   Unlike the Core, this room is mostly real scrolling content, not a
+   photo with hidden hotspots — so it gets a hero banner up top and a
+   visible fixed tab bar, styled to match, instead of baked-in hotspots. */
+.pl-room[hidden] { display: none !important; }
+.pl-room { position: relative; background: #030202; }
+.pl-hero {
+  position: relative; min-height: 92vh; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding-top: 70px; overflow: hidden;
+}
+.pl-frame {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.10), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(242,232,213,0.045) 0 2.6%, rgba(10,8,5,0) 2.6% 5.2%),
+    linear-gradient(180deg, #0d0905 0%, #030202 70%);
+}
+.pl-frame::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.7), transparent 55%);
+}
+.pl-hero-note {
+  position: relative; z-index: 2; text-align: center;
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: rgba(242,232,213,0.26);
+}
+.pl-card {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: min(300px, 30vw); min-width: 240px;
+  background: rgba(6,4,2,0.72); border: 1px solid rgba(201,168,76,0.22);
+  padding: 22px 22px 26px; backdrop-filter: blur(6px); z-index: 3;
+}
+.pl-card-left { left: 4%; }
+.pl-card-right { right: 4%; }
+.pl-card-label {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.38em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.75; margin: 0 0 12px;
+}
+.pl-card-art {
+  width: 56px; height: 56px; margin-bottom: 14px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.16), rgba(0,0,0,0.4));
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: rgba(201,168,76,0.5);
+}
+.pl-card-body { font-family: 'Cormorant Garamond', serif; color: var(--cream); font-size: 15px; line-height: 1.5; }
+.pl-schedule-row {
+  display: flex; gap: 16px; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.pl-schedule-row:last-child { border-bottom: none; }
+.pl-schedule-time {
+  font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.1em;
+  color: var(--gold); min-width: 66px; opacity: 0.85;
+}
+.pl-schedule-what { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--cream); opacity: 0.85; }
+@media (max-width: 900px) {
+  .pl-card { position: static; transform: none; width: 100%; margin: 0 0 16px; }
+  .pl-hero { flex-direction: column; padding: 100px 20px 40px; min-height: auto; gap: 16px; }
+}
+
+.pl-content { max-width: 1100px; margin: 0 auto; padding: 10px 32px 150px; }
+.pl-section { padding: 70px 0; border-top: 1px solid rgba(201,168,76,0.1); }
+.pl-section:first-child { border-top: none; }
+.pl-section-head {
+  font-family: 'Cormorant SC', serif; font-size: 13px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+}
+.pl-section-sub {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+  color: rgba(242,232,213,0.5); margin-bottom: 34px; max-width: 640px;
+}
+
+.pl-genre-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+.pl-genre-tab {
+  background: none; border: 1px solid rgba(201,168,76,0.28); color: rgba(242,232,213,0.7);
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer; transition: all 0.3s ease;
+}
+.pl-genre-tab:hover { border-color: var(--gold); color: var(--gold); }
+.pl-genre-tab.on { background: rgba(201,168,76,0.14); border-color: var(--gold); color: var(--gold); }
+
+.pl-song-list { display: flex; flex-direction: column; }
+.pl-song-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 15px 0; border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.pl-song-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); }
+.pl-song-by { font-size: 13px; opacity: 0.45; font-style: italic; margin-left: 10px; }
+.pl-request-btn {
+  background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; padding: 9px 16px; cursor: pointer; white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.pl-request-btn:hover { background: rgba(201,168,76,0.14); }
+.pl-request-btn:disabled { opacity: 0.4; cursor: default; }
+
+.pl-queue { margin-top: 36px; padding-top: 26px; border-top: 1px dashed rgba(201,168,76,0.18); }
+.pl-queue-head {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.3em;
+  color: rgba(201,168,76,0.6); text-transform: uppercase; margin-bottom: 14px;
+}
+.pl-queue-row { display: flex; justify-content: space-between; font-size: 15px; color: rgba(242,232,213,0.75); padding: 8px 0; }
+.pl-queue-empty { font-style: italic; opacity: 0.4; font-size: 14px; }
+
+.pl-empty-archive {
+  border: 1px dashed rgba(201,168,76,0.22); padding: 40px 30px; text-align: center;
+  font-family: 'Cormorant Garamond', serif; font-style: italic; color: rgba(242,232,213,0.4);
+}
+
+.pl-estate-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 20px; }
+.pl-estate-card { border: 1px solid rgba(201,168,76,0.14); padding: 20px; }
+.pl-estate-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); margin-bottom: 3px; }
+.pl-estate-tag { font-size: 12px; opacity: 0.45; font-style: italic; margin-bottom: 16px; }
+.pl-arr-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.pl-arr-pill {
+  background: none; border: 1px solid rgba(201,168,76,0.24); color: rgba(242,232,213,0.6);
+  font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.15em;
+  padding: 6px 10px; cursor: pointer; transition: all 0.25s ease;
+}
+.pl-arr-pill:hover { border-color: var(--gold); color: var(--gold); }
+.pl-arr-pill.available { color: var(--gold); border-color: rgba(201,168,76,0.5); }
+.pl-arr-pill.playing { background: rgba(201,168,76,0.18); color: var(--gold); }
+
+.pl-toast {
+  position: fixed; bottom: 94px; left: 50%; transform: translateX(-50%) translateY(10px);
+  background: rgba(6,4,2,0.95); border: 1px solid rgba(201,168,76,0.35); color: var(--gold);
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+  padding: 12px 24px; z-index: 60; opacity: 0; pointer-events: none; transition: all 0.4s ease;
+  max-width: 80vw; text-align: center;
+}
+.pl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.pl-tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 52;
+  display: flex; overflow-x: auto;
+  background: linear-gradient(0deg, rgba(3,2,2,0.98) 60%, rgba(3,2,2,0.85));
+  border-top: 1px solid rgba(201,168,76,0.16);
+}
+.pl-tab {
+  flex: 1 0 auto; background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 14px; font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(242,232,213,0.5); white-space: nowrap; transition: color 0.3s ease;
+}
+.pl-tab-icon { font-size: 16px; }
+.pl-tab:hover, .pl-tab.on { color: var(--gold); }
+
 </style>
 </head>
 <body>
@@ -2506,6 +2656,82 @@ body::before {
     <div class="gc-carousel" id="gc-bite-carousel" data-title="Featured Small Bite"></div>
 
     <nav class="gh-list" id="gc-list" aria-label="Gemini Core"></nav>
+  </section>
+
+  <!-- ══ THE PIANO LOUNGE — listen, request, discover, play the catalog ══
+       Music discovery and participation, not another ordering screen.
+       Hero banner + two live cards, then real scrollable content below,
+       with its own fixed tab bar. Hero art is a placeholder treatment
+       until real Piano Lounge photography is composited in — swap the
+       .pl-frame background the same way #gc-frame was. ══ -->
+  <section class="pl-room" id="pl-lounge" hidden>
+    <div class="pl-hero">
+      <div class="pl-frame"></div>
+      <p class="pl-hero-note">The Piano Lounge &middot; Gemini Hall</p>
+
+      <div class="pl-card pl-card-left">
+        <p class="pl-card-label">Now Playing</p>
+        <div class="pl-card-art">&#9834;</div>
+        <div id="ai-content-pl-now" class="ai-content-block">
+          <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="pl-card pl-card-right">
+        <p class="pl-card-label">Tonight&rsquo;s Performance</p>
+        <div class="pl-card-body">
+          <div class="pl-schedule-row"><span class="pl-schedule-time">8:00 PM</span><span class="pl-schedule-what">Cocktail Piano</span></div>
+          <div class="pl-schedule-row"><span class="pl-schedule-time">9:30 PM</span><span class="pl-schedule-what">Featured Artist</span></div>
+          <div class="pl-schedule-row"><span class="pl-schedule-time">11:00 PM</span><span class="pl-schedule-what">Late Night Requests</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pl-content">
+      <section class="pl-section" id="pl-sec-request">
+        <p class="pl-section-head">Request a Song</p>
+        <p class="pl-section-sub">Browse the approved songbook and send a request straight to tonight&rsquo;s pianist. They can accept, hold, or decline from their own stand.</p>
+        <div class="pl-genre-tabs" id="pl-genre-tabs"></div>
+        <div class="pl-song-list" id="pl-song-list"></div>
+        <div class="pl-queue">
+          <p class="pl-queue-head">Tonight&rsquo;s Queue</p>
+          <div id="pl-queue-list"><p class="pl-queue-empty">No requests yet tonight &mdash; be the first.</p></div>
+        </div>
+      </section>
+
+      <section class="pl-section" id="pl-sec-sessions">
+        <p class="pl-section-head">The Piano Sessions</p>
+        <p class="pl-section-sub">Recordings made inside this room &mdash; intimate piano performances, stripped-down RichFraz records, guest artists, the spontaneous ones nobody planned for. The room builds its own archive over time.</p>
+        <div class="pl-empty-archive">The Estate&rsquo;s session archive begins recording soon. Every performance from tonight forward becomes part of it.</div>
+      </section>
+
+      <section class="pl-section" id="pl-sec-songbook">
+        <p class="pl-section-head">Play the Estate</p>
+        <p class="pl-section-sub">The Estate Songbook. Choose a RichFraz / DEPMG song, then choose how you want to hear it: Original, Piano, Jazz, Neo-Soul, or Instrumental.</p>
+        <div class="pl-estate-grid" id="pl-estate-grid"></div>
+      </section>
+
+      <section class="pl-section" id="pl-sec-artist">
+        <p class="pl-section-head">Tonight&rsquo;s Artist</p>
+        <p class="pl-section-sub">The 9:30 PM Featured Artist slot.</p>
+        <div id="ai-content-pl-artist" class="ai-content-block">
+          <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="pl-tabbar" id="pl-tabbar" aria-label="Piano Lounge">
+      <button class="pl-tab" data-pl-tab="hero"><span class="pl-tab-icon">&#127929;</span>Now Playing</button>
+      <button class="pl-tab" data-pl-tab="pl-sec-request"><span class="pl-tab-icon">&#127932;</span>Request a Song</button>
+      <button class="pl-tab" data-pl-tab="pl-sec-sessions"><span class="pl-tab-icon">&#9673;</span>Piano Sessions</button>
+      <button class="pl-tab" data-pl-tab="pl-sec-songbook"><span class="pl-tab-icon">&#9835;</span>Estate Songbook</button>
+      <button class="pl-tab" data-pl-tab="pl-sec-artist"><span class="pl-tab-icon">&#127908;</span>Tonight&rsquo;s Artist</button>
+      <button class="pl-tab" data-pl-tab="private"><span class="pl-tab-icon">&#9819;</span>Private Session</button>
+      <button class="pl-tab" data-pl-tab="core"><span class="pl-tab-icon">&#9671;</span>Gemini Core</button>
+      <button class="pl-tab" data-pl-tab="return"><span class="pl-tab-icon">&#8617;</span>Return to Gemini</button>
+    </nav>
+
+    <div class="pl-toast" id="pl-toast"></div>
   </section>
 
   <div class="room-content" id="gemini-content">
@@ -4294,7 +4520,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'perf',     label:'Main Performance Stage — Tonight’s Entertainment',
     ix:0.500, iy:0.352, w:0.175, h:0.052, action:'scroll' },
   { key:'piano',    label:'Piano Lounge',
-    ix:0.173, iy:0.352, w:0.155, h:0.052, action:'lock', msg:'The Piano Lounge opens later this year.' },
+    ix:0.173, iy:0.352, w:0.155, h:0.052, action:'piano' },
   { key:'vinyl',    label:'Vinyl Lounge',
     ix:0.827, iy:0.352, w:0.155, h:0.052, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
   { key:'cigar',    label:'Cigar & Whiskey',
@@ -4307,7 +4533,7 @@ const GEMINI_HERO_SPOTS = [
     ix:0.500, iy:0.735, w:0.165, h:0.048, action:'hall' },
   // the bottom rail repeats the same destinations across a single wide row
   { key:'piano2',   label:'Piano Lounge',
-    ix:0.1194, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Piano Lounge opens later this year.' },
+    ix:0.1194, iy:0.900, w:0.109, h:0.11, action:'piano' },
   { key:'vinyl2',   label:'Vinyl Lounge',
     ix:0.2280, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
   { key:'cigar2',   label:'Cigar & Whiskey',
@@ -4348,7 +4574,7 @@ const GEMINI_CORE_SPOTS = [
     ix:0.870, iy:0.7725, w:0.130, h:0.125, action:'menu' },
   // bottom rail — mirrors the arrival hero's, from this screen
   { key:'r-piano',  label:'Piano Lounge',
-    ix:0.075, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Piano Lounge opens later this year.' },
+    ix:0.075, iy:0.910, w:0.105, h:0.090, action:'piano' },
   { key:'r-vinyl',  label:'Vinyl Lounge',
     ix:0.185, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Vinyl Lounge opens later this year.' },
   { key:'r-cigar',  label:'Cigar & Whiskey',
@@ -4368,6 +4594,7 @@ const GEMINI_CORE_SPOTS = [
 function gcAction(spot) {
   if (spot.action === 'hero') { ghShowHero(); return; }
   if (spot.action === 'menu') { openBar(); return; }
+  if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'scroll') { ghShowHero(); setTimeout(() => ghAction({ action:'scroll' }), 650); return; }
   if (spot.action === 'lock') { ghShowHero(); setTimeout(() => ghAction(spot), 650); return; }
 }
@@ -4527,12 +4754,242 @@ function layoutGeminiCore() {
 }
 window.addEventListener('resize', layoutGeminiCore);
 
+// ══ THE PIANO LOUNGE — listen, request, discover, play the catalog ══
+// The approved guest songbook for REQUEST A SONG — covers and standards,
+// not the RichFraz/DEPMG catalog (that's the Estate Songbook below).
+const PL_REQUEST_BOOK = {
+  'Jazz': [
+    { title:'Fly Me to the Moon', by:'Bart Howard' },
+    { title:'Autumn Leaves', by:'Joseph Kosma' },
+    { title:'My Funny Valentine', by:'Rodgers & Hart' },
+    { title:'Take Five', by:'Paul Desmond' },
+    { title:'Round Midnight', by:'Thelonious Monk' },
+    { title:'Summertime', by:'George Gershwin' },
+  ],
+  'Neo-Soul': [
+    { title:'Untitled (How Does It Feel)', by:"D'Angelo" },
+    { title:'On & On', by:'Erykah Badu' },
+    { title:'A Long Walk', by:'Jill Scott' },
+    { title:'Brown Skin', by:'India.Arie' },
+    { title:'Adorn', by:'Miguel' },
+  ],
+  'R&B': [
+    { title:'A Song for You', by:'Leon Russell / Donny Hathaway' },
+    { title:'Ordinary People', by:'John Legend' },
+    { title:'No One', by:'Alicia Keys' },
+    { title:'Try a Little Tenderness', by:'Otis Redding' },
+    { title:'Killing Me Softly', by:'Roberta Flack' },
+    { title:'At Last', by:'Etta James' },
+  ],
+  'Standards': [
+    { title:'The Way You Look Tonight', by:'Jerome Kern' },
+    { title:'Georgia on My Mind', by:'Hoagy Carmichael' },
+    { title:'Unforgettable', by:'Nat King Cole' },
+    { title:'What a Wonderful World', by:'Louis Armstrong' },
+    { title:'Someone to Watch Over Me', by:'George Gershwin' },
+  ],
+  'Hip-Hop Reimagined': [
+    { title:'Juicy', by:'The Notorious B.I.G.' },
+    { title:'Empire State of Mind', by:'Jay-Z & Alicia Keys' },
+    { title:'N.Y. State of Mind', by:'Nas' },
+    { title:'Alright', by:'Kendrick Lamar' },
+    { title:'All of the Lights', by:'Kanye West' },
+  ],
+  'RichFraz & DEPMG': [
+    { title:'Speakeasy', by:'RichFraz' }, { title:'Potentially', by:'RichFraz' },
+    { title:'Untouchable', by:'RichFraz' }, { title:'Bad Way', by:'RichFraz' },
+    { title:'4 the Night', by:'RichFraz' }, { title:'Sticky', by:'RichFraz' },
+    { title:'Cinnamon', by:'RichFraz' }, { title:'Clock It', by:'RichFraz' },
+    { title:'DRIVER', by:'RichFraz' }, { title:'Mine', by:'RichFraz' },
+    { title:'What Are We Doing?', by:'RichFraz' }, { title:'Fixation', by:'RichFraz' },
+    { title:'GHOST', by:'RichFraz' },
+  ],
+};
+
+let plRequestQueue = [];
+try { plRequestQueue = JSON.parse(localStorage.getItem('plRequestQueue') || '[]'); } catch(e) {}
+
+function plBuildRequestBook() {
+  const tabsEl = document.getElementById('pl-genre-tabs');
+  if (!tabsEl || tabsEl.childElementCount) return;
+  const genres = Object.keys(PL_REQUEST_BOOK);
+  genres.forEach((g, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'pl-genre-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = g;
+    btn.addEventListener('click', () => plShowGenre(g, btn));
+    tabsEl.appendChild(btn);
+  });
+  plShowGenre(genres[0]);
+  plRenderQueue();
+}
+
+function plShowGenre(genre, btnEl) {
+  document.querySelectorAll('.pl-genre-tab').forEach(b => b.classList.remove('on'));
+  if (btnEl) btnEl.classList.add('on');
+  const listEl = document.getElementById('pl-song-list');
+  listEl.innerHTML = '';
+  PL_REQUEST_BOOK[genre].forEach(song => {
+    const row = document.createElement('div');
+    row.className = 'pl-song-row';
+    const name = document.createElement('span');
+    name.className = 'pl-song-name';
+    name.textContent = song.title;
+    const by = document.createElement('span');
+    by.className = 'pl-song-by';
+    by.textContent = song.by;
+    name.appendChild(by);
+    const btn = document.createElement('button');
+    btn.className = 'pl-request-btn';
+    btn.textContent = 'Request';
+    btn.addEventListener('click', () => plSubmitRequest(song.title, btn));
+    row.appendChild(name);
+    row.appendChild(btn);
+    listEl.appendChild(row);
+  });
+}
+
+function plSubmitRequest(title, btn) {
+  plRequestQueue.push({ title, at: Date.now() });
+  if (plRequestQueue.length > 8) plRequestQueue = plRequestQueue.slice(-8);
+  try { localStorage.setItem('plRequestQueue', JSON.stringify(plRequestQueue)); } catch(e) {}
+  plRenderQueue();
+  plToast('“' + title + '” has entered tonight’s request queue.');
+  btn.disabled = true; btn.textContent = 'Requested';
+  setTimeout(() => { btn.disabled = false; btn.textContent = 'Request'; }, 4000);
+}
+
+function plRenderQueue() {
+  const q = document.getElementById('pl-queue-list');
+  if (!q) return;
+  if (!plRequestQueue.length) {
+    q.innerHTML = '<p class="pl-queue-empty">No requests yet tonight &mdash; be the first.</p>';
+    return;
+  }
+  q.innerHTML = plRequestQueue.slice().reverse().map(r =>
+    '<div class="pl-queue-row"><span>' + r.title + '</span>' +
+    '<span style="opacity:0.4; font-style:italic; font-size:12px;">pending</span></div>'
+  ).join('');
+}
+
+// The real RichFraz/DEPMG catalog, keyed to the audio that already exists
+// on this page — only these three have a produced ORIGINAL to play back.
+const PL_ESTATE_SONGBOOK = [
+  { key:'speakeasy',   title:'Speakeasy',            tag:'Intro — Instrumental Neo-Soul', audio:true },
+  { key:'potentially', title:'Potentially',          tag:'Contemporary R&B' },
+  { key:'untouchable', title:'Untouchable',          tag:'Neo-Soul/Hip-Hop' },
+  { key:'badway',      title:'Bad Way',              tag:'Contemporary R&B · Single' },
+  { key:'4thenight',   title:'4 the Night',          tag:'Modern R&B' },
+  { key:'sticky',      title:'Sticky',               tag:'Neo-Soul' },
+  { key:'cinnamon',    title:'Cinnamon',             tag:'Neo-Soul · Single', audio:true },
+  { key:'clockit',     title:'Clock It',             tag:'R&B House' },
+  { key:'driver',      title:'DRIVER',                tag:'Afrobeats/Amapiano · Single', audio:true },
+  { key:'mine',        title:'Mine',                 tag:'Modern R&B' },
+  { key:'watwd',       title:'What Are We Doing?',   tag:'Contemporary R&B Ballad' },
+  { key:'fixation',    title:'Fixation',              tag:'TrapSoul' },
+  { key:'ghost',       title:'GHOST',                 tag:'Contemporary R&B Ballad · Single' },
+];
+const PL_ARRANGEMENTS = ['ORIGINAL', 'PIANO', 'JAZZ', 'NEO-SOUL', 'INSTRUMENTAL'];
+
+function plBuildEstateSongbook() {
+  const grid = document.getElementById('pl-estate-grid');
+  if (!grid || grid.childElementCount) return;
+  PL_ESTATE_SONGBOOK.forEach(song => {
+    const card = document.createElement('div');
+    card.className = 'pl-estate-card';
+    const title = document.createElement('div');
+    title.className = 'pl-estate-title'; title.textContent = song.title;
+    const tag = document.createElement('div');
+    tag.className = 'pl-estate-tag'; tag.textContent = song.tag;
+    const row = document.createElement('div');
+    row.className = 'pl-arr-row';
+    PL_ARRANGEMENTS.forEach(arr => {
+      const pill = document.createElement('button');
+      pill.className = 'pl-arr-pill' + (arr === 'ORIGINAL' && song.audio ? ' available' : '');
+      pill.textContent = arr;
+      pill.addEventListener('click', () => plPlayArrangement(song, arr, pill));
+      row.appendChild(pill);
+    });
+    card.appendChild(title); card.appendChild(tag); card.appendChild(row);
+    grid.appendChild(card);
+  });
+}
+
+function plPlayArrangement(song, arr, pillEl) {
+  if (arr === 'ORIGINAL' && song.audio) {
+    document.querySelectorAll('.pl-arr-pill.playing').forEach(p => p.classList.remove('playing'));
+    toggleTrack(song.key);
+    const audio = document.getElementById('audio-' + song.key);
+    if (audio && !audio.paused) pillEl.classList.add('playing');
+    return;
+  }
+  plToast(song.title + ' — the ' + arr + ' arrangement is in production for the Estate Songbook.');
+}
+
+let plToastTimer;
+function plToast(msg) {
+  const t = document.getElementById('pl-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(plToastTimer);
+  plToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function plGoTab(target) {
+  if (target === 'hero') { document.getElementById('pl-lounge').scrollIntoView({ behavior:'smooth', block:'start' }); return; }
+  if (target === 'private') { plToast('Private piano sessions are arranged through the concierge.'); return; }
+  if (target === 'core') { ghShowCore(); return; }
+  if (target === 'return') { ghShowHero(); return; }
+  const sec = document.getElementById(target);
+  if (sec) sec.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function loadPianoNowPlaying() {
+  fetchEstateContent('pl-now',
+    `You are the voice of The Piano Lounge's Now Playing display. This room is built around a single grand piano and a rotating cast of pianists, vocalists, and guest artists performing live jazz, neo-soul, R&B, standards, and reimagined arrangements of RichFraz/DEPMG songs. Never write actual quotable lyrics — describe the performance, never its literal lyrical content.`,
+    `Today is ${CURRENT_DATE}, ${TIME_OF_DAY}. Invent ONE song being performed live in The Piano Lounge right now — a jazz standard, a neo-soul or R&B classic, or a RichFraz/DEPMG song reimagined on piano. In under 40 words: the song title, who's performing it (invent a first name and last initial), and, if it's a cover, who originally wrote or recorded it. One evocative sentence, not a list. No brackets, no headers.`
+  );
+}
+
+function loadPianoArtist() {
+  fetchEstateContent('pl-artist',
+    `You are the voice of The Piano Lounge's artist spotlight. Tonight's 9:30 PM Featured Artist slot showcases a musician playing an intimate solo or small-ensemble set on the Estate's grand piano. Invent a plausible performer and set — never claim they are a real, identifiable public figure, and never write actual quotable lyrics.`,
+    `Today is ${CURRENT_DATE}. Write a short spotlight (70-100 words) introducing tonight's 9:30 PM Featured Artist in The Piano Lounge — invent a name, one sentence on their sound or background, and what guests can expect from tonight's set. Warm, intimate program-note voice, not a press release. No brackets or headers, just the note.`
+  );
+}
+
+function buildPianoLounge() {
+  const root = document.getElementById('pl-lounge');
+  if (!root || root.dataset.built) return;
+  root.dataset.built = '1';
+
+  document.querySelectorAll('#pl-tabbar .pl-tab').forEach(btn => {
+    btn.addEventListener('click', () => plGoTab(btn.dataset.plTab));
+  });
+
+  plBuildRequestBook();
+  plBuildEstateSongbook();
+  loadPianoNowPlaying();
+  loadPianoArtist();
+}
+
+function plShowLounge() {
+  buildPianoLounge();
+  document.getElementById('gh-hero').hidden = true;
+  document.getElementById('gc-core').hidden = true;
+  document.getElementById('pl-lounge').hidden = false;
+  window.scrollTo(0, 0);
+}
+
 function ghShowHero() {
+  const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   document.getElementById('gc-core').hidden = true;
   document.getElementById('gh-hero').hidden = false;
 }
 function ghShowCore() {
   buildGeminiCore();
+  const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = false;
   layoutGeminiCore();
@@ -4541,6 +4998,7 @@ function ghShowCore() {
 function ghAction(spot, btn) {
   if (spot.action === 'bar') { openBar(); return; }
   if (spot.action === 'gc') { ghShowCore(); return; }
+  if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'hall') { goTo('hall'); return; }
   if (spot.action === 'scroll') {
     const target = document.getElementById('gemini-content');
