@@ -2094,6 +2094,117 @@ body::before {
 }
 .vl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ══ THE CIGAR & WHISKEY LOUNGE — built on the real render, grid-measured ══
+   Same architecture as the Piano and Vinyl Lounges: the render is the
+   room, hotspots measured against its own baked buttons. Featured
+   Cigar and Featured Whiskey are the only genuinely blank parts of
+   the artwork — no free public photo API exists for spirits/cigars
+   the way Cover Art Archive does for albums, so their art always uses
+   the honestly-labeled generated placeholder, never a fake photo. ══ */
+#cw-frame { background-image: url('assets/images/cigar-whiskey-lounge.jpg'); }
+
+.cw-art-frame {
+  position: absolute; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.2);
+}
+.cw-art-loading { font-size: 20px; color: rgba(201,168,76,0.25); animation: vlPulse 1.8s ease infinite; }
+.cw-field {
+  position: absolute; text-align: left; pointer-events: none;
+  font-family: 'Cormorant Garamond', serif; color: var(--cream); opacity: 0.85;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+#cw-sheet {
+  display: none; position: fixed; inset: 0; z-index: 700;
+  background: #0a0603; overflow-y: auto; flex-direction: column;
+}
+#cw-sheet.open { display: flex; }
+.cw-sheet-body { max-width: 1150px; margin: 0 auto; padding: 90px 32px 100px; width: 100%; }
+.cw-sheet-page[hidden] { display: none; }
+.cw-section-head {
+  font-family: 'Cormorant SC', serif; font-size: 13px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+}
+.cw-section-sub {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+  color: rgba(242,232,213,0.5); margin-bottom: 34px; max-width: 640px;
+}
+
+.cw-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+.cw-tab {
+  background: none; border: 1px solid rgba(201,168,76,0.28); color: rgba(242,232,213,0.7);
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer; transition: all 0.3s ease;
+}
+.cw-tab:hover { border-color: var(--gold); color: var(--gold); }
+.cw-tab.on { background: rgba(201,168,76,0.14); border-color: var(--gold); color: var(--gold); }
+
+.cw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 18px; }
+.cw-card {
+  position: relative; border: 1px solid rgba(201,168,76,0.14); padding: 20px; cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease; background: none; text-align: left; width: 100%;
+}
+.cw-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.03); }
+.cw-card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); margin-bottom: 3px; }
+.cw-card-meta { font-size: 12px; opacity: 0.5; margin-bottom: 6px; }
+.cw-card-tag { font-size: 11px; opacity: 0.4; letter-spacing: 0.05em; }
+
+.cw-pairing-row {
+  display: flex; align-items: center; gap: 20px; padding: 22px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08); flex-wrap: wrap;
+}
+.cw-pairing-items { display: flex; align-items: center; gap: 14px; font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream); }
+.cw-pairing-plus { color: var(--gold); opacity: 0.6; font-size: 14px; }
+.cw-pairing-note { font-size: 13px; opacity: 0.55; margin-top: 6px; max-width: 620px; }
+
+.cw-btn {
+  background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.cw-btn:hover { background: rgba(201,168,76,0.14); }
+.cw-btn:disabled { opacity: 0.4; cursor: default; }
+
+.cw-form-field { margin-bottom: 20px; }
+.cw-form-field label {
+  display: block; font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 8px;
+}
+.cw-form-field input, .cw-form-field textarea, .cw-form-field select {
+  width: 100%; background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.22);
+  color: var(--cream); font-family: 'Cormorant Garamond', serif; font-size: 15px;
+  padding: 12px 14px; box-sizing: border-box;
+}
+.cw-form-field textarea { resize: vertical; min-height: 80px; }
+
+#cw-modal {
+  display: none; position: fixed; inset: 0; z-index: 750; background: rgba(3,1,1,0.92);
+  backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px;
+}
+#cw-modal.open { display: flex; }
+.cw-modal-card {
+  max-width: 600px; width: 100%; max-height: 86vh; overflow-y: auto;
+  background: #0d0805; border: 1px solid rgba(201,168,76,0.25); padding: 44px 40px 40px; position: relative;
+}
+.cw-modal-close {
+  position: absolute; top: 16px; right: 20px; background: none; border: none;
+  color: rgba(242,232,213,0.5); font-family: 'Cormorant SC', serif; font-size: 11px;
+  letter-spacing: 0.2em; cursor: pointer;
+}
+.cw-modal-close:hover { color: var(--gold); }
+.cw-modal-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--cream); margin: 0 0 4px; }
+.cw-modal-meta { font-size: 12px; opacity: 0.45; letter-spacing: 0.05em; margin-bottom: 20px; }
+.cw-modal-facts { display: flex; flex-direction: column; gap: 6px; margin-bottom: 22px; }
+.cw-modal-fact { display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid rgba(201,168,76,0.06); padding: 6px 0; }
+.cw-modal-fact span:first-child { opacity: 0.45; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; }
+.cw-modal-label {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin: 20px 0 10px;
+}
+.cw-modal-body-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.6; color: rgba(242,232,213,0.8); }
+
 </style>
 </head>
 <body>
@@ -2839,6 +2950,90 @@ body::before {
     </div>
   </div>
   <div class="vl-toast" id="vl-toast"></div>
+
+  <!-- ══ THE CIGAR & WHISKEY LOUNGE — savor: smoke, spirits, ritual ══
+       Built the same way as the Piano and Vinyl Lounges: the render is
+       the room, hotspots grid-measured against its own baked buttons.
+       Featured Cigar and Featured Whiskey are the only genuinely blank
+       parts of the artwork — filled programmatically, never baked. ══ -->
+  <section class="gh-hero" id="cw-lounge" hidden>
+    <div class="gh-frame" id="cw-frame"></div>
+    <div class="gh-nav" id="cw-nav"></div>
+    <div id="cw-cigar-art-frame" class="cw-art-frame"><div class="cw-art-loading">&#9734;</div></div>
+    <div id="cw-whiskey-art-frame" class="cw-art-frame"><div class="cw-art-loading">&#127864;</div></div>
+    <div id="cw-fields"></div>
+    <nav class="gh-list" id="cw-list" aria-label="Cigar &amp; Whiskey Lounge"></nav>
+  </section>
+
+  <div id="cw-sheet">
+    <button class="bar-close" onclick="cwCloseSheet()">← Back to the Cigar &amp; Whiskey Lounge</button>
+    <div class="cw-sheet-body">
+
+      <section class="cw-sheet-page" id="cw-page-cigars" hidden>
+        <p class="cw-section-head">Cigar Selection</p>
+        <p class="cw-section-sub">A curated humidor, not a smoke shop shelf — browse by strength and tap any cigar for its full profile.</p>
+        <div class="cw-tabs" id="cw-cigar-tabs"></div>
+        <div class="cw-grid" id="cw-cigar-grid"></div>
+      </section>
+
+      <section class="cw-sheet-page" id="cw-page-whiskeys" hidden>
+        <p class="cw-section-head">Whiskey Collection</p>
+        <p class="cw-section-sub">Rare, allocated, and vintage pours from around the world — browse by style and tap any bottle for its full profile.</p>
+        <div class="cw-tabs" id="cw-whiskey-tabs"></div>
+        <div class="cw-grid" id="cw-whiskey-grid"></div>
+      </section>
+
+      <section class="cw-sheet-page" id="cw-page-pairings" hidden>
+        <p class="cw-section-head">Pairings</p>
+        <p class="cw-section-sub">The house's own recommended cigar-and-pour combinations, built the way a real steward would build them — by weight, not by trend.</p>
+        <div id="cw-pairings-list"></div>
+      </section>
+
+      <section class="cw-sheet-page" id="cw-page-tour" hidden>
+        <p class="cw-section-head">Humidor Tour</p>
+        <p class="cw-section-sub">A short walk through the walk-in humidor and the private reserves it holds.</p>
+        <div id="ai-content-cw-tour" class="ai-content-block">
+          <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+        </div>
+      </section>
+
+      <section class="cw-sheet-page" id="cw-page-locker" hidden>
+        <p class="cw-section-head">Locker Program</p>
+        <p class="cw-section-sub">Reserve a private, climate-controlled cigar locker at the Lounge — your own inventory, stored in style, ready whenever you are.</p>
+        <div id="cw-locker-status"></div>
+      </section>
+
+      <section class="cw-sheet-page" id="cw-page-service" hidden>
+        <p class="cw-section-head">Lounge Service</p>
+        <p class="cw-section-sub">Request personalized service from the Lounge's expert staff — a specific bottle, a private tasting, anything the humidor doesn't already have out.</p>
+        <div class="cw-form-field">
+          <label for="cw-service-type">Request Type</label>
+          <select id="cw-service-type">
+            <option>Pairing Recommendation</option>
+            <option>Source a Specific Bottle or Cigar</option>
+            <option>Private Tasting</option>
+            <option>Locker Program Inquiry</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="cw-form-field">
+          <label for="cw-service-details">Details</label>
+          <textarea id="cw-service-details" placeholder="Tell the staff what you're looking for…"></textarea>
+        </div>
+        <button class="cw-btn cw-service-btn" onclick="cwSubmitService()">Request Service</button>
+        <div id="cw-service-status" style="margin-top:20px;"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <div id="cw-modal">
+    <div class="cw-modal-card">
+      <button class="cw-modal-close" onclick="cwCloseModal()">&times; Close</button>
+      <div id="cw-modal-body"></div>
+    </div>
+  </div>
+  <div class="vl-toast" id="cw-toast"></div>
 
   <div class="room-content" id="gemini-content">
     <div class="gemini-sign fade-up">
@@ -4630,7 +4825,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'vinyl',    label:'Vinyl Lounge',
     ix:0.827, iy:0.352, w:0.155, h:0.052, action:'vinyl' },
   { key:'cigar',    label:'Cigar & Whiskey',
-    ix:0.173, iy:0.595, w:0.155, h:0.048, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.173, iy:0.595, w:0.155, h:0.048, action:'cigar' },
   { key:'wine',     label:'DEPMG Wine Bar',
     ix:0.827, iy:0.595, w:0.155, h:0.048, action:'lock', msg:'The Wine Bar opens later this year.' },
   { key:'core',     label:'Gemini Core — Center Bar',
@@ -4643,7 +4838,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'vinyl2',   label:'Vinyl Lounge',
     ix:0.2280, iy:0.900, w:0.109, h:0.11, action:'vinyl' },
   { key:'cigar2',   label:'Cigar & Whiskey',
-    ix:0.3370, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.3370, iy:0.900, w:0.109, h:0.11, action:'cigar' },
   { key:'wine2',    label:'DEPMG Wine Bar',
     ix:0.4460, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Wine Bar opens later this year.' },
   { key:'perf2',    label:'Tonight’s Performance',
@@ -4684,7 +4879,7 @@ const GEMINI_CORE_SPOTS = [
   { key:'r-vinyl',  label:'Vinyl Lounge',
     ix:0.185, iy:0.910, w:0.105, h:0.090, action:'vinyl' },
   { key:'r-cigar',  label:'Cigar & Whiskey',
-    ix:0.298, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.298, iy:0.910, w:0.105, h:0.090, action:'cigar' },
   { key:'r-wine',   label:'DEPMG Wine Bar',
     ix:0.565, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Wine Bar opens later this year.' },
   { key:'r-perf',   label:'Tonight’s Performance',
@@ -4702,6 +4897,7 @@ function gcAction(spot) {
   if (spot.action === 'menu') { openBar(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
+  if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'scroll') { ghShowHero(); setTimeout(() => ghAction({ action:'scroll' }), 650); return; }
   if (spot.action === 'lock') { ghShowHero(); setTimeout(() => ghAction(spot), 650); return; }
 }
@@ -5049,7 +5245,7 @@ const PL_SPOTS = [
   // the wayfinding map in the sidebar — "every label already drawn on
   // it is a live destination," same rule as the Gemini Hall render
   { key:'map-cigar',  label:'Cigar & Whiskey Room',
-    ix:0.0625, iy:0.552, w:0.11,  h:0.038, action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.0625, iy:0.552, w:0.11,  h:0.038, action:'cigar' },
   { key:'map-vinyl',  label:'Vinyl Lounge',
     ix:0.175,  iy:0.547, w:0.065, h:0.028, action:'vinyl' },
   { key:'map-core',   label:'Gemini Core — Center Bar',
@@ -5115,6 +5311,7 @@ function plAction(spot, btn) {
   if (spot.action === 'hero') { ghShowHero(); return; }
   if (spot.action === 'core') { ghShowCore(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
+  if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'now-refresh') { loadPianoNowPlaying(); plToast('Refreshing what’s playing now…'); return; }
   if (spot.action === 'lyrics') { plToast('The Estate doesn’t reproduce lyrics on screen — ask your pianist to play it live.'); return; }
   if (spot.action === 'lock') {
@@ -5269,6 +5466,7 @@ function plShowLounge() {
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = true;
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
+  const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   document.getElementById('pl-lounge').hidden = false;
   layoutPianoLounge();
 }
@@ -5692,7 +5890,7 @@ const VL_SPOTS = [
   { key:'map-piano',  label:'Piano Lounge',
     ix:0.045, iy:0.517, w:0.09,  h:0.035, action:'piano' },
   { key:'map-cigar',  label:'Cigar & Whiskey Room',
-    ix:0.168, iy:0.520, w:0.075, h:0.04,  action:'lock', msg:'The Cigar & Whiskey Room opens later this year.' },
+    ix:0.168, iy:0.520, w:0.075, h:0.04,  action:'cigar' },
   { key:'map-main',   label:'Main Cocktail Lounge III-201',
     ix:0.055, iy:0.618, w:0.105, h:0.045, action:'hero' },
   { key:'map-wine',   label:'DEPMG Wine Bar',
@@ -5760,6 +5958,7 @@ function vlAction(spot, btn) {
   if (spot.action === 'hero') { ghShowHero(); return; }
   if (spot.action === 'core') { ghShowCore(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
+  if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'random') { vlRandomPull(); return; }
   if (spot.action === 'now-retry') { if (vlCurrentAlbum) vlSetNowSpinning(vlCurrentAlbum); return; }
   if (spot.action === 'lock') {
@@ -5902,13 +6101,469 @@ function vlShowLounge() {
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = true;
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   document.getElementById('vl-lounge').hidden = false;
   layoutVinylLounge();
+}
+
+// ══ THE CIGAR & WHISKEY LOUNGE — savor: smoke, spirits, ritual ══
+// Real brand facts (name/origin/size-or-age/strength-or-abv) for
+// well-known cigars and whiskeys — the kind of factual detail a real
+// lounge menu lists. "Why it's here" is explicitly the Estate's own
+// curatorial voice. No free public photo API exists for spirits or
+// cigars, so Featured Cigar/Whiskey art always uses the honestly-
+// labeled generated placeholder — never a fabricated product photo.
+const CW_CIGARS = [
+  { name:'Padrón 1964 Anniversary', origin:'Nicaragua', size:'Toro', strength:'Full', tag:'Full',
+    note:'The house benchmark for a full-bodied Nicaraguan — rich, peppery, built to sit with a dark spirit.' },
+  { name:'Arturo Fuente Hemingway', origin:'Dominican Republic', size:'Perfecto', strength:'Medium', tag:'Medium',
+    note:'A perfecto shape that burns slow and even — the cigar the Lounge hands a first-timer.' },
+  { name:'Cohiba Behike', origin:'Cuba', size:'Robusto', strength:'Full', tag:'Full',
+    note:'Kept for what it represents as much as the smoke — the name collectors ask for first.' },
+  { name:'Davidoff Winston Churchill', origin:'Dominican Republic', size:'Toro', strength:'Medium-Full', tag:'Medium-Full',
+    note:'Precise, consistent, built for a long conversation rather than a quick smoke.' },
+  { name:'My Father Le Bijou 1922', origin:'Nicaragua', size:'Robusto', strength:'Full', tag:'Full',
+    note:'Dense and dark — the Lounge\'s answer for a guest who already knows what they like.' },
+  { name:'Macanudo Café', origin:'Dominican Republic', size:'Robusto', strength:'Mild', tag:'Mild',
+    note:'The easy, approachable house pour of cigars — mild enough to pair with almost anything.' },
+  { name:'Oliva Serie V', origin:'Nicaragua', size:'Torpedo', strength:'Full', tag:'Full',
+    note:'A torpedo built for a clean draw — kept for guests who want full-bodied without the harshness.' },
+  { name:'Ashton VSG', origin:'Dominican Republic', size:'Belicoso', strength:'Medium-Full', tag:'Medium-Full',
+    note:'Long-aged tobacco, slow to reveal itself — a cigar for a guest who isn\'t in a hurry.' },
+];
+const CW_CIGAR_STRENGTHS = ['Mild', 'Medium', 'Medium-Full', 'Full'];
+
+const CW_WHISKEYS = [
+  { name:'Macallan 18', origin:'Speyside, Scotland', age:'18 Years', abv:'43%', tag:'Scotch',
+    note:'Sherry-cask depth the Lounge keeps on hand for guests who already know Scotch.' },
+  { name:'Pappy Van Winkle 15', origin:'Kentucky, USA', age:'15 Years', abv:'53.5%', tag:'Bourbon',
+    note:'The allocated bottle everyone asks for — kept behind the bar for exactly that reason.' },
+  { name:'Hibiki Harmony', origin:'Japan', age:'NAS', abv:'43%', tag:'Japanese',
+    note:'Blended for balance, not bravado — the pour for a guest who wants something different.' },
+  { name:'Redbreast 12', origin:'Ireland', age:'12 Years', abv:'40%', tag:'Irish',
+    note:'Single pot still Irish whiskey with a spice the Lounge finds pairs unusually well with cigars.' },
+  { name:'Blanton\'s Single Barrel', origin:'Kentucky, USA', age:'NAS', abv:'46.5%', tag:'Bourbon',
+    note:'Every bottle a little different — kept for the guest who wants to taste the barrel, not the brand.' },
+  { name:'Yamazaki 12', origin:'Japan', age:'12 Years', abv:'43%', tag:'Japanese',
+    note:'Delicate and fruit-forward — the Lounge\'s pour for a lighter cigar, not a heavier one.' },
+  { name:'Glenfarclas 25', origin:'Speyside, Scotland', age:'25 Years', abv:'43%', tag:'Scotch',
+    note:'A family-owned distillery\'s own reserve — kept for guests who ask what the Lounge itself would drink.' },
+  { name:'Angel\'s Envy Rye', origin:'Kentucky, USA', age:'NAS', abv:'50%', tag:'Rye',
+    note:'Finished in rum casks — a rye with enough sweetness to hold up against a full-bodied cigar.' },
+];
+const CW_WHISKEY_STYLES = ['Bourbon', 'Rye', 'Scotch', 'Irish', 'Japanese'];
+
+const CW_PAIRINGS = [
+  { cigar:'Padrón 1964 Anniversary', whiskey:'Pappy Van Winkle 15', note:'Two full-bodied, high-demand names that don\'t compete for attention — the pepper of the cigar meets the bourbon\'s sweetness halfway.' },
+  { cigar:'Arturo Fuente Hemingway', whiskey:'Redbreast 12', note:'A medium cigar and a spicy pot-still Irish — neither overwhelms the other, a good starting pairing.' },
+  { cigar:'Macanudo Café', whiskey:'Hibiki Harmony', note:'Mild meets balanced — the house recommendation for a guest easing into either.' },
+  { cigar:'My Father Le Bijou 1922', whiskey:'Glenfarclas 25', note:'Dense tobacco against sherried Scotch depth — built for a long night, not a quick glass.' },
+  { cigar:'Oliva Serie V', whiskey:'Angel\'s Envy Rye', note:'Full-bodied and clean-drawing against a rum-finished rye\'s sweetness — a modern pairing, not a classic one.' },
+  { cigar:'Davidoff Winston Churchill', whiskey:'Yamazaki 12', note:'Precision on both sides — a controlled, even cigar against a delicate, fruit-forward single malt.' },
+];
+
+function cwHashHue(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  return h % 360;
+}
+function cwInitials(name) {
+  return name.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+}
+function cwGeneratedArtHTML(item, hueSeed) {
+  const hue = cwHashHue((item.name || '') + hueSeed);
+  return '<div class="vl-art-generated" style="background:' +
+    'radial-gradient(circle at 30% 25%, hsla(' + hue + ',50%,28%,0.9), transparent 60%),' +
+    'linear-gradient(150deg, hsl(' + hue + ',34%,13%), #0a0603 78%);">' +
+    '<span class="vl-art-mono">' + cwInitials(item.name) + '</span>' +
+    '<span class="vl-art-tag">Estate Rendering</span></div>';
+}
+
+function cwSetFeaturedCigar(item) {
+  document.getElementById('cw-brand').textContent = item.name;
+  document.getElementById('cw-origin').textContent = item.origin;
+  document.getElementById('cw-size').textContent = item.size;
+  document.getElementById('cw-strength').textContent = item.strength;
+  document.getElementById('cw-notes').textContent = item.note.length > 34 ? item.note.slice(0, 33) + '…' : item.note;
+  document.getElementById('cw-cigar-art-frame').innerHTML = cwGeneratedArtHTML(item, 'cigar');
+}
+function cwSetFeaturedWhiskey(item) {
+  document.getElementById('cw-whiskey').textContent = item.name;
+  document.getElementById('cw-whiskey-origin').textContent = item.origin;
+  document.getElementById('cw-age').textContent = item.age;
+  document.getElementById('cw-abv').textContent = item.abv;
+  document.getElementById('cw-whiskey-notes').textContent = item.note.length > 34 ? item.note.slice(0, 33) + '…' : item.note;
+  document.getElementById('cw-whiskey-art-frame').innerHTML = cwGeneratedArtHTML(item, 'whiskey');
+}
+
+function cwBuildCigarTabs() {
+  const tabsEl = document.getElementById('cw-cigar-tabs');
+  if (!tabsEl || tabsEl.childElementCount) return;
+  CW_CIGAR_STRENGTHS.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cw-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = s;
+    btn.addEventListener('click', () => cwShowCigarStrength(s, btn));
+    tabsEl.appendChild(btn);
+  });
+  cwShowCigarStrength(CW_CIGAR_STRENGTHS[0]);
+}
+function cwShowCigarStrength(strength, btnEl) {
+  document.querySelectorAll('#cw-cigar-tabs .cw-tab').forEach(b => b.classList.remove('on'));
+  if (btnEl) btnEl.classList.add('on');
+  const grid = document.getElementById('cw-cigar-grid');
+  grid.innerHTML = '';
+  CW_CIGARS.filter(c => c.tag === strength).forEach(c => grid.appendChild(cwCard(c, 'cigar')));
+}
+function cwBuildWhiskeyTabs() {
+  const tabsEl = document.getElementById('cw-whiskey-tabs');
+  if (!tabsEl || tabsEl.childElementCount) return;
+  CW_WHISKEY_STYLES.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cw-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = s;
+    btn.addEventListener('click', () => cwShowWhiskeyStyle(s, btn));
+    tabsEl.appendChild(btn);
+  });
+  cwShowWhiskeyStyle(CW_WHISKEY_STYLES[0]);
+}
+function cwShowWhiskeyStyle(style, btnEl) {
+  document.querySelectorAll('#cw-whiskey-tabs .cw-tab').forEach(b => b.classList.remove('on'));
+  if (btnEl) btnEl.classList.add('on');
+  const grid = document.getElementById('cw-whiskey-grid');
+  grid.innerHTML = '';
+  CW_WHISKEYS.filter(w => w.tag === style).forEach(w => grid.appendChild(cwCard(w, 'whiskey')));
+}
+
+function cwCard(item, kind) {
+  const card = document.createElement('button');
+  card.className = 'cw-card';
+  card.innerHTML = '<div class="cw-card-title"></div><div class="cw-card-meta"></div><div class="cw-card-tag"></div>';
+  card.querySelector('.cw-card-title').textContent = item.name;
+  card.querySelector('.cw-card-meta').textContent = kind === 'cigar'
+    ? item.origin + ' · ' + item.size
+    : item.origin + ' · ' + item.age;
+  card.querySelector('.cw-card-tag').textContent = kind === 'cigar' ? item.strength + ' Strength' : item.abv + ' ABV';
+  card.addEventListener('click', () => cwOpenItem(item, kind));
+  return card;
+}
+
+function cwOpenItem(item, kind) {
+  const body = document.getElementById('cw-modal-body');
+  let html = '<h3 class="cw-modal-title"></h3><p class="cw-modal-meta"></p><div class="cw-modal-facts"></div>';
+  html += '<p class="cw-modal-label">Estate Commentary</p><p class="cw-modal-body-text"></p>';
+  html += '<button class="cw-btn cw-feature-btn" style="margin-top:22px;" onclick="cwFeatureFromModal(' + (kind === 'cigar' ? "'cigar'" : "'whiskey'") + ')">' +
+    (kind === 'cigar' ? '&#9734; Feature This Cigar' : '&#127864; Feature This Whiskey') + '</button>';
+  body.innerHTML = html;
+  body.querySelector('.cw-modal-title').textContent = item.name;
+  body.querySelector('.cw-modal-meta').textContent = item.origin;
+  body.querySelector('.cw-modal-body-text').textContent = item.note;
+  const facts = body.querySelector('.cw-modal-facts');
+  const rows = kind === 'cigar'
+    ? [['Size', item.size], ['Strength', item.strength]]
+    : [['Age', item.age], ['ABV', item.abv]];
+  rows.forEach(([k, v]) => {
+    const row = document.createElement('div');
+    row.className = 'cw-modal-fact';
+    row.innerHTML = '<span></span><span></span>';
+    row.children[0].textContent = k;
+    row.children[1].textContent = v;
+    facts.appendChild(row);
+  });
+  cwModalItem = item; cwModalKind = kind;
+  document.getElementById('cw-modal').classList.add('open');
+}
+let cwModalItem = null, cwModalKind = null;
+function cwCloseModal() { document.getElementById('cw-modal').classList.remove('open'); }
+function cwFeatureFromModal(kind) {
+  if (kind === 'cigar') cwSetFeaturedCigar(cwModalItem);
+  else cwSetFeaturedWhiskey(cwModalItem);
+  cwToast((kind === 'cigar' ? cwModalItem.name : cwModalItem.name) + ' is now featured in the Lounge.');
+  cwCloseModal();
+  cwCloseSheet();
+}
+
+function cwBuildPairings() {
+  const list = document.getElementById('cw-pairings-list');
+  if (!list || list.childElementCount) return;
+  CW_PAIRINGS.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'cw-pairing-row';
+    row.innerHTML =
+      '<div style="flex:1; min-width:260px;">' +
+      '<div class="cw-pairing-items"><span></span><span class="cw-pairing-plus">+</span><span></span></div>' +
+      '<div class="cw-pairing-note"></div></div>';
+    row.querySelectorAll('.cw-pairing-items span')[0].textContent = p.cigar;
+    row.querySelectorAll('.cw-pairing-items span')[2].textContent = p.whiskey;
+    row.querySelector('.cw-pairing-note').textContent = p.note;
+    list.appendChild(row);
+  });
+}
+
+function loadCwTour() {
+  fetchEstateContent('cw-tour',
+    `You are the voice of the Cigar & Whiskey Lounge's Humidor Tour — a short guided walk through the walk-in humidor and its private reserves. Never write actual product marketing copy as if it were a real brand's official description; describe the experience of the tour itself.`,
+    `Today is ${CURRENT_DATE}, ${TIME_OF_DAY}. Write a short first-person tour narration (70-100 words) as if a guest just stepped into the walk-in humidor tonight — the temperature, the rows of boxes, one specific (invented) detail the guide points out, and what makes tonight's tour a little different. Warm, unhurried voice. No brackets or headers, just the narration.`
+  );
+}
+
+let cwLockerWaitlist = [];
+try { cwLockerWaitlist = JSON.parse(localStorage.getItem('cwLockerWaitlist') || '[]'); } catch(e) {}
+function cwBuildLocker() {
+  const el = document.getElementById('cw-locker-status');
+  const already = cwLockerWaitlist.length > 0;
+  el.innerHTML = already
+    ? '<p style="font-family:\'Cormorant Garamond\',serif; font-style:italic; opacity:0.7; margin-bottom:20px;">You&rsquo;re on the Locker Program waitlist. The staff will reach out when a locker opens.</p>'
+    : '<p style="font-family:\'Cormorant Garamond\',serif; font-style:italic; opacity:0.7; margin-bottom:20px;">Lockers are climate-controlled and reserved on a waitlist basis.</p>';
+  if (!already) {
+    const btn = document.createElement('button');
+    btn.className = 'cw-btn cw-waitlist-btn';
+    btn.textContent = 'Join the Waitlist';
+    btn.addEventListener('click', () => {
+      cwLockerWaitlist.push(Date.now());
+      try { localStorage.setItem('cwLockerWaitlist', JSON.stringify(cwLockerWaitlist)); } catch(e) {}
+      cwToast('You’ve been added to the Locker Program waitlist.');
+      cwBuildLocker();
+    });
+    el.appendChild(btn);
+  }
+}
+
+function cwSubmitService() {
+  const type = document.getElementById('cw-service-type').value;
+  const details = document.getElementById('cw-service-details').value.trim();
+  if (!details) { cwToast('Add a few details so the staff know what you need.'); return; }
+  const status = document.getElementById('cw-service-status');
+  status.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif; font-style:italic; color:var(--gold); opacity:0.85;">Request received — “' + type + '.” A member of the staff will follow up shortly.</p>';
+  document.getElementById('cw-service-details').value = '';
+  cwToast('Your request has been sent to the Lounge staff.');
+}
+
+let cwToastTimer;
+function cwToast(msg) {
+  const t = document.getElementById('cw-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(cwToastTimer);
+  cwToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── the render itself, grid-measured ──
+const CW_SPOTS = [
+  { key:'return-top', label:'Return to Gemini Main Floor',
+    ix:0.90, iy:0.05, w:0.16, h:0.10, action:'hero' },
+
+  { key:'map-vip',    label:'VIP Mezzanine',
+    ix:0.108, iy:0.522, w:0.20,  h:0.02,  action:'lock', msg:'The Mezzanine is reserved for members above.' },
+  { key:'map-piano',  label:'Piano Lounge',
+    ix:0.055, iy:0.560, w:0.09,  h:0.035, action:'piano' },
+  { key:'map-stage',  label:'Main Performance Stage',
+    ix:0.115, iy:0.5565, w:0.08, h:0.045, action:'hero' },
+  { key:'map-vinyl',  label:'Vinyl Lounge',
+    ix:0.178, iy:0.560, w:0.075, h:0.035, action:'vinyl' },
+  { key:'map-core',   label:'Gemini Core — Center Bar',
+    ix:0.115, iy:0.6375, w:0.08, h:0.055, action:'core' },
+  { key:'map-service',label:'Service Zone',
+    ix:0.185, iy:0.65,  w:0.045, h:0.03,  action:'lock', msg:'Staff access only beyond this point.' },
+  { key:'map-wine',   label:'DEPMG Wine Bar',
+    ix:0.178, iy:0.6975,w:0.055, h:0.03,  action:'lock', msg:'The Wine Bar opens later this year.' },
+
+  { key:'tile-cigars',   label:'Cigar Selection',
+    ix:0.2825, iy:0.78, w:0.11, h:0.15, action:'sheet-cigars' },
+  { key:'tile-whiskeys', label:'Whiskey Collection',
+    ix:0.3975, iy:0.78, w:0.11, h:0.15, action:'sheet-whiskeys' },
+  { key:'tile-pairings', label:'Pairings',
+    ix:0.5125, iy:0.78, w:0.11, h:0.15, action:'sheet-pairings' },
+  { key:'tile-tour',     label:'Humidor Tour',
+    ix:0.6275, iy:0.78, w:0.11, h:0.15, action:'sheet-tour' },
+  { key:'tile-locker',   label:'Locker Program',
+    ix:0.7425, iy:0.78, w:0.11, h:0.15, action:'sheet-locker' },
+
+  { key:'tile-service', label:'Lounge Service',
+    ix:0.889, iy:0.78, w:0.178, h:0.15, action:'sheet-service' },
+
+  { key:'nav-cigars',   label:'Cigar Selection',
+    ix:0.0625, iy:0.918, w:0.115, h:0.085, action:'sheet-cigars' },
+  { key:'nav-whiskeys', label:'Whiskey Collection',
+    ix:0.1875, iy:0.918, w:0.115, h:0.085, action:'sheet-whiskeys' },
+  { key:'nav-pairings', label:'Pairings',
+    ix:0.3125, iy:0.918, w:0.115, h:0.085, action:'sheet-pairings' },
+  { key:'nav-tour',     label:'Humidor Tour',
+    ix:0.4375, iy:0.918, w:0.115, h:0.085, action:'sheet-tour' },
+  { key:'nav-locker',   label:'Locker Program',
+    ix:0.5625, iy:0.918, w:0.115, h:0.085, action:'sheet-locker' },
+  { key:'nav-service',  label:'Lounge Service',
+    ix:0.6875, iy:0.918, w:0.115, h:0.085, action:'sheet-service' },
+  { key:'nav-core',     label:'Gemini Core — Center Bar',
+    ix:0.8125, iy:0.918, w:0.115, h:0.085, action:'core' },
+  { key:'nav-return',   label:'Return to Gemini',
+    ix:0.9375, iy:0.918, w:0.115, h:0.085, action:'hero' },
+];
+
+const CW_FIELDS = [
+  { key:'brand',    ix:0.928, iy:0.298, w:0.037, size:'10px' },
+  { key:'origin',   ix:0.928, iy:0.323, w:0.037, size:'10px' },
+  { key:'size',     ix:0.928, iy:0.348, w:0.037, size:'10px' },
+  { key:'strength', ix:0.928, iy:0.373, w:0.037, size:'10px' },
+  { key:'notes',    ix:0.928, iy:0.398, w:0.037, size:'9px' },
+  { key:'whiskey',        ix:0.928, iy:0.618, w:0.037, size:'10px' },
+  { key:'whiskey-origin', ix:0.928, iy:0.643, w:0.037, size:'10px' },
+  { key:'age',             ix:0.928, iy:0.668, w:0.037, size:'10px' },
+  { key:'abv',             ix:0.928, iy:0.693, w:0.037, size:'10px' },
+  { key:'whiskey-notes',   ix:0.928, iy:0.718, w:0.037, size:'9px' },
+];
+
+function cwAction(spot, btn) {
+  if (spot.action === 'hero') { ghShowHero(); return; }
+  if (spot.action === 'core') { ghShowCore(); return; }
+  if (spot.action === 'piano') { plShowLounge(); return; }
+  if (spot.action === 'vinyl') { vlShowLounge(); return; }
+  if (spot.action === 'lock') {
+    let word = btn.querySelector('.locked-word');
+    if (!word) {
+      word = document.createElement('span');
+      word.className = 'locked-word';
+      Object.assign(word.style, {
+        position: 'absolute', left: '50%', bottom: '112%', transform: 'translateX(-50%)',
+        width: 'max-content', maxWidth: '60vw',
+        fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: '13px',
+        textShadow: '0 1px 10px #000', opacity: '0', transition: 'opacity 0.4s ease',
+        pointerEvents: 'none', whiteSpace: 'normal', textAlign: 'center',
+      });
+      btn.appendChild(word);
+    }
+    word.textContent = spot.msg;
+    word.style.opacity = '1';
+    clearTimeout(btn._cwTimer);
+    btn._cwTimer = setTimeout(() => { word.style.opacity = '0'; }, 2600);
+    return;
+  }
+  if (spot.action.indexOf('sheet-') === 0) { cwOpenSheet(spot.action.slice(6)); return; }
+}
+
+function cwOpenSheet(page) {
+  document.querySelectorAll('.cw-sheet-page').forEach(el => el.hidden = true);
+  const target = document.getElementById('cw-page-' + page);
+  if (target) target.hidden = false;
+  const sheet = document.getElementById('cw-sheet');
+  sheet.classList.add('open');
+  sheet.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  if (page === 'tour' && !target.dataset.loaded) { target.dataset.loaded = '1'; loadCwTour(); }
+}
+function cwCloseSheet() {
+  document.getElementById('cw-sheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function buildCwLounge() {
+  const nav = document.getElementById('cw-nav');
+  const list = document.getElementById('cw-list');
+  const fields = document.getElementById('cw-fields');
+  if (!nav || nav.childElementCount) return;
+
+  const head = document.createElement('p');
+  head.className = 'gh-list-head';
+  head.textContent = 'THE CIGAR & WHISKEY LOUNGE';
+  list.appendChild(head);
+
+  const seen = new Set();
+  CW_SPOTS.forEach(spot => {
+    const btn = document.createElement('button');
+    btn.className = 'hotspot bare';
+    btn.dataset.ix = spot.ix; btn.dataset.iy = spot.iy;
+    btn.dataset.w = spot.w; btn.dataset.h = spot.h;
+    btn.innerHTML = '<span class="halo"></span><span class="sr-only">' + spot.label + '</span>';
+    btn.addEventListener('click', () => cwAction(spot, btn));
+    nav.appendChild(btn);
+
+    if (!seen.has(spot.label)) {
+      seen.add(spot.label);
+      const li = document.createElement('button');
+      li.textContent = spot.label;
+      li.addEventListener('click', () => cwAction(spot, li));
+      list.appendChild(li);
+    }
+  });
+
+  CW_FIELDS.forEach(f => {
+    const span = document.createElement('span');
+    span.className = 'cw-field';
+    span.id = 'cw-' + f.key;
+    span.dataset.ix = f.ix; span.dataset.iy = f.iy; span.dataset.w = f.w; span.dataset.size = f.size;
+    fields.appendChild(span);
+  });
+
+  layoutCwLounge();
+  cwBuildCigarTabs();
+  cwBuildWhiskeyTabs();
+  cwBuildPairings();
+  cwBuildLocker();
+
+  cwSetFeaturedCigar(CW_CIGARS[0]);
+  cwSetFeaturedWhiskey(CW_WHISKEYS[0]);
+}
+
+function layoutCwLounge() {
+  const nav = document.getElementById('cw-nav');
+  if (!nav || !nav.childElementCount) return;
+  const aspect = 1536 / 1024;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let w = vw, h = vw / aspect;
+  if (h > vh) { h = vh; w = vh * aspect; }
+  const ox = (vw - w) / 2, oy = (vh - h) / 2;
+
+  nav.querySelectorAll('.hotspot').forEach((el, i) => {
+    const spot = CW_SPOTS[i];
+    el.style.left = (ox + spot.ix * w) + 'px';
+    el.style.top = (oy + spot.iy * h) + 'px';
+    el.style.width = (spot.w * w) + 'px';
+    el.style.height = (spot.h * h) + 'px';
+    el.style.transform = 'translate(-50%, -50%)';
+  });
+
+  const cigarFrame = document.getElementById('cw-cigar-art-frame');
+  cigarFrame.style.left = (ox + 0.8855 * w) + 'px';
+  cigarFrame.style.top = (oy + 0.209 * h) + 'px';
+  cigarFrame.style.width = (0.165 * w) + 'px';
+  cigarFrame.style.height = (0.124 * h) + 'px';
+  cigarFrame.style.transform = 'translate(-50%, -50%)';
+  cigarFrame.style.fontSize = (0.165 * w * 0.16) + 'px';
+
+  const whiskeyFrame = document.getElementById('cw-whiskey-art-frame');
+  whiskeyFrame.style.left = (ox + 0.8855 * w) + 'px';
+  whiskeyFrame.style.top = (oy + 0.51 * h) + 'px';
+  whiskeyFrame.style.width = (0.165 * w) + 'px';
+  whiskeyFrame.style.height = (0.124 * h) + 'px';
+  whiskeyFrame.style.transform = 'translate(-50%, -50%)';
+  whiskeyFrame.style.fontSize = (0.165 * w * 0.16) + 'px';
+
+  document.querySelectorAll('.cw-field').forEach(el => {
+    const ix = parseFloat(el.dataset.ix), iy = parseFloat(el.dataset.iy), fw = parseFloat(el.dataset.w);
+    el.style.left = (ox + ix * w) + 'px';
+    el.style.top = (oy + iy * h) + 'px';
+    el.style.width = (fw * w) + 'px';
+    el.style.fontSize = el.dataset.size;
+    el.style.transform = 'translateY(-50%)';
+  });
+}
+window.addEventListener('resize', layoutCwLounge);
+
+function cwShowLounge() {
+  buildCwLounge();
+  document.getElementById('gh-hero').hidden = true;
+  document.getElementById('gc-core').hidden = true;
+  const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
+  document.getElementById('cw-lounge').hidden = false;
+  layoutCwLounge();
 }
 
 function ghShowHero() {
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
+  const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   document.getElementById('gc-core').hidden = true;
   document.getElementById('gh-hero').hidden = false;
 }
@@ -5916,6 +6571,7 @@ function ghShowCore() {
   buildGeminiCore();
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
+  const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = false;
   layoutGeminiCore();
@@ -5926,6 +6582,7 @@ function ghAction(spot, btn) {
   if (spot.action === 'gc') { ghShowCore(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
+  if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'hall') { goTo('hall'); return; }
   if (spot.action === 'scroll') {
     const target = document.getElementById('gemini-content');
