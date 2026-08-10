@@ -2179,11 +2179,11 @@ body::before {
 }
 .cw-form-field textarea { resize: vertical; min-height: 80px; }
 
-#cw-modal {
+#cw-modal, #dw-modal, #orion-info-modal {
   display: none; position: fixed; inset: 0; z-index: 750; background: rgba(3,1,1,0.92);
   backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px;
 }
-#cw-modal.open { display: flex; }
+#cw-modal.open, #dw-modal.open, #orion-info-modal.open { display: flex; }
 .cw-modal-card {
   max-width: 600px; width: 100%; max-height: 86vh; overflow-y: auto;
   background: #0d0805; border: 1px solid rgba(201,168,76,0.25); padding: 44px 40px 40px; position: relative;
@@ -2239,6 +2239,131 @@ body::before {
   font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 6px 12px; opacity: 0.9;
 }
+
+/* ══ THE ORION LOUNGES — III-601 VIP Mezzanine ══
+   Placeholder build (no render yet) for four screens: Constellation
+   Doors (threshold) + Mintaka / Alnilam / Alnitak. A restrained
+   star-map motif per the brief, distinct from every ground-floor
+   room's own placeholder treatment. Swap for real photography via
+   the same rebuild playbook every other Gemini room went through. ══ */
+.orion-room[hidden] { display: none !important; }
+.orion-room { position: relative; background: #050608; }
+.orion-hero {
+  position: relative; min-height: 100vh; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 100px 20px 160px; text-align: center; overflow: hidden;
+}
+.orion-frame {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(242,232,213,0.5), transparent),
+    radial-gradient(1px 1px at 24% 68%, rgba(242,232,213,0.35), transparent),
+    radial-gradient(2px 2px at 38% 14%, rgba(201,168,76,0.5), transparent),
+    radial-gradient(1px 1px at 52% 42%, rgba(242,232,213,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 64% 78%, rgba(242,232,213,0.3), transparent),
+    radial-gradient(2px 2px at 78% 30%, rgba(201,168,76,0.45), transparent),
+    radial-gradient(1px 1px at 88% 60%, rgba(242,232,213,0.35), transparent),
+    radial-gradient(1.5px 1.5px at 92% 15%, rgba(242,232,213,0.4), transparent),
+    radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08), transparent 60%),
+    linear-gradient(180deg, #0a0b10 0%, #050608 75%);
+}
+.orion-belt { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); display: flex; gap: 60px; z-index: 2; }
+.orion-star {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 12px 3px rgba(201,168,76,0.6); animation: orionTwinkle 3s ease-in-out infinite;
+}
+.orion-star:nth-child(2) { animation-delay: 0.6s; }
+.orion-star:nth-child(3) { animation-delay: 1.2s; }
+@keyframes orionTwinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .orion-star { animation: none; } }
+
+.orion-eyebrow {
+  position: relative; z-index: 2; font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.7; margin: 40px 0 14px;
+}
+.orion-title {
+  position: relative; z-index: 2; font-family: 'Cormorant SC', serif; font-size: clamp(40px,7vw,80px);
+  letter-spacing: 0.1em; color: var(--cream); margin: 0 0 10px;
+}
+.orion-sub {
+  position: relative; z-index: 2; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px;
+  color: rgba(242,232,213,0.55); margin-bottom: 50px;
+}
+
+.orion-tiles { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1000px; }
+.orion-tile {
+  background: rgba(8,9,12,0.6); border: 1px solid rgba(201,168,76,0.22); padding: 30px 26px; width: 260px;
+  text-align: left; cursor: pointer; transition: border-color 0.3s ease, background 0.3s ease;
+}
+.orion-tile:hover { border-color: rgba(201,168,76,0.55); background: rgba(201,168,76,0.05); }
+.orion-tile-name { font-family: 'Cormorant SC', serif; font-size: 20px; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 6px; }
+.orion-tile-loc { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(242,232,213,0.4); margin-bottom: 14px; }
+.orion-tile-desc { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: rgba(242,232,213,0.7); }
+
+.orion-actions { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 3px; max-width: 480px; width: 100%; margin-top: 10px; }
+.orion-action-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,9,12,0.55); border: 1px solid rgba(201,168,76,0.2); padding: 18px 24px; cursor: pointer;
+  text-align: left; font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--cream); transition: all 0.3s ease;
+}
+.orion-action-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); color: var(--gold); }
+.orion-action-arrow { opacity: 0.5; }
+
+.orion-cardrow { position: relative; z-index: 2; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 900px; margin-bottom: 30px; }
+.orion-feature-card { background: rgba(8,9,12,0.6); border: 1px solid rgba(201,168,76,0.22); padding: 20px 22px; width: 240px; text-align: left; }
+.orion-feature-label { font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.75; margin-bottom: 10px; }
+.orion-feature-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream); }
+.orion-feature-meta { font-size: 12px; opacity: 0.5; margin-top: 3px; }
+
+.orion-navbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 52; display: flex; overflow-x: auto; flex-wrap: nowrap;
+  background: linear-gradient(0deg, rgba(5,6,8,0.98) 60%, rgba(5,6,8,0.85)); border-top: 1px solid rgba(201,168,76,0.16);
+}
+.orion-nav-btn {
+  flex: 1 0 auto; background: none; border: none; cursor: pointer; padding: 14px 16px;
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(242,232,213,0.55); white-space: nowrap; transition: color 0.3s ease;
+}
+.orion-nav-btn:hover, .orion-nav-btn.on { color: var(--gold); }
+
+/* Unified ordering overlay — spans all three Gemini hospitality sources */
+#orion-order-sheet {
+  display: none; position: fixed; inset: 0; z-index: 720; background: #05060a;
+  overflow-y: auto; flex-direction: column;
+}
+#orion-order-sheet.open { display: flex; }
+.orion-order-body { max-width: 1150px; margin: 0 auto; padding: 90px 32px 140px; width: 100%; }
+.orion-catalog-section { margin-bottom: 34px; }
+.orion-catalog-head { font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 14px; }
+.orion-catalog-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(201,168,76,0.08); }
+.orion-catalog-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--cream); }
+.orion-catalog-meta { font-size: 12px; opacity: 0.45; margin-left: 8px; }
+.orion-add-btn {
+  background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.3s ease;
+}
+.orion-add-btn:hover { background: rgba(201,168,76,0.14); }
+
+.orion-cart-panel { position: sticky; bottom: 0; margin-top: 40px; background: rgba(10,6,3,0.97); border: 1px solid rgba(201,168,76,0.3); padding: 26px 28px; }
+.orion-cart-title { font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.orion-cart-lounge { opacity: 0.6; font-style: italic; font-size: 13px; }
+.orion-cart-group-head { font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(201,168,76,0.6); margin: 16px 0 6px; }
+.orion-cart-row { display: flex; justify-content: space-between; font-size: 15px; color: rgba(242,232,213,0.85); padding: 4px 0; }
+.orion-cart-remove { background: none; border: none; color: rgba(242,232,213,0.35); cursor: pointer; font-size: 12px; margin-left: 10px; }
+.orion-cart-remove:hover { color: var(--gold); }
+.orion-cart-empty { font-family: 'Cormorant Garamond', serif; font-style: italic; opacity: 0.4; font-size: 14px; padding: 10px 0; }
+.orion-deliver-to { font-size: 13px; opacity: 0.6; margin: 18px 0 16px; font-style: italic; }
+
+.orion-status-track { display: flex; flex-wrap: wrap; gap: 0; margin: 26px 0; }
+.orion-status-step {
+  flex: 1; min-width: 110px; text-align: center; padding: 12px 6px;
+  font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(242,232,213,0.3); border-bottom: 2px solid rgba(201,168,76,0.15);
+}
+.orion-status-step.done { color: var(--gold); border-bottom-color: var(--gold); }
+.orion-status-step.active { color: var(--gold); border-bottom-color: var(--gold); animation: vlPulse 1.5s ease infinite; }
 
 </style>
 </head>
@@ -3165,6 +3290,132 @@ body::before {
     </div>
   </div>
   <div class="vl-toast" id="dw-toast"></div>
+
+  <!-- ══ THE ORION LOUNGES — III-601 VIP Mezzanine ══
+       Placeholder build (no render yet): a threshold screen plus
+       three lounges, per the Claude Code Implementation Brief. Every
+       lounge is an ordering endpoint into the three existing Gemini
+       hospitality sources (Gemini Core / Cigar & Whiskey / DEPMG Wine
+       Bar) — no separate menus are maintained here. ══ -->
+  <section class="orion-room" id="constellation-doors" hidden>
+    <div class="orion-hero">
+      <div class="orion-frame"></div>
+      <div class="orion-belt"><span class="orion-star"></span><span class="orion-star"></span><span class="orion-star"></span></div>
+      <p class="orion-eyebrow">The Obsidian Estate &middot; District III &middot; III-601</p>
+      <h1 class="orion-title">The Constellation Doors</h1>
+      <p class="orion-sub">Beyond this point: The Orion Lounges</p>
+      <div class="orion-tiles">
+        <button class="orion-tile" onclick="orionShowLounge('mintaka')">
+          <div class="orion-tile-name">MINTAKA</div>
+          <div class="orion-tile-loc">West &middot; Private Conversation</div>
+          <div class="orion-tile-desc">Cocktails, low light, and a direct line to the performance below.</div>
+        </button>
+        <button class="orion-tile" onclick="orionShowLounge('alnilam')">
+          <div class="orion-tile-name">ALNILAM</div>
+          <div class="orion-tile-loc">Center &middot; Celestial Overlook</div>
+          <div class="orion-tile-desc">The mezzanine&rsquo;s social heart, overlooking Gemini Core and the stage.</div>
+        </button>
+        <button class="orion-tile" onclick="orionShowLounge('alnitak')">
+          <div class="orion-tile-name">ALNITAK</div>
+          <div class="orion-tile-loc">East &middot; Private Hosting</div>
+          <div class="orion-tile-desc">Reserved service, group hospitality, and hosted events.</div>
+        </button>
+      </div>
+      <div class="orion-actions" style="margin-top:44px;">
+        <button class="orion-action-btn" onclick="ghShowHero()"><span>Return to Gemini Arrival / Reception</span><span class="orion-action-arrow">&larr;</span></button>
+      </div>
+    </div>
+    <nav class="orion-navbar" id="orion-navbar-doors"></nav>
+  </section>
+
+  <section class="orion-room" id="mintaka-lounge" hidden>
+    <div class="orion-hero">
+      <div class="orion-frame"></div>
+      <p class="orion-eyebrow">III-601 &middot; West VIP Lounge</p>
+      <h1 class="orion-title">Mintaka</h1>
+      <p class="orion-sub">Private Conversation &middot; Cocktails &middot; Performance Overlook</p>
+      <div class="orion-actions">
+        <button class="orion-action-btn" onclick="orionOpenOrder('mintaka')"><span>Order to Mintaka</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowTonight()"><span>Tonight Below</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowTable()"><span>Your Table / Lounge</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionRequestService('Lounge Host')"><span>Request Service</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowPrivacy()"><span>Privacy Controls</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="ghShowHero()"><span>View Gemini</span><span class="orion-action-arrow">&rarr;</span></button>
+      </div>
+    </div>
+    <nav class="orion-navbar" id="orion-navbar-mintaka"></nav>
+  </section>
+
+  <section class="orion-room" id="alnilam-lounge" hidden>
+    <div class="orion-hero">
+      <div class="orion-frame"></div>
+      <p class="orion-eyebrow">III-601 &middot; Center VIP Lounge</p>
+      <h1 class="orion-title">Alnilam</h1>
+      <p class="orion-sub">The Celestial Overlook</p>
+      <div class="orion-cardrow" id="alnilam-featured-row">
+        <div class="orion-feature-card"><p class="orion-feature-label">Tonight&rsquo;s Featured Pour</p><p class="orion-feature-name" id="alnilam-pour-name">&mdash;</p><p class="orion-feature-meta" id="alnilam-pour-meta">&mdash;</p></div>
+        <div class="orion-feature-card"><p class="orion-feature-label">Tonight&rsquo;s Featured Cocktail</p><p class="orion-feature-name" id="alnilam-cocktail-name">&mdash;</p><p class="orion-feature-meta" id="alnilam-cocktail-meta">&mdash;</p></div>
+        <div class="orion-feature-card"><p class="orion-feature-label">Featured Whiskey</p><p class="orion-feature-name" id="alnilam-whiskey-name">&mdash;</p><p class="orion-feature-meta" id="alnilam-whiskey-meta">&mdash;</p></div>
+      </div>
+      <div class="orion-actions">
+        <button class="orion-action-btn" onclick="orionOpenOrder('alnilam')"><span>Order to Alnilam</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowTonight()"><span>Now on Stage</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionOpenOrder('alnilam')"><span>VIP Bar Service</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionRequestService('VIP Host')"><span>Request Host</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="ghShowHero()"><span>View Performance Floor</span><span class="orion-action-arrow">&rarr;</span></button>
+      </div>
+    </div>
+    <nav class="orion-navbar" id="orion-navbar-alnilam"></nav>
+  </section>
+
+  <section class="orion-room" id="alnitak-lounge" hidden>
+    <div class="orion-hero">
+      <div class="orion-frame"></div>
+      <p class="orion-eyebrow">III-601 &middot; East VIP Lounge</p>
+      <h1 class="orion-title">Alnitak</h1>
+      <p class="orion-sub">Private Hosting &middot; Reserved Service &middot; Performance Overlook</p>
+      <div class="orion-actions">
+        <button class="orion-action-btn" onclick="orionOpenOrder('alnitak')"><span>Order to Alnitak</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionRequestService('Hosted Service')"><span>Hosted Service</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionOpenOrder('alnitak')"><span>Group Order</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowPrivateEvents()"><span>Private Event Options</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionShowTable()"><span>Current Reservation</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="orionRequestService('Service Staff')"><span>Request Service</span><span class="orion-action-arrow">&rarr;</span></button>
+        <button class="orion-action-btn" onclick="ghShowHero()"><span>View Gemini</span><span class="orion-action-arrow">&rarr;</span></button>
+      </div>
+    </div>
+    <nav class="orion-navbar" id="orion-navbar-alnitak"></nav>
+  </section>
+
+  <div id="orion-order-sheet">
+    <button class="bar-close" onclick="orionCloseOrder()">← Back to the Lounge</button>
+    <div class="orion-order-body">
+      <p class="cw-section-head" id="orion-order-title">Order</p>
+      <p class="cw-section-sub">One combined order across Gemini Core, Cigar &amp; Whiskey, and DEPMG Wine Bar — the guest places one order, fulfillment routes it to the right source.</p>
+      <div class="cw-tabs" id="orion-source-tabs">
+        <button class="cw-tab on" data-source="gemini-core">Gemini Core</button>
+        <button class="cw-tab" data-source="cigar-whiskey">Cigar &amp; Whiskey</button>
+        <button class="cw-tab" data-source="depmg-wine-bar">DEPMG Wine Bar</button>
+      </div>
+      <div id="orion-catalog-list"></div>
+
+      <div class="orion-cart-panel">
+        <p class="orion-cart-title">Your Order <span class="orion-cart-lounge" id="orion-cart-lounge-label"></span></p>
+        <div id="orion-cart-list"></div>
+        <p class="orion-deliver-to">Deliver to: <span id="orion-cart-table"></span></p>
+        <button class="cw-btn" onclick="orionPlaceOrder()">Place Order</button>
+        <div id="orion-order-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="orion-info-modal">
+    <div class="cw-modal-card">
+      <button class="cw-modal-close" onclick="orionCloseInfo()">&times; Close</button>
+      <div id="orion-info-body"></div>
+    </div>
+  </div>
+  <div class="vl-toast" id="orion-toast"></div>
 
   <div class="room-content" id="gemini-content">
     <div class="gemini-sign fade-up">
@@ -4948,7 +5199,7 @@ document.addEventListener('keydown', function (e) {
 // ══ GEMINI HALL ARRIVAL — the render is the room ══
 const GEMINI_HERO_SPOTS = [
   { key:'vip',      label:'VIP Mezzanine — III-601',
-    ix:0.500, iy:0.243, w:0.175, h:0.052, action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.500, iy:0.243, w:0.175, h:0.052, action:'orion' },
   { key:'perf',     label:'Main Performance Stage — Tonight’s Entertainment',
     ix:0.500, iy:0.352, w:0.175, h:0.052, action:'scroll' },
   { key:'piano',    label:'Piano Lounge',
@@ -4975,7 +5226,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'perf2',    label:'Tonight’s Performance',
     ix:0.5540, iy:0.900, w:0.109, h:0.11, action:'scroll' },
   { key:'vip2',     label:'VIP Mezzanine',
-    ix:0.6630, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.6630, iy:0.900, w:0.109, h:0.11, action:'orion' },
   { key:'private',  label:'Private Events',
     ix:0.7720, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'Private events are arranged through the concierge.' },
   { key:'estate',   label:'Return to Estate',
@@ -5016,7 +5267,7 @@ const GEMINI_CORE_SPOTS = [
   { key:'r-perf',   label:'Tonight’s Performance',
     ix:0.675, iy:0.910, w:0.105, h:0.090, action:'scroll' },
   { key:'r-vip',    label:'VIP Mezzanine',
-    ix:0.775, iy:0.910, w:0.105, h:0.090, action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.775, iy:0.910, w:0.105, h:0.090, action:'orion' },
   { key:'r-private',label:'Private Events',
     ix:0.868, iy:0.910, w:0.090, h:0.090, action:'lock', msg:'Private events are arranged through the concierge.' },
   { key:'r-return', label:'Return to Gemini',
@@ -5030,6 +5281,7 @@ function gcAction(spot) {
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'wine') { dwShowLounge(); return; }
+  if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'scroll') { ghShowHero(); setTimeout(() => ghAction({ action:'scroll' }), 650); return; }
   if (spot.action === 'lock') { ghShowHero(); setTimeout(() => ghAction(spot), 650); return; }
 }
@@ -5445,6 +5697,7 @@ function plAction(spot, btn) {
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'wine') { dwShowLounge(); return; }
+  if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'now-refresh') { loadPianoNowPlaying(); plToast('Refreshing what’s playing now…'); return; }
   if (spot.action === 'lyrics') { plToast('The Estate doesn’t reproduce lyrics on screen — ask your pianist to play it live.'); return; }
   if (spot.action === 'lock') {
@@ -5601,6 +5854,7 @@ function plShowLounge() {
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('pl-lounge').hidden = false;
   layoutPianoLounge();
 }
@@ -6238,9 +6492,38 @@ function vlShowLounge() {
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('vl-lounge').hidden = false;
   layoutVinylLounge();
 }
+
+// ══ THE GEMINI CORE MENU — canonical catalog, referenced by the bar
+// overlay's own card grid and, later, by the Orion Lounges' unified
+// ordering system. The 20 names here are the same 13 Album tracks +
+// 7 Magnificent 7 cocktails already established in the bar overlay —
+// this does not invent a new menu, it structures the existing one. ══
+const GEMINI_CORE_MENU = [
+  { id:'gemini-speakeasy', name:'Gemini Speakeasy', category:'Signature Cocktails', collection:'The Album', tag:'Track 01' },
+  { id:'potentially', name:'Potentially', category:'Signature Cocktails', collection:'The Album', tag:'Track 02' },
+  { id:'untouchable', name:'Untouchable', category:'Signature Cocktails', collection:'The Album', tag:'Track 03' },
+  { id:'bad-way', name:'Bad Way', category:'Signature Cocktails', collection:'The Album', tag:'Track 04' },
+  { id:'4-the-night', name:'4 the Night', category:'Signature Cocktails', collection:'The Album', tag:'Track 05' },
+  { id:'sticky', name:'Sticky', category:'Signature Cocktails', collection:'The Album', tag:'Track 06' },
+  { id:'cinnamon', name:'Cinnamon', category:'Signature Cocktails', collection:'The Album', tag:'Track 07' },
+  { id:'clock-it', name:'Clock It', category:'Signature Cocktails', collection:'The Album', tag:'Track 08' },
+  { id:'driver', name:'DRIVER', category:'Signature Cocktails', collection:'The Album', tag:'Track 09' },
+  { id:'mine', name:'MINE', category:'Signature Cocktails', collection:'The Album', tag:'Track 10' },
+  { id:'what-are-we-doing', name:"What Are We Doin'?", category:'Signature Cocktails', collection:'The Album', tag:'Track 11' },
+  { id:'fixation', name:'Fixation', category:'Signature Cocktails', collection:'The Album', tag:'Track 12' },
+  { id:'ghost', name:'Ghost', category:'Signature Cocktails', collection:'The Album', tag:'Track 13' },
+  { id:'richfraz', name:'RichFraz', category:'Classics', collection:'The Magnificent 7', tag:'No. 1' },
+  { id:'depmg', name:'DEPMG', category:'Classics', collection:'The Magnificent 7', tag:'No. 2' },
+  { id:'jungle', name:'Jungle', category:'Classics', collection:'The Magnificent 7', tag:'No. 3' },
+  { id:'phantom', name:'Phantom', category:'Classics', collection:'The Magnificent 7', tag:'No. 4' },
+  { id:'the-saxman', name:'The Saxman', category:'Classics', collection:'The Magnificent 7', tag:'No. 5' },
+  { id:'noise-cancellation', name:'Noise Cancellation', category:'Classics', collection:'The Magnificent 7', tag:'No. 6' },
+  { id:'algorhythm', name:'Algorhythm', category:'Classics', collection:'The Magnificent 7', tag:'No. 7' },
+];
 
 // ══ THE CIGAR & WHISKEY LOUNGE — savor: smoke, spirits, ritual ══
 // Real brand facts (name/origin/size-or-age/strength-or-abv) for
@@ -6323,7 +6606,9 @@ function cwSetFeaturedCigar(item) {
   document.getElementById('cw-notes').textContent = item.note.length > 34 ? item.note.slice(0, 33) + '…' : item.note;
   document.getElementById('cw-cigar-art-frame').innerHTML = cwGeneratedArtHTML(item, 'cigar');
 }
+let cwCurrentWhiskey = null;
 function cwSetFeaturedWhiskey(item) {
+  cwCurrentWhiskey = item;
   document.getElementById('cw-whiskey').textContent = item.name;
   document.getElementById('cw-whiskey-origin').textContent = item.origin;
   document.getElementById('cw-age').textContent = item.age;
@@ -6491,7 +6776,7 @@ const CW_SPOTS = [
     ix:0.90, iy:0.05, w:0.16, h:0.10, action:'hero' },
 
   { key:'map-vip',    label:'VIP Mezzanine',
-    ix:0.108, iy:0.522, w:0.20,  h:0.02,  action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.108, iy:0.522, w:0.20,  h:0.02,  action:'orion' },
   { key:'map-piano',  label:'Piano Lounge',
     ix:0.055, iy:0.560, w:0.09,  h:0.035, action:'piano' },
   { key:'map-stage',  label:'Main Performance Stage',
@@ -6556,6 +6841,7 @@ function cwAction(spot, btn) {
   if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'wine') { dwShowLounge(); return; }
+  if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'lock') {
     let word = btn.querySelector('.locked-word');
     if (!word) {
@@ -6694,6 +6980,7 @@ function cwShowLounge() {
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('cw-lounge').hidden = false;
   layoutCwLounge();
 }
@@ -6787,12 +7074,12 @@ const DW_WINES = [
   { winery:'Mumm Napa', region:'Napa Valley', country:'US', vintage:2002, varietal:'Sparkling Blend', style:'Sparkling', pour:'4oz', points:94, note:'Rated 94 points, $55 at time of review.' },
   { winery:'Mumm Napa', region:'Napa Valley', country:'US', vintage:2001, varietal:'Sparkling Blend', style:'Sparkling', pour:'4oz', points:94, note:'Rated 94 points, $55 at time of review.' },
   { winery:'Nyetimber', region:'England', country:'England', vintage:0, varietal:'Sparkling Blend', style:'Sparkling', pour:'4oz', points:94, note:'Rated 94 points, $65 at time of review.' },
-  { winery:'Chambers Rosewood Vineyards', region:'Rutherglen', country:'Australia', vintage:0, varietal:'Muscat', style:'White', pour:'5oz', points:100, note:'Rated 100 points, $350 at time of review.' },
+  { winery:'Chambers Rosewood Vineyards', region:'Rutherglen', country:'Australia', vintage:0, varietal:'Muscat', style:'Fortified', pour:'5oz', points:100, note:'Rated 100 points, $350 at time of review.' },
   { winery:'Failla', region:'Sonoma Coast', country:'US', vintage:2010, varietal:'Chardonnay', style:'White', pour:'5oz', points:99, note:'Rated 99 points, $44 at time of review.' },
   { winery:'Robert Weil', region:'Rheingau', country:'Germany', vintage:2015, varietal:'Riesling', style:'White', pour:'5oz', points:98, note:'Rated 98 points, $775 at time of review.' },
   { winery:'Wayfarer', region:'Fort Ross-Seaview', country:'US', vintage:2014, varietal:'Chardonnay', style:'White', pour:'5oz', points:98, note:'Rated 98 points, $80 at time of review.' },
   { winery:'Robert Weil', region:'Rheingau', country:'Germany', vintage:2014, varietal:'Riesling', style:'White', pour:'5oz', points:97, note:'Rated 97 points, $775 at time of review.' },
-  { winery:'Chambers Rosewood Vineyards', region:'Rutherglen', country:'Australia', vintage:0, varietal:'Muscat', style:'White', pour:'5oz', points:97, note:'Rated 97 points, $100 at time of review.' },
+  { winery:'Chambers Rosewood Vineyards', region:'Rutherglen', country:'Australia', vintage:0, varietal:'Muscat', style:'Fortified', pour:'5oz', points:97, note:'Rated 97 points, $100 at time of review.' },
   { winery:'Müller-Catoir', region:'Pfalz', country:'Germany', vintage:2007, varietal:'Riesling', style:'White', pour:'5oz', points:97, note:'Rated 97 points.' },
   { winery:'Lynmar', region:'Russian River Valley', country:'US', vintage:2014, varietal:'Chardonnay', style:'White', pour:'5oz', points:97, note:'Rated 97 points, $70 at time of review.' },
   { winery:'Principe Corsini Fattoria Le Corti', region:'Vin Santo del Chianti Classico', country:'Italy', vintage:1997, varietal:'White Blend', style:'White', pour:'5oz', points:97, note:'Rated 97 points.' },
@@ -7149,7 +7436,7 @@ const DW_SPOTS = [
     ix:0.90, iy:0.05, w:0.16, h:0.10, action:'hero' },
 
   { key:'map-vip',    label:'VIP Mezzanine',
-    ix:0.108, iy:0.522, w:0.20,  h:0.02,  action:'lock', msg:'The Mezzanine is reserved for members above.' },
+    ix:0.108, iy:0.522, w:0.20,  h:0.02,  action:'orion' },
   { key:'map-piano',  label:'Piano Lounge',
     ix:0.055, iy:0.560, w:0.09,  h:0.035, action:'piano' },
   { key:'map-stage',  label:'Main Performance Stage',
@@ -7215,6 +7502,7 @@ function dwAction(spot, btn) {
   if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'cigar') { cwShowLounge(); return; }
+  if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'now-retry') { if (dwCurrentWine) dwSetFeaturedPour(dwCurrentWine); return; }
   if (spot.action === 'lock') {
     let word = btn.querySelector('.locked-word');
@@ -7349,8 +7637,367 @@ function dwShowLounge() {
   const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('dw-lounge').hidden = false;
   layoutDwLounge();
+}
+
+// ══ THE ORION LOUNGES — III-601 VIP Mezzanine ══
+// Placeholder star-map build (no render yet). The three lounges are not
+// independent bars — they aggregate inventory from the three existing
+// hospitality sources (Gemini Core cocktails, the Cigar & Whiskey
+// Lounge, DEPMG Wine Bar) into one combined guest order. Featured
+// cards read live off those rooms' own canonical data/state rather
+// than duplicating anything.
+
+const ORION_TABLES = {
+  mintaka: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+  alnilam: ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8'],
+  alnitak: ['K1', 'K2', 'K3', 'K4'],
+};
+const ORION_LOUNGE_NAMES = { mintaka: 'Mintaka', alnilam: 'Alnilam', alnitak: 'Alnitak' };
+const ORION_SOURCE_NAMES = {
+  'gemini-core': 'Gemini Core',
+  'cigar-whiskey': 'Cigar & Whiskey Lounge',
+  'depmg-wine-bar': 'DEPMG Wine Bar',
+};
+const ORION_STATUS_STEPS = ['ORDER RECEIVED', 'IN PREPARATION', 'PARTIALLY READY', 'OUT FOR SERVICE', 'DELIVERED'];
+
+let orionCurrentLounge = 'mintaka';
+let orionOrderSource = 'gemini-core';
+let orionFeaturedCocktail = null;
+let orionToastTimer = null;
+let orionStatusTimer = null;
+
+function orionGuestSessionId() {
+  let id = localStorage.getItem('orionGuestSession');
+  if (!id) {
+    id = 'guest-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    localStorage.setItem('orionGuestSession', id);
+  }
+  return id;
+}
+function orionCurrentTable() {
+  let t = localStorage.getItem('orionTable_' + orionCurrentLounge);
+  if (!t) {
+    t = ORION_TABLES[orionCurrentLounge][0];
+    localStorage.setItem('orionTable_' + orionCurrentLounge, t);
+  }
+  return t;
+}
+function orionSetTable(t) {
+  localStorage.setItem('orionTable_' + orionCurrentLounge, t);
+  orionToast('Now seated at ' + ORION_LOUNGE_NAMES[orionCurrentLounge] + ' ' + t + '.');
+  orionShowTable();
+  orionRenderCart();
+}
+
+function orionLoadCart() {
+  try { return JSON.parse(localStorage.getItem('orionCart') || '[]'); } catch (e) { return []; }
+}
+function orionSaveCart() {
+  localStorage.setItem('orionCart', JSON.stringify(orionCart));
+}
+let orionCart = orionLoadCart();
+
+function orionToast(msg) {
+  const t = document.getElementById('orion-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(orionToastTimer);
+  orionToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── screen navigation ──
+function orionBuildNavbar() {
+  const items = [
+    { id: 'mintaka', label: 'Mintaka', action: () => orionShowLounge('mintaka') },
+    { id: 'alnilam', label: 'Alnilam', action: () => orionShowLounge('alnilam') },
+    { id: 'alnitak', label: 'Alnitak', action: () => orionShowLounge('alnitak') },
+    { id: 'order', label: 'Order', action: () => orionOpenOrder(orionCurrentLounge) },
+    { id: 'tonight', label: 'Tonight Below', action: () => orionShowTonight() },
+    { id: 'table', label: 'Your Table', action: () => orionShowTable() },
+    { id: 'service', label: 'Request Service', action: () => orionRequestService(
+        orionCurrentLounge === 'alnilam' ? 'VIP Host' : orionCurrentLounge === 'alnitak' ? 'Service Staff' : 'Lounge Host') },
+    { id: 'gemini', label: 'Gemini Core', action: () => ghShowHero() },
+  ];
+  document.querySelectorAll('.orion-navbar').forEach(nav => {
+    if (nav.childElementCount) return;
+    items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'orion-nav-btn';
+      btn.textContent = item.label;
+      btn.addEventListener('click', item.action);
+      nav.appendChild(btn);
+    });
+  });
+  document.querySelectorAll('.orion-navbar').forEach(nav => {
+    nav.querySelectorAll('.orion-nav-btn').forEach((btn, i) => {
+      btn.classList.toggle('on', items[i].id === orionCurrentLounge);
+    });
+  });
+}
+
+function orionShowLounge(id) {
+  orionBuildNavbar();
+  document.getElementById('gh-hero').hidden = true;
+  document.getElementById('gc-core').hidden = true;
+  const pl = document.getElementById('pl-lounge'); if (pl) pl.hidden = true;
+  const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
+  const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
+  const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  const targetId = id === 'doors' ? 'constellation-doors' : id + '-lounge';
+  document.getElementById(targetId).hidden = false;
+  if (id !== 'doors') {
+    orionCurrentLounge = id;
+    orionBuildNavbar();
+    if (id === 'alnilam') orionRenderAlnilamFeatured();
+  }
+  window.scrollTo(0, 0);
+}
+
+function orionRenderAlnilamFeatured() {
+  buildDwLounge();
+  buildCwLounge();
+
+  const wine = dwCurrentWine;
+  document.getElementById('alnilam-pour-name').textContent = wine ? (wine.winery + ' ' + (wine.vintage ? wine.vintage : 'NV')) : 'Ask Your Sommelier';
+  document.getElementById('alnilam-pour-meta').textContent = wine ? (wine.varietal + ' · ' + wine.country) : 'DEPMG Wine Bar';
+
+  if (!orionFeaturedCocktail) {
+    orionFeaturedCocktail = GEMINI_CORE_MENU[Math.floor(Math.random() * GEMINI_CORE_MENU.length)];
+  }
+  document.getElementById('alnilam-cocktail-name').textContent = orionFeaturedCocktail.name;
+  document.getElementById('alnilam-cocktail-meta').textContent = orionFeaturedCocktail.collection + ' · ' + orionFeaturedCocktail.tag;
+
+  const whiskey = cwCurrentWhiskey || CW_WHISKEYS[0];
+  document.getElementById('alnilam-whiskey-name').textContent = whiskey.name;
+  document.getElementById('alnilam-whiskey-meta').textContent = whiskey.origin + ' · ' + whiskey.age;
+}
+
+// ── unified ordering: aggregates the three existing hospitality sources ──
+function orionItemName(item, source) {
+  return source === 'depmg-wine-bar' ? (item.winery + ' ' + (item.vintage ? item.vintage : 'NV')) : item.name;
+}
+function orionItemId(item, source) {
+  return source === 'depmg-wine-bar' ? ('wine-' + item.winery + '-' + item.vintage) : (source + '-' + (item.id || item.name));
+}
+function orionCatalogRow(item, meta, source) {
+  const row = document.createElement('div');
+  row.className = 'orion-catalog-row';
+  const label = document.createElement('span');
+  label.innerHTML = '<span class="orion-catalog-name">' + orionItemName(item, source) +
+    '</span><span class="orion-catalog-meta">' + meta + '</span>';
+  row.appendChild(label);
+  const btn = document.createElement('button');
+  btn.className = 'orion-add-btn';
+  btn.textContent = 'Add';
+  btn.addEventListener('click', () => orionAddToCart(item, source));
+  row.appendChild(btn);
+  return row;
+}
+function orionRenderCatalog(source) {
+  orionOrderSource = source;
+  document.querySelectorAll('#orion-source-tabs .cw-tab').forEach(t => t.classList.toggle('on', t.dataset.source === source));
+  const list = document.getElementById('orion-catalog-list');
+  list.innerHTML = '';
+
+  function section(label, items, metaFn) {
+    const wrap = document.createElement('div');
+    wrap.className = 'orion-catalog-section';
+    const head = document.createElement('p');
+    head.className = 'orion-catalog-head';
+    head.textContent = label;
+    wrap.appendChild(head);
+    items.forEach(item => wrap.appendChild(orionCatalogRow(item, metaFn(item), source)));
+    list.appendChild(wrap);
+  }
+
+  if (source === 'gemini-core') {
+    section('Signature Cocktails — The Album', GEMINI_CORE_MENU.filter(i => i.category === 'Signature Cocktails'),
+      i => i.tag);
+    section('Classics — The Magnificent 7', GEMINI_CORE_MENU.filter(i => i.category === 'Classics'),
+      i => i.tag);
+  } else if (source === 'cigar-whiskey') {
+    buildCwLounge();
+    section('Cigars', CW_CIGARS, i => i.origin + ' · ' + i.size + ' · ' + i.strength);
+    section('Whiskey', CW_WHISKEYS, i => i.origin + ' · ' + i.age);
+  } else if (source === 'depmg-wine-bar') {
+    buildDwLounge();
+    section('Estate Picks', DW_WINES.filter(w => w.estate),
+      w => w.region + ', ' + w.country + ' · ' + (w.vintage ? w.vintage : 'NV') + ' · ' + w.style);
+  }
+}
+document.querySelectorAll('#orion-source-tabs .cw-tab').forEach(btn => {
+  btn.addEventListener('click', () => orionRenderCatalog(btn.dataset.source));
+});
+
+function orionAddToCart(item, source) {
+  const id = orionItemId(item, source);
+  const name = orionItemName(item, source);
+  const existing = orionCart.find(c => c.itemId === id && c.loungeId === orionCurrentLounge && c.orderStatus === 'CART');
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    orionCart.push({
+      guestSessionId: orionGuestSessionId(),
+      loungeId: orionCurrentLounge,
+      tableId: orionCurrentTable(),
+      sourceVenue: source,
+      itemId: id,
+      itemName: name,
+      quantity: 1,
+      specialInstructions: '',
+      timestamp: Date.now(),
+      orderStatus: 'CART',
+    });
+  }
+  orionSaveCart();
+  orionRenderCart();
+  orionToast(name + ' added to your order.');
+}
+function orionRemoveFromCart(itemId) {
+  const idx = orionCart.findIndex(c => c.itemId === itemId && c.loungeId === orionCurrentLounge && c.orderStatus === 'CART');
+  if (idx === -1) return;
+  orionCart[idx].quantity -= 1;
+  if (orionCart[idx].quantity <= 0) orionCart.splice(idx, 1);
+  orionSaveCart();
+  orionRenderCart();
+}
+function orionRenderCart() {
+  const list = document.getElementById('orion-cart-list');
+  if (!list) return;
+  const lounge = orionCurrentLounge;
+  document.getElementById('orion-cart-lounge-label').textContent = '— ' + ORION_LOUNGE_NAMES[lounge];
+  document.getElementById('orion-cart-table').textContent = ORION_LOUNGE_NAMES[lounge] + ' ' + orionCurrentTable();
+  const items = orionCart.filter(c => c.loungeId === lounge && c.orderStatus === 'CART');
+  list.innerHTML = '';
+  if (!items.length) {
+    list.innerHTML = '<p class="orion-cart-empty">Your order is empty. Add items from any of the three sources above.</p>';
+    return;
+  }
+  ['gemini-core', 'cigar-whiskey', 'depmg-wine-bar'].forEach(source => {
+    const sourceItems = items.filter(c => c.sourceVenue === source);
+    if (!sourceItems.length) return;
+    const head = document.createElement('p');
+    head.className = 'orion-cart-group-head';
+    head.textContent = ORION_SOURCE_NAMES[source];
+    list.appendChild(head);
+    sourceItems.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'orion-cart-row';
+      const span = document.createElement('span');
+      span.textContent = c.quantity + '× ' + c.itemName;
+      row.appendChild(span);
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'orion-cart-remove';
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', () => orionRemoveFromCart(c.itemId));
+      row.appendChild(removeBtn);
+      list.appendChild(row);
+    });
+  });
+}
+
+function orionOpenOrder(loungeId) {
+  orionCurrentLounge = loungeId;
+  document.getElementById('orion-order-title').textContent = 'Order to ' + ORION_LOUNGE_NAMES[loungeId];
+  document.getElementById('orion-order-status').innerHTML = '';
+  orionRenderCatalog('gemini-core');
+  orionRenderCart();
+  document.getElementById('orion-order-sheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function orionCloseOrder() {
+  document.getElementById('orion-order-sheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function orionPlaceOrder() {
+  const items = orionCart.filter(c => c.loungeId === orionCurrentLounge && c.orderStatus === 'CART');
+  if (!items.length) { orionToast('Add something to your order first.'); return; }
+  const sources = [...new Set(items.map(c => ORION_SOURCE_NAMES[c.sourceVenue]))];
+  items.forEach(c => { c.orderStatus = 'ORDER RECEIVED'; c.timestamp = Date.now(); });
+  orionSaveCart();
+  orionRenderCart();
+  orionToast('Order placed — routed to ' + sources.join(', ') + '.');
+  orionRunStatusSimulation();
+}
+function orionRunStatusSimulation() {
+  const track = document.getElementById('orion-order-status');
+  let stepIndex = 0;
+  function render() {
+    track.innerHTML = '<div class="orion-status-track">' +
+      ORION_STATUS_STEPS.map((s, i) => '<div class="orion-status-step ' +
+        (i < stepIndex ? 'done' : i === stepIndex ? 'active' : '') + '">' + s + '</div>').join('') +
+      '</div>';
+  }
+  render();
+  clearInterval(orionStatusTimer);
+  orionStatusTimer = setInterval(() => {
+    stepIndex++;
+    if (stepIndex >= ORION_STATUS_STEPS.length - 1) {
+      stepIndex = ORION_STATUS_STEPS.length - 1;
+      render();
+      clearInterval(orionStatusTimer);
+      orionCart.filter(c => c.loungeId === orionCurrentLounge).forEach(c => c.orderStatus = 'DELIVERED');
+      orionSaveCart();
+      return;
+    }
+    render();
+  }, 2600);
+}
+
+// ── info panels (shared modal) ──
+function orionShowInfo(title, bodyHtml) {
+  document.getElementById('orion-info-body').innerHTML = '<p class="cw-modal-title">' + title + '</p>' + bodyHtml;
+  document.getElementById('orion-info-modal').classList.add('open');
+}
+function orionCloseInfo() {
+  document.getElementById('orion-info-modal').classList.remove('open');
+}
+function orionShowTonight() {
+  orionShowInfo('Tonight Below',
+    '<p class="cw-modal-body-text">One room. One night. One experience — and it is never the same twice down in Gemini Core. Thirteen scenes, and a poster on the wall for each one.</p>' +
+    '<p class="cw-modal-body-text" style="margin-top:14px;"><em>The programme is never printed in advance.</em> Follow the sound from up here in the mezzanine, or step down and see it from the floor.</p>');
+}
+function orionShowTable() {
+  const lounge = orionCurrentLounge;
+  const table = orionCurrentTable();
+  const rows = ORION_TABLES[lounge].map(t =>
+    '<button class="orion-add-btn" style="margin:3px;" onclick="orionSetTable(\'' + t + '\')">' + t + (t === table ? ' ✓' : '') + '</button>').join('');
+  orionShowInfo('Your Table — ' + ORION_LOUNGE_NAMES[lounge],
+    '<p class="cw-modal-body-text">You are currently seated at <strong>' + ORION_LOUNGE_NAMES[lounge] + ' ' + table +
+    '</strong>. Orders and service requests are routed to this table automatically.</p>' +
+    '<p class="cw-modal-label" style="margin-top:20px;">Change Table</p><div>' + rows + '</div>');
+}
+function orionRequestService(role) {
+  const lounge = orionCurrentLounge, table = orionCurrentTable();
+  orionShowInfo('Request ' + role,
+    '<p class="cw-modal-body-text">A ' + role.toLowerCase() + ' has been notified for ' + ORION_LOUNGE_NAMES[lounge] +
+    ' ' + table + '. Someone will be with you shortly.</p>');
+  orionToast(role + ' notified — ' + ORION_LOUNGE_NAMES[lounge] + ' ' + table + '.');
+}
+function orionShowPrivacy() {
+  orionShowInfo('Privacy Controls',
+    '<p class="cw-modal-body-text">Mintaka is built for private conversation. Lighting stays low, service is unobtrusive, and staff will not approach your table unless summoned.</p>' +
+    '<div class="cw-modal-facts" style="margin-top:16px;">' +
+    '<div class="cw-modal-fact"><span>Photography</span><span>Ask before pointing a lens at another table</span></div>' +
+    '<div class="cw-modal-fact"><span>Service Approach</span><span>By request only</span></div>' +
+    '<div class="cw-modal-fact"><span>Conversation</span><span>Stays at your table</span></div>' +
+    '</div>');
+}
+function orionShowPrivateEvents() {
+  orionShowInfo('Private Event Options',
+    '<p class="cw-modal-body-text">Alnitak hosts private groups, celebrations, and reserved sets for parties who want the mezzanine to themselves.</p>' +
+    '<div class="cw-modal-facts" style="margin-top:16px;">' +
+    '<div class="cw-modal-fact"><span>Capacity</span><span>Up to 24 guests</span></div>' +
+    '<div class="cw-modal-fact"><span>Minimum</span><span>Bottle service required</span></div>' +
+    '<div class="cw-modal-fact"><span>Booking</span><span>Through your Alnitak host</span></div>' +
+    '</div>' +
+    '<button class="cw-btn" style="margin-top:18px;" onclick="orionCloseInfo();orionRequestService(\'Private Events Host\')">Request Private Event Host</button>');
 }
 
 function ghShowHero() {
@@ -7358,6 +8005,7 @@ function ghShowHero() {
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('gc-core').hidden = true;
   document.getElementById('gh-hero').hidden = false;
 }
@@ -7367,6 +8015,7 @@ function ghShowCore() {
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
+  document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = false;
   layoutGeminiCore();
@@ -7379,6 +8028,7 @@ function ghAction(spot, btn) {
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
   if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'wine') { dwShowLounge(); return; }
+  if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'hall') { goTo('hall'); return; }
   if (spot.action === 'scroll') {
     const target = document.getElementById('gemini-content');
