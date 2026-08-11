@@ -8121,19 +8121,78 @@ function orionShowLedger() {
 }
 
 const ORION_EVENT_LEAGUES = ['NFL', 'NBA', 'MLB', 'NHL', 'NCAA', 'WWE', 'UFC', 'Boxing', 'Soccer'];
+// TheSportsDB's free public test key ("3") — for schedule pulls only,
+// on the leagues it tracks with a clean season fixture list. The
+// other leagues/promotions here (NCAA covers many sports, WWE/UFC/
+// Boxing are event- not fixture-based, "Soccer" spans many
+// competitions) don't map to one clean live pull, so they only get
+// the official link. No streaming-rights API is wired in anywhere —
+// where a game is legally watchable varies by region/blackout and
+// changes constantly, so rather than guess, every league always gets
+// a real link to its own official schedule/broadcast page.
+const ORION_LEAGUE_INFO = {
+  NFL:    { sportsdbId: 4391, officialUrl: 'https://www.nfl.com/schedules/',        officialLabel: 'NFL.com — Schedule & Broadcast Info' },
+  NBA:    { sportsdbId: 4387, officialUrl: 'https://www.nba.com/schedule',          officialLabel: 'NBA.com — Schedule & Broadcast Info' },
+  MLB:    { sportsdbId: 4424, officialUrl: 'https://www.mlb.com/schedule',          officialLabel: 'MLB.com — Schedule & Broadcast Info' },
+  NHL:    { sportsdbId: 4380, officialUrl: 'https://www.nhl.com/schedule',          officialLabel: 'NHL.com — Schedule & Broadcast Info' },
+  NCAA:   { sportsdbId: null, officialUrl: 'https://www.ncaa.com/scoreboard',       officialLabel: 'NCAA.com — Scoreboard' },
+  WWE:    { sportsdbId: null, officialUrl: 'https://www.wwe.com/shows',             officialLabel: 'WWE.com — Shows' },
+  UFC:    { sportsdbId: null, officialUrl: 'https://www.ufc.com/events',            officialLabel: 'UFC.com — Events' },
+  Boxing: { sportsdbId: null, officialUrl: 'https://www.espn.com/boxing/schedule',  officialLabel: 'ESPN — Boxing Schedule' },
+  Soccer: { sportsdbId: null, officialUrl: 'https://www.espn.com/soccer/fixtures',  officialLabel: 'ESPN — Soccer Fixtures' },
+};
 function orionShowLiveDisplay() {
-  const current = localStorage.getItem('orionLiveEvent_alnitak') || 'NFL · NBA · MLB · WWE (Game Night Rotation)';
+  const current = localStorage.getItem('orionLiveEvent_alnitak') || 'NFL';
   orionShowInfo('Alnitak Live — PNP Event Display',
     '<p class="cw-modal-body-text">Four screens, always tuned to what the room wants — Game Night Mode keeps the rotation live across the major leagues.</p>' +
     '<div class="cw-modal-facts" style="margin-top:16px;"><div class="cw-modal-fact"><span>Now Showing</span><span>' + current + '</span></div></div>' +
-    '<p class="cw-modal-label" style="margin-top:20px;">Choose the Rotation</p><div>' +
+    '<p class="cw-modal-label" style="margin-top:20px;">Tonight’s Schedule</p>' +
+    '<div id="ob-live-schedule"><p class="cw-modal-body-text" style="opacity:0.5;">Loading…</p></div>' +
+    '<a id="ob-live-official" class="cw-btn" style="margin-top:14px;display:inline-block;text-decoration:none;" target="_blank" rel="noopener"></a>' +
+    '<p class="cw-modal-label" style="margin-top:24px;">Choose the Rotation</p><div>' +
     ORION_EVENT_LEAGUES.map(l => '<button class="orion-add-btn" style="margin:3px;" onclick="orionSetLiveEvent(\'' + l + '\')">' + l + '</button>').join('') +
     '</div>');
+  orionRenderLiveSchedule(current);
 }
 function orionSetLiveEvent(league) {
   localStorage.setItem('orionLiveEvent_alnitak', league);
   orionToast('Alnitak Live now featuring ' + league + '.');
   orionShowLiveDisplay();
+}
+function orionRenderLiveSchedule(league) {
+  const info = ORION_LEAGUE_INFO[league];
+  const link = document.getElementById('ob-live-official');
+  if (link) { link.href = info.officialUrl; link.textContent = info.officialLabel; }
+  const listEl = document.getElementById('ob-live-schedule');
+  if (!listEl) return;
+  if (!info.sportsdbId) {
+    listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">A single live schedule doesn’t apply to ' + league +
+      ' the way it does a league season — see the official page below for tonight’s card and where it’s airing.</p>';
+    return;
+  }
+  fetch('https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=' + info.sportsdbId)
+    .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+    .then(data => {
+      if (league !== (localStorage.getItem('orionLiveEvent_alnitak') || 'NFL')) return; // guest already switched leagues
+      const events = (data && data.events ? data.events : []).slice(0, 5);
+      if (!events.length) {
+        listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">No upcoming ' + league + ' games listed right now — check the official schedule below.</p>';
+        return;
+      }
+      listEl.innerHTML = events.map(ev => {
+        const raw = ev.strTimestamp ? ev.strTimestamp.replace(' ', 'T') + 'Z' : null;
+        const date = raw ? new Date(raw) : null;
+        const when = date && !isNaN(date) ?
+          date.toLocaleString(undefined, { weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }) :
+          (ev.dateEvent || 'Date TBD');
+        const matchup = ev.strEvent || ((ev.strHomeTeam || '') + ' vs ' + (ev.strAwayTeam || ''));
+        return '<div class="cw-modal-fact"><span>' + matchup + '</span><span>' + when + '</span></div>';
+      }).join('');
+    })
+    .catch(() => {
+      if (league !== (localStorage.getItem('orionLiveEvent_alnitak') || 'NFL')) return;
+      listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">Live schedule is unavailable right now — see the official schedule below.</p>';
+    });
 }
 
 // ── Social Constellation — shared by Alnilam (where it's live, for
