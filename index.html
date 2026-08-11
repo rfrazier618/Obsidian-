@@ -2373,6 +2373,20 @@ body::before {
 .orion-status-step.done { color: var(--gold); border-bottom-color: var(--gold); }
 .orion-status-step.active { color: var(--gold); border-bottom-color: var(--gold); animation: vlPulse 1.5s ease infinite; }
 
+/* persistent, subtle — visible only inside Mintaka/Alnilam/Alnitak,
+   so the way back to the hub (or sideways to another lounge) is
+   never something a guest has to stumble onto by tapping room art */
+#orion-quickswitch-btn {
+  display: none; position: fixed; left: 24px; bottom: 90px; z-index: 200;
+  align-items: center; gap: 8px;
+  background: rgba(6,4,2,0.85); border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold); font-family: 'Cormorant SC', serif; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 12px 18px; border-radius: 999px; cursor: pointer;
+  backdrop-filter: blur(4px); transition: all 0.3s ease;
+}
+#orion-quickswitch-btn:hover { border-color: var(--gold); background: rgba(6,4,2,0.95); }
+
 </style>
 </head>
 <body>
@@ -3359,6 +3373,7 @@ body::before {
     </div>
   </div>
   <div class="vl-toast" id="orion-toast"></div>
+  <button id="orion-quickswitch-btn" onclick="orionShowQuickSwitch()">✦ Orion&rsquo;s Belt</button>
 
   <div class="room-content" id="gemini-content">
     <div class="gemini-sign fade-up">
@@ -5798,6 +5813,7 @@ function plShowLounge() {
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('pl-lounge').hidden = false;
   layoutPianoLounge();
 }
@@ -6436,6 +6452,7 @@ function vlShowLounge() {
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('vl-lounge').hidden = false;
   layoutVinylLounge();
 }
@@ -6922,6 +6939,7 @@ function cwShowLounge() {
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('cw-lounge').hidden = false;
   layoutCwLounge();
 }
@@ -7579,6 +7597,7 @@ function dwShowLounge() {
   const vl = document.getElementById('vl-lounge'); if (vl) vl.hidden = true;
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('dw-lounge').hidden = false;
   layoutDwLounge();
 }
@@ -8013,6 +8032,35 @@ function orionShowSocialConstellation(lounge) {
   }
 }
 
+// ── persistent wayfinding: one small, always-visible affordance
+// inside any of the three lounges — jump straight to another lounge,
+// or step back up to the mezzanine overlook, without guessing that
+// the room-title art is clickable ──
+function orionShowQuickSwitchBtn() {
+  const btn = document.getElementById('orion-quickswitch-btn');
+  if (btn) btn.style.display = 'flex';
+}
+function orionHideQuickSwitch() {
+  const btn = document.getElementById('orion-quickswitch-btn');
+  if (btn) btn.style.display = 'none';
+}
+function orionShowQuickSwitch() {
+  const here = orionCurrentLounge;
+  const rows = ['mintaka', 'alnilam', 'alnitak'].map(id => {
+    const isHere = id === here;
+    const style = isHere ? ' style="opacity:0.4;cursor:default;"' : '';
+    const onclick = isHere ? '' : ' onclick="orionCloseInfo();orionShowLounge(\'' + id + '\')"';
+    return '<button class="orion-action-btn"' + style + onclick +
+      '><span>' + ORION_LOUNGE_NAMES[id] + '</span><span class="orion-action-arrow">' +
+      (isHere ? 'You are here' : '→') + '</span></button>';
+  }).join('');
+  orionShowInfo('Orion’s Belt',
+    '<p class="cw-modal-body-text">Move between the mezzanine lounges, or step back to the overlook.</p>' +
+    '<div class="orion-actions" style="max-width:none;margin-top:16px;">' + rows +
+    '<button class="orion-action-btn" style="margin-top:12px;" onclick="orionCloseInfo();orionShowLounge(\'doors\')">' +
+    '<span>Return to Constellation Mezzanine</span><span class="orion-action-arrow">↑</span></button></div>');
+}
+
 const AT_SPOTS = [
   { key:'title-return',   label:'Alnitak — Return to Constellation Doors', ix:0.545, iy:0.285, w:0.20, h:0.11, action:'doors' },
 
@@ -8246,12 +8294,14 @@ function orionShowLounge(id) {
   if (id === 'doors') {
     buildOmLounge();
     layoutOmLounge();
+    orionHideQuickSwitch();
   } else {
     orionCurrentLounge = id;
     orionBuildNavbar();
     if (id === 'mintaka') { buildMkLounge(); layoutMkLounge(); }
     if (id === 'alnitak') { buildAtLounge(); layoutAtLounge(); }
     if (id === 'alnilam') { buildAlLounge(); layoutAlLounge(); }
+    orionShowQuickSwitchBtn();
   }
   window.scrollTo(0, 0);
 }
@@ -8465,6 +8515,7 @@ function ghShowHero() {
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('gc-core').hidden = true;
   document.getElementById('gh-hero').hidden = false;
 }
@@ -8475,6 +8526,7 @@ function ghShowCore() {
   const cw = document.getElementById('cw-lounge'); if (cw) cw.hidden = true;
   const dw = document.getElementById('dw-lounge'); if (dw) dw.hidden = true;
   document.querySelectorAll('.orion-room').forEach(r => r.hidden = true);
+  orionHideQuickSwitch();
   document.getElementById('gh-hero').hidden = true;
   document.getElementById('gc-core').hidden = false;
   layoutGeminiCore();
@@ -8668,6 +8720,7 @@ document.addEventListener('touchstart', () => { if (fadeActive) restoreContent()
 document.addEventListener('scroll', () => { if (fadeActive) restoreContent(); }, {passive: true});
 
 function executeGoTo(id) {
+  orionHideQuickSwitch();
   if (id === 'gemini') buildGeminiHero();
   // Fade out estate track when leaving the hall
   if (estateTrack && id !== 'hall' && !estateTrack.paused) {
