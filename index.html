@@ -2593,7 +2593,38 @@ body::before {
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 14px; cursor: pointer; transition: all 0.25s ease;
 }
 .asb-control-btn:hover, .asb-control-btn.asb-control-on { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
-.asb-control-icon { font-size: 15px; }
+.asb-control-icon {
+  width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.5);
+  display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--gold);
+}
+.asb-rotation-add {
+  border-style: dashed; border-color: rgba(201,168,76,0.3); color: rgba(242,232,213,0.4);
+}
+.asb-rotation-add:hover { border-color: rgba(201,168,76,0.55); color: var(--gold); }
+.asb-rotation-add .asb-rotation-badge { border-style: dashed; }
+
+/* crosshair corner brackets — added as 4 spans via orionAddCorners() */
+.asb-panel, .asb-ticker-row, .asb-rotation, .asb-controls, .asb-panel-card { position: relative; }
+.asb-corner { position: absolute; width: 13px; height: 13px; pointer-events: none; }
+.asb-corner::before, .asb-corner::after { content: ''; position: absolute; background: rgba(201,168,76,0.55); }
+.asb-corner::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+.asb-corner::after { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); }
+.asb-corner-tl { top: 7px; left: 7px; }
+.asb-corner-tr { top: 7px; right: 7px; }
+.asb-corner-bl { bottom: 7px; left: 7px; }
+.asb-corner-br { bottom: 7px; right: 7px; }
+
+.asb-tick-dots { display: flex; gap: 5px; justify-content: center; margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(201,168,76,0.12); }
+.asb-tick-dots span { width: 4px; height: 4px; border-radius: 50%; background: rgba(201,168,76,0.35); }
+
+.asb-performer-tiles { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.asb-performer-tile {
+  flex: 1 1 90px; border: 1px solid rgba(201,168,76,0.3); padding: 12px 8px; text-align: center;
+  text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.25s ease;
+}
+.asb-performer-tile:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+.asb-performer-league { font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.1em; color: var(--gold); }
+.asb-performer-star { font-size: 12px; color: rgba(201,168,76,0.5); }
 
 .asb-bottom-row { display: flex; gap: 15px; margin-bottom: 18px; flex-wrap: wrap; }
 .asb-panel-card {
@@ -8370,6 +8401,17 @@ let orionTickerInterval = null;
 let orionTickerPaused = false;
 let orionSportsbookClockInterval = null;
 
+function orionAddCorners(el) {
+  if (!el || el.querySelector(':scope > .asb-corner')) return;
+  ['tl', 'tr', 'bl', 'br'].forEach(pos => {
+    const span = document.createElement('span');
+    span.className = 'asb-corner asb-corner-' + pos;
+    el.appendChild(span);
+  });
+}
+function orionAddAllCorners() {
+  document.querySelectorAll('.asb-panel, .asb-ticker-row, .asb-rotation, .asb-controls, .asb-panel-card').forEach(orionAddCorners);
+}
 function orionOpenSportsbook() {
   document.getElementById('alnitak-sportsbook').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -8384,6 +8426,7 @@ function orionOpenSportsbook() {
   orionRenderUpNextPanel();
   orionTickerPaused = false;
   orionTickerAutoScrollStart();
+  orionAddAllCorners();
 }
 function orionCloseSportsbook() {
   const el = document.getElementById('alnitak-sportsbook');
@@ -8432,6 +8475,8 @@ function orionBuildRotationIcons() {
   if (!el || el.childElementCount) return;
   el.innerHTML = ORION_ROTATION_LEAGUES.map(l =>
     '<button class="asb-rotation-icon" onclick="orionJumpTicker(\'' + l + '\')"><span class="asb-rotation-badge">' + l.slice(0, 3) + '</span><span class="asb-rotation-label">' + l + '</span></button>'
+  ).join('') + [1, 2, 3].map(() =>
+    '<button class="asb-rotation-icon asb-rotation-add" onclick="orionToast(\'More leagues coming soon — ask your host which sport you’d like added.\')"><span class="asb-rotation-badge">+</span><span class="asb-rotation-label">&nbsp;</span></button>'
   ).join('');
 }
 function orionJumpTicker(league) {
@@ -8505,7 +8550,8 @@ function orionTickerCardHTML(league) {
   return '<div class="asb-tick-card' + (isFav ? ' asb-tick-fav' : '') + '" id="asb-tick-' + league + '" onclick="orionJumpToOfficial(\'' + league + '\')">' +
     '<div class="asb-tick-league-row"><span class="asb-tick-league">' + league + '</span>' +
     '<button class="asb-tick-fav-btn" onclick="event.stopPropagation();orionToggleFavorite(\'' + league + '\')" title="Favorite">' + (isFav ? '★' : '☆') + '</button></div>' +
-    '<div class="asb-tick-body"><div class="asb-tick-note">Loading…</div></div></div>';
+    '<div class="asb-tick-body"><div class="asb-tick-note">Loading…</div></div>' +
+    '<div class="asb-tick-dots"><span></span><span></span><span></span><span></span><span></span></div></div>';
 }
 function orionFillTickerCard(league, events) {
   const card = document.getElementById('asb-tick-' + league);
@@ -8553,9 +8599,10 @@ function orionRenderLedgerPanel() {
 function orionRenderPerformersPanel() {
   const el = document.getElementById('asb-performers-rows');
   if (!el) return;
-  el.innerHTML = ['NFL', 'NBA', 'MLB', 'NHL'].map(l =>
-    '<a class="asb-link-row" href="' + ORION_LEAGUE_INFO[l].statsUrl + '" target="_blank" rel="noopener">' + l + ' — Official Stats &amp; Leaders &rarr;</a>'
-  ).join('') + '<p class="asb-disclaimer">Nightly leaderboards change too often to post here — see each league’s own page.</p>';
+  el.innerHTML = '<div class="asb-performer-tiles">' + ['NFL', 'NBA', 'MLB', 'NHL'].map(l =>
+    '<a class="asb-performer-tile" href="' + ORION_LEAGUE_INFO[l].statsUrl + '" target="_blank" rel="noopener">' +
+    '<span class="asb-performer-league">' + l + '</span><span class="asb-performer-star">★</span></a>'
+  ).join('') + '</div><p class="asb-disclaimer">Nightly leaderboards change too often to post here — see each league’s official stats.</p>';
 }
 function orionRenderOddsPanel() {
   const el = document.getElementById('asb-odds-body');
