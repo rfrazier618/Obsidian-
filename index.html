@@ -2481,6 +2481,131 @@ body::before {
 .ob-return-icon { font-size: 15px; color: var(--gold); }
 .ob-return-arrow { opacity: 0.6; }
 
+/* ── Alnitak Sportsbook — full-screen dashboard opened from the PNP
+   Event Display hotspot. Real data where the Estate actually has it
+   (upcoming fixtures via TheSportsDB, the real Ledger, real official
+   links); everything else (in-play live scores, individual stat
+   leaders, betting odds) has no honest free data source behind it,
+   so those sections are either omitted, linked to the real official
+   source, or explicitly framed as atmosphere rather than a real
+   product — this is not a gambling product and never places a real
+   wager. */
+#alnitak-sportsbook {
+  display: none; position: fixed; inset: 0; z-index: 800; background: rgba(2,1,1,0.96);
+  overflow-y: auto; padding: 30px 20px;
+}
+#alnitak-sportsbook.open { display: flex; align-items: flex-start; justify-content: center; }
+.asb-panel {
+  position: relative; width: 100%; max-width: 1500px; background: #0a0806;
+  border: 1px solid rgba(201,168,76,0.35); padding: 26px 30px 20px;
+}
+.asb-close {
+  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(6,4,2,0.7); border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+  font-size: 18px; line-height: 1; cursor: pointer; z-index: 2;
+}
+.asb-close:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+
+.asb-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  border: 1px solid rgba(201,168,76,0.2); padding: 14px 22px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.asb-header-left, .asb-header-right { flex: 1 1 200px; }
+.asb-header-right { text-align: right; }
+.asb-header-center { flex: 2 1 320px; text-align: center; }
+.asb-gamenight {
+  display: flex; align-items: center; gap: 7px; font-family: 'Cormorant SC', serif; font-size: 11px;
+  letter-spacing: 0.15em; color: var(--gold); margin: 0 0 4px;
+}
+.asb-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf6d; box-shadow: 0 0 6px #4caf6d; flex-shrink: 0; }
+.asb-dot.asb-dot-off { background: rgba(242,232,213,0.3); box-shadow: none; }
+.asb-dot-static { animation: none; }
+.asb-tz { font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.2em; color: rgba(242,232,213,0.4); margin: 0; }
+.asb-crest {
+  width: 40px; height: 40px; margin: 0 auto 4px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.4);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+}
+.asb-crest-crown { font-size: 7px; color: var(--gold); opacity: 0.8; }
+.asb-crest-mono { font-family: 'Cormorant SC', serif; font-size: 12px; color: var(--gold); }
+.asb-title { font-family: 'Cormorant SC', serif; font-size: clamp(22px,3vw,32px); letter-spacing: 0.1em; color: var(--cream); margin: 0; }
+.asb-tagline { font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin: 4px 0 0; }
+.asb-date { font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.1em; color: var(--cream); margin: 0 0 4px; }
+.asb-time { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); margin: 0; }
+
+.asb-section-label {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.75; margin: 0 0 10px; text-align: center;
+}
+.asb-ticker-section { margin-bottom: 18px; }
+.asb-ticker-row { display: flex; align-items: stretch; gap: 8px; border: 1px solid rgba(201,168,76,0.2); padding: 12px; }
+.asb-ticker-arrow {
+  flex: 0 0 auto; width: 30px; background: none; border: 1px solid rgba(201,168,76,0.25); color: var(--gold);
+  cursor: pointer; font-size: 14px; transition: all 0.25s ease;
+}
+.asb-ticker-arrow:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+.asb-ticker-track { flex: 1 1 auto; display: flex; gap: 10px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: thin; }
+.asb-ticker-track::-webkit-scrollbar { height: 5px; }
+.asb-ticker-track::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); }
+.asb-tick-card {
+  flex: 0 0 168px; border: 1px solid rgba(201,168,76,0.25); padding: 12px 12px 10px; cursor: pointer; transition: border-color 0.25s ease;
+}
+.asb-tick-card:hover { border-color: var(--gold); }
+.asb-tick-card.asb-tick-fav { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+.asb-tick-league-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.asb-tick-league { font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.1em; color: var(--gold); }
+.asb-tick-status { font-family: 'Cormorant Garamond', serif; font-size: 10px; color: rgba(242,232,213,0.5); }
+.asb-tick-fav-btn { background: none; border: none; color: var(--gold); font-size: 13px; cursor: pointer; padding: 0; line-height: 1; }
+.asb-tick-team { display: flex; justify-content: space-between; font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--cream); padding: 2px 0; }
+.asb-tick-note { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 10px; color: rgba(242,232,213,0.45); margin-top: 6px; }
+
+.asb-mid-row { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.asb-rotation { flex: 2 1 400px; border: 1px solid rgba(201,168,76,0.2); padding: 12px; }
+.asb-controls { flex: 1 1 260px; border: 1px solid rgba(201,168,76,0.2); padding: 12px; }
+.asb-rotation-icons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.asb-rotation-icon {
+  display: flex; flex-direction: column; align-items: center; gap: 5px; background: none;
+  border: 1px solid rgba(201,168,76,0.2); padding: 8px 10px; cursor: pointer; width: 62px; transition: all 0.25s ease;
+}
+.asb-rotation-icon:hover, .asb-rotation-icon.asb-rotation-on { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+.asb-rotation-badge {
+  width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.4); display: flex;
+  align-items: center; justify-content: center; font-family: 'Cormorant SC', serif; font-size: 8px; color: var(--gold);
+}
+.asb-rotation-label { font-family: 'Cormorant SC', serif; font-size: 8px; letter-spacing: 0.06em; color: rgba(242,232,213,0.6); }
+.asb-controls-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.asb-control-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 5px; background: none;
+  border: 1px solid rgba(201,168,76,0.25); color: var(--cream); font-family: 'Cormorant SC', serif;
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 12px; cursor: pointer; transition: all 0.25s ease;
+}
+.asb-control-btn:hover, .asb-control-btn.asb-control-on { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+.asb-control-icon { font-size: 13px; }
+
+.asb-bottom-row { display: flex; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.asb-panel-card { flex: 1 1 230px; border: 1px solid rgba(201,168,76,0.2); padding: 14px 16px; }
+.asb-panel-title {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.8; margin: 0 0 10px; text-align: center;
+}
+.asb-panel-card .cw-modal-fact { font-size: 12px; padding: 5px 0; }
+.asb-view-btn {
+  display: block; width: 100%; margin-top: 10px; background: none; border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold); font-family: 'Cormorant SC', serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px; cursor: pointer; transition: all 0.25s ease;
+}
+.asb-view-btn:hover { background: rgba(201,168,76,0.1); }
+.asb-link-row { display: block; font-family: 'Cormorant Garamond', serif; font-size: 12px; color: rgba(242,232,213,0.75); padding: 4px 0; text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.08); }
+.asb-link-row:hover { color: var(--gold); }
+.asb-disclaimer { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 10px; color: rgba(242,232,213,0.4); margin-top: 8px; }
+
+.asb-footer {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  border-top: 1px solid rgba(201,168,76,0.15); padding-top: 12px;
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(242,232,213,0.5);
+}
+.asb-footer-right { display: flex; align-items: center; gap: 6px; }
+
 </style>
 </head>
 <body>
@@ -3492,6 +3617,77 @@ body::before {
         <span class="ob-return-label">Return to Constellation Mezzanine</span>
         <span class="ob-return-arrow">&rarr;</span>
       </button>
+    </div>
+  </div>
+
+  <div id="alnitak-sportsbook">
+    <div class="asb-panel">
+      <button class="asb-close" onclick="orionCloseSportsbook()" aria-label="Close">&times;</button>
+      <div class="asb-header">
+        <div class="asb-header-left">
+          <p class="asb-gamenight"><span class="asb-dot" id="asb-gamenight-dot"></span><span id="asb-gamenight-text">GAME NIGHT MODE</span></p>
+          <p class="asb-tz">All Times Eastern</p>
+        </div>
+        <div class="asb-header-center">
+          <div class="asb-crest"><span class="asb-crest-crown">&#9670;</span><span class="asb-crest-mono">OE</span></div>
+          <h1 class="asb-title">Alnitak Sportsbook</h1>
+          <p class="asb-tagline">Live Scores &middot; Live Stats &middot; Live Odds</p>
+        </div>
+        <div class="asb-header-right">
+          <p class="asb-date" id="asb-date">&mdash;</p>
+          <p class="asb-time" id="asb-time">&mdash;</p>
+        </div>
+      </div>
+
+      <div class="asb-ticker-section">
+        <p class="asb-section-label">Live Scores &amp; Stats Ticker</p>
+        <div class="asb-ticker-row">
+          <button class="asb-ticker-arrow" onclick="orionScrollTicker(-1)" aria-label="Scroll left">&larr;</button>
+          <div class="asb-ticker-track" id="asb-ticker-track"></div>
+          <button class="asb-ticker-arrow" onclick="orionScrollTicker(1)" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+
+      <div class="asb-mid-row">
+        <div class="asb-rotation">
+          <p class="asb-section-label">League Rotation</p>
+          <div class="asb-rotation-icons" id="asb-rotation-icons"></div>
+        </div>
+        <div class="asb-controls">
+          <p class="asb-section-label">Ticker Controls</p>
+          <div class="asb-controls-row">
+            <button class="asb-control-btn" id="asb-control-pause" onclick="orionToggleTickerPause()"><span class="asb-control-icon">&#10074;&#10074;</span>Pause</button>
+            <button class="asb-control-btn" id="asb-control-fav" onclick="orionToggleFavoritesView()"><span class="asb-control-icon">&#9733;</span>Favorites</button>
+            <button class="asb-control-btn" onclick="orionToast('The board is for atmosphere only — ask your host about tonight’s Game Night specials.')"><span class="asb-control-icon">&#8599;</span>Odds View</button>
+            <button class="asb-control-btn" onclick="orionToggleFullscreen()"><span class="asb-control-icon">&#10021;</span>Full Screen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="asb-bottom-row">
+        <div class="asb-panel-card">
+          <p class="asb-panel-title">The Alnitak Ledger</p>
+          <div id="asb-ledger-rows"></div>
+          <button class="asb-view-btn" onclick="orionShowLedger()">View Full Ledger</button>
+        </div>
+        <div class="asb-panel-card">
+          <p class="asb-panel-title">Top Performers</p>
+          <div id="asb-performers-rows"></div>
+        </div>
+        <div class="asb-panel-card">
+          <p class="asb-panel-title">Tonight&rsquo;s Line</p>
+          <div id="asb-odds-body"></div>
+        </div>
+        <div class="asb-panel-card">
+          <p class="asb-panel-title">Up Next</p>
+          <div id="asb-upnext-rows"></div>
+        </div>
+      </div>
+
+      <div class="asb-footer">
+        <span>The Alnitak Code &#9670; Play well. Lose gracefully. Remember who won.</span>
+        <span class="asb-footer-right"><span class="asb-dot asb-dot-static"></span>Live data powered by TheSportsDB</span>
+      </div>
     </div>
   </div>
 
@@ -8120,7 +8316,6 @@ function orionShowLedger() {
     '</div>');
 }
 
-const ORION_EVENT_LEAGUES = ['NFL', 'NBA', 'MLB', 'NHL', 'NCAA', 'WWE', 'UFC', 'Boxing', 'Soccer'];
 // TheSportsDB's free public test key ("3") — for schedule pulls only,
 // on the leagues it tracks with a clean season fixture list. The
 // other leagues/promotions here (NCAA covers many sports, WWE/UFC/
@@ -8131,67 +8326,228 @@ const ORION_EVENT_LEAGUES = ['NFL', 'NBA', 'MLB', 'NHL', 'NCAA', 'WWE', 'UFC', '
 // changes constantly, so rather than guess, every league always gets
 // a real link to its own official schedule/broadcast page.
 const ORION_LEAGUE_INFO = {
-  NFL:    { sportsdbId: 4391, officialUrl: 'https://www.nfl.com/schedules/',        officialLabel: 'NFL.com — Schedule & Broadcast Info' },
-  NBA:    { sportsdbId: 4387, officialUrl: 'https://www.nba.com/schedule',          officialLabel: 'NBA.com — Schedule & Broadcast Info' },
-  MLB:    { sportsdbId: 4424, officialUrl: 'https://www.mlb.com/schedule',          officialLabel: 'MLB.com — Schedule & Broadcast Info' },
-  NHL:    { sportsdbId: 4380, officialUrl: 'https://www.nhl.com/schedule',          officialLabel: 'NHL.com — Schedule & Broadcast Info' },
+  NFL:    { sportsdbId: 4391, officialUrl: 'https://www.nfl.com/schedules/',        officialLabel: 'NFL.com — Schedule & Broadcast Info', statsUrl: 'https://www.nfl.com/stats/player-stats/' },
+  NBA:    { sportsdbId: 4387, officialUrl: 'https://www.nba.com/schedule',          officialLabel: 'NBA.com — Schedule & Broadcast Info', statsUrl: 'https://www.nba.com/stats' },
+  MLB:    { sportsdbId: 4424, officialUrl: 'https://www.mlb.com/schedule',          officialLabel: 'MLB.com — Schedule & Broadcast Info', statsUrl: 'https://www.mlb.com/stats' },
+  NHL:    { sportsdbId: 4380, officialUrl: 'https://www.nhl.com/schedule',          officialLabel: 'NHL.com — Schedule & Broadcast Info', statsUrl: 'https://www.nhl.com/stats' },
   NCAA:   { sportsdbId: null, officialUrl: 'https://www.ncaa.com/scoreboard',       officialLabel: 'NCAA.com — Scoreboard' },
   WWE:    { sportsdbId: null, officialUrl: 'https://www.wwe.com/shows',             officialLabel: 'WWE.com — Shows' },
   UFC:    { sportsdbId: null, officialUrl: 'https://www.ufc.com/events',            officialLabel: 'UFC.com — Events' },
   Boxing: { sportsdbId: null, officialUrl: 'https://www.espn.com/boxing/schedule',  officialLabel: 'ESPN — Boxing Schedule' },
   Soccer: { sportsdbId: null, officialUrl: 'https://www.espn.com/soccer/fixtures',  officialLabel: 'ESPN — Soccer Fixtures' },
 };
-function orionShowLiveDisplay() {
-  const current = localStorage.getItem('orionLiveEvent_alnitak') || 'NFL';
-  orionShowInfo('Alnitak Live — PNP Event Display',
-    '<p class="cw-modal-body-text">Four screens, always tuned to what the room wants — Game Night Mode keeps the rotation live across the major leagues.</p>' +
-    '<div class="cw-modal-facts" style="margin-top:16px;"><div class="cw-modal-fact"><span>Now Showing</span><span>' + current + '</span></div></div>' +
-    '<p class="cw-modal-label" style="margin-top:20px;">Tonight’s Schedule</p>' +
-    '<div id="ob-live-schedule"><p class="cw-modal-body-text" style="opacity:0.5;">Loading…</p></div>' +
-    '<a id="ob-live-official" class="cw-btn" style="margin-top:14px;display:inline-block;text-decoration:none;" target="_blank" rel="noopener"></a>' +
-    '<p class="cw-modal-label" style="margin-top:24px;">Choose the Rotation</p><div>' +
-    ORION_EVENT_LEAGUES.map(l => '<button class="orion-add-btn" style="margin:3px;" onclick="orionSetLiveEvent(\'' + l + '\')">' + l + '</button>').join('') +
-    '</div>');
-  orionRenderLiveSchedule(current);
+// ── Alnitak Sportsbook — the full dashboard behind the PNP Event
+// Display hotspot. Real data where it genuinely exists (upcoming
+// fixtures per league via TheSportsDB, the real Ledger, real
+// official links); everything the free data landscape can't honestly
+// support (in-play live scores/clocks, individual stat leaders) is
+// either a real official-site link or an honest "not available"
+// state — never a fabricated number. "Tonight's Line" is explicitly
+// atmosphere, not a real wager — Alnitak places no real bets. ──
+const ORION_TICKER_LEAGUES = ['NFL', 'NBA', 'MLB', 'NHL', 'NCAA', 'UFC', 'WWE', 'Soccer'];
+const ORION_ROTATION_LEAGUES = ['NFL', 'NBA', 'MLB', 'NHL', 'NCAA', 'UFC', 'WWE', 'Boxing', 'Soccer'];
+let orionFixtureCache = {};
+let orionFavorites = (() => { try { return JSON.parse(localStorage.getItem('orionSportsbookFavorites')) || ['NFL', 'NBA']; } catch (e) { return ['NFL', 'NBA']; } })();
+let orionFavoritesViewOn = false;
+let orionTickerInterval = null;
+let orionTickerPaused = false;
+let orionSportsbookClockInterval = null;
+
+function orionOpenSportsbook() {
+  document.getElementById('alnitak-sportsbook').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  orionBuildRotationIcons();
+  orionUpdateSportsbookHeader();
+  clearInterval(orionSportsbookClockInterval);
+  orionSportsbookClockInterval = setInterval(orionUpdateSportsbookHeader, 30000);
+  orionRenderTicker();
+  orionRenderLedgerPanel();
+  orionRenderPerformersPanel();
+  orionRenderOddsPanel();
+  orionRenderUpNextPanel();
+  orionTickerPaused = false;
+  orionTickerAutoScrollStart();
 }
-function orionSetLiveEvent(league) {
-  localStorage.setItem('orionLiveEvent_alnitak', league);
-  orionToast('Alnitak Live now featuring ' + league + '.');
-  orionShowLiveDisplay();
+function orionCloseSportsbook() {
+  const el = document.getElementById('alnitak-sportsbook');
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+  orionTickerAutoScrollStop();
+  clearInterval(orionSportsbookClockInterval);
+  if (document.fullscreenElement) (document.exitFullscreen || function () {}).call(document);
 }
-function orionRenderLiveSchedule(league) {
+function orionUpdateSportsbookHeader() {
+  const controls = orionGetControls('alnitak');
+  const dot = document.getElementById('asb-gamenight-dot');
+  const text = document.getElementById('asb-gamenight-text');
+  if (dot) dot.classList.toggle('asb-dot-off', !controls.gameNight);
+  if (text) text.textContent = 'Game Night Mode: ' + (controls.gameNight ? 'On' : 'Off');
+  const now = new Date();
+  const dateEl = document.getElementById('asb-date');
+  const timeEl = document.getElementById('asb-time');
+  if (dateEl) dateEl.textContent = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  if (timeEl) timeEl.textContent = now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short' });
+}
+
+function orionFetchLeagueFixture(league) {
   const info = ORION_LEAGUE_INFO[league];
-  const link = document.getElementById('ob-live-official');
-  if (link) { link.href = info.officialUrl; link.textContent = info.officialLabel; }
-  const listEl = document.getElementById('ob-live-schedule');
-  if (!listEl) return;
-  if (!info.sportsdbId) {
-    listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">A single live schedule doesn’t apply to ' + league +
-      ' the way it does a league season — see the official page below for tonight’s card and where it’s airing.</p>';
-    return;
-  }
-  fetch('https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=' + info.sportsdbId)
+  if (!info.sportsdbId) return Promise.resolve([]);
+  if (orionFixtureCache[league]) return Promise.resolve(orionFixtureCache[league]);
+  return fetch('https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=' + info.sportsdbId)
     .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
     .then(data => {
-      if (league !== (localStorage.getItem('orionLiveEvent_alnitak') || 'NFL')) return; // guest already switched leagues
-      const events = (data && data.events ? data.events : []).slice(0, 5);
-      if (!events.length) {
-        listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">No upcoming ' + league + ' games listed right now — check the official schedule below.</p>';
-        return;
-      }
-      listEl.innerHTML = events.map(ev => {
-        const raw = ev.strTimestamp ? ev.strTimestamp.replace(' ', 'T') + 'Z' : null;
-        const date = raw ? new Date(raw) : null;
-        const when = date && !isNaN(date) ?
-          date.toLocaleString(undefined, { weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }) :
-          (ev.dateEvent || 'Date TBD');
-        const matchup = ev.strEvent || ((ev.strHomeTeam || '') + ' vs ' + (ev.strAwayTeam || ''));
-        return '<div class="cw-modal-fact"><span>' + matchup + '</span><span>' + when + '</span></div>';
-      }).join('');
+      const events = (data && data.events) ? data.events : [];
+      orionFixtureCache[league] = events;
+      return events;
     })
-    .catch(() => {
-      if (league !== (localStorage.getItem('orionLiveEvent_alnitak') || 'NFL')) return;
-      listEl.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.6;">Live schedule is unavailable right now — see the official schedule below.</p>';
+    .catch(() => { orionFixtureCache[league] = []; return []; });
+}
+function orionFormatFixtureTime(ev) {
+  const raw = ev.strTimestamp ? ev.strTimestamp.replace(' ', 'T') + 'Z' : null;
+  const date = raw ? new Date(raw) : null;
+  return date && !isNaN(date) ?
+    date.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short' }) :
+    (ev.dateEvent || 'Date TBD');
+}
+
+function orionBuildRotationIcons() {
+  const el = document.getElementById('asb-rotation-icons');
+  if (!el || el.childElementCount) return;
+  el.innerHTML = ORION_ROTATION_LEAGUES.map(l =>
+    '<button class="asb-rotation-icon" onclick="orionJumpTicker(\'' + l + '\')"><span class="asb-rotation-badge">' + l.slice(0, 3) + '</span><span class="asb-rotation-label">' + l + '</span></button>'
+  ).join('');
+}
+function orionJumpTicker(league) {
+  const card = document.getElementById('asb-tick-' + league);
+  if (card) { card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); return; }
+  if (orionFavoritesViewOn) {
+    orionFavoritesViewOn = false;
+    const btn = document.getElementById('asb-control-fav');
+    if (btn) btn.classList.remove('asb-control-on');
+    orionRenderTicker();
+    setTimeout(() => orionJumpTicker(league), 300);
+  }
+}
+function orionJumpToOfficial(league) {
+  window.open(ORION_LEAGUE_INFO[league].officialUrl, '_blank', 'noopener');
+}
+function orionToggleFavorite(league) {
+  const idx = orionFavorites.indexOf(league);
+  if (idx === -1) orionFavorites.push(league); else orionFavorites.splice(idx, 1);
+  localStorage.setItem('orionSportsbookFavorites', JSON.stringify(orionFavorites));
+  orionRenderTicker();
+}
+function orionToggleFavoritesView() {
+  orionFavoritesViewOn = !orionFavoritesViewOn;
+  const btn = document.getElementById('asb-control-fav');
+  if (btn) btn.classList.toggle('asb-control-on', orionFavoritesViewOn);
+  orionRenderTicker();
+}
+function orionToggleFullscreen() {
+  const el = document.getElementById('alnitak-sportsbook');
+  if (!document.fullscreenElement) {
+    (el.requestFullscreen || el.webkitRequestFullscreen || function () {}).call(el);
+  } else {
+    (document.exitFullscreen || document.webkitExitFullscreen || function () {}).call(document);
+  }
+}
+function orionScrollTicker(dir) {
+  const track = document.getElementById('asb-ticker-track');
+  if (track) track.scrollBy({ left: dir * 200, behavior: 'smooth' });
+}
+function orionTickerAutoTick() {
+  const track = document.getElementById('asb-ticker-track');
+  if (!track) return;
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  if (maxScroll <= 2) return;
+  if (track.scrollLeft >= maxScroll - 2) track.scrollTo({ left: 0, behavior: 'smooth' });
+  else track.scrollBy({ left: 178, behavior: 'smooth' });
+}
+function orionTickerAutoScrollStart() {
+  clearInterval(orionTickerInterval);
+  orionTickerInterval = setInterval(orionTickerAutoTick, 4000);
+}
+function orionTickerAutoScrollStop() {
+  clearInterval(orionTickerInterval);
+  orionTickerInterval = null;
+}
+function orionToggleTickerPause() {
+  orionTickerPaused = !orionTickerPaused;
+  const btn = document.getElementById('asb-control-pause');
+  if (orionTickerPaused) {
+    orionTickerAutoScrollStop();
+    if (btn) { btn.classList.add('asb-control-on'); btn.innerHTML = '<span class="asb-control-icon">&#9654;</span>Resume'; }
+  } else {
+    orionTickerAutoScrollStart();
+    if (btn) { btn.classList.remove('asb-control-on'); btn.innerHTML = '<span class="asb-control-icon">&#10074;&#10074;</span>Pause'; }
+  }
+}
+
+function orionTickerCardHTML(league) {
+  const isFav = orionFavorites.indexOf(league) !== -1;
+  return '<div class="asb-tick-card' + (isFav ? ' asb-tick-fav' : '') + '" id="asb-tick-' + league + '" onclick="orionJumpToOfficial(\'' + league + '\')">' +
+    '<div class="asb-tick-league-row"><span class="asb-tick-league">' + league + '</span>' +
+    '<button class="asb-tick-fav-btn" onclick="event.stopPropagation();orionToggleFavorite(\'' + league + '\')" title="Favorite">' + (isFav ? '★' : '☆') + '</button></div>' +
+    '<div class="asb-tick-body"><div class="asb-tick-note">Loading…</div></div></div>';
+}
+function orionFillTickerCard(league, events) {
+  const card = document.getElementById('asb-tick-' + league);
+  if (!card) return;
+  const body = card.querySelector('.asb-tick-body');
+  const info = ORION_LEAGUE_INFO[league];
+  if (!info.sportsdbId) {
+    body.innerHTML = '<div class="asb-tick-status">Tonight’s Card</div><div class="asb-tick-note">See the official site for tonight’s lineup &amp; broadcast.</div>';
+    return;
+  }
+  if (!events || !events.length) {
+    body.innerHTML = '<div class="asb-tick-note">No upcoming games listed — see official site.</div>';
+    return;
+  }
+  const ev = events[0];
+  body.innerHTML = '<div class="asb-tick-team"><span>' + (ev.strHomeTeam || '—') + '</span></div>' +
+    '<div class="asb-tick-team"><span>' + (ev.strAwayTeam || '—') + '</span></div>' +
+    '<div class="asb-tick-status">' + orionFormatFixtureTime(ev) + '</div>';
+}
+function orionRenderTicker() {
+  const track = document.getElementById('asb-ticker-track');
+  if (!track) return;
+  const leagues = orionFavoritesViewOn ? ORION_TICKER_LEAGUES.filter(l => orionFavorites.indexOf(l) !== -1) : ORION_TICKER_LEAGUES;
+  if (!leagues.length) {
+    track.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.5;padding:20px;">No favorite leagues yet — tap the star on a card to add one.</p>';
+    return;
+  }
+  track.innerHTML = leagues.map(l => orionTickerCardHTML(l)).join('');
+  leagues.forEach(l => orionFetchLeagueFixture(l).then(events => orionFillTickerCard(l, events)));
+}
+
+function orionRenderLedgerPanel() {
+  const el = document.getElementById('asb-ledger-rows');
+  if (!el) return;
+  el.innerHTML = ORION_LEDGER.map(l => '<div class="cw-modal-fact"><span>' + l.title + '</span><span>' + l.wins + ' Wins</span></div>').join('');
+}
+function orionRenderPerformersPanel() {
+  const el = document.getElementById('asb-performers-rows');
+  if (!el) return;
+  el.innerHTML = ['NFL', 'NBA', 'MLB', 'NHL'].map(l =>
+    '<a class="asb-link-row" href="' + ORION_LEAGUE_INFO[l].statsUrl + '" target="_blank" rel="noopener">' + l + ' — Official Stats &amp; Leaders &rarr;</a>'
+  ).join('') + '<p class="asb-disclaimer">Nightly leaderboards change too often to post here — see each league’s own page.</p>';
+}
+function orionRenderOddsPanel() {
+  const el = document.getElementById('asb-odds-body');
+  if (!el) return;
+  el.innerHTML = '<p class="cw-modal-body-text" style="font-size:12px;">The board here is atmosphere, not a wager — Alnitak doesn’t take real bets.</p>' +
+    '<button class="asb-view-btn" onclick="orionToast(\'Ask your host about tonight’s Game Night specials.\')">Ask Your Host</button>';
+}
+function orionRenderUpNextPanel() {
+  const el = document.getElementById('asb-upnext-rows');
+  if (!el) return;
+  el.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.5;font-size:12px;">Loading…</p>';
+  Promise.all(['NFL', 'NBA', 'MLB', 'NHL'].map(l => orionFetchLeagueFixture(l).then(events => ({ league: l, ev: events && events[0] }))))
+    .then(results => {
+      const rows = results.filter(r => r.ev).map(r =>
+        '<div class="cw-modal-fact"><span>' + r.league + ' · ' + (r.ev.strHomeTeam || '') + ' vs ' + (r.ev.strAwayTeam || '') + '</span></div>'
+      );
+      el.innerHTML = rows.length ? rows.join('') : '<p class="cw-modal-body-text" style="opacity:0.5;font-size:12px;">No upcoming games listed right now.</p>';
     });
 }
 
@@ -8323,7 +8679,7 @@ function atAction(spot) {
   if (spot.action === 'controls') { orionShowLoungeControls('alnitak'); return; }
   if (spot.action === 'social') { orionShowSocialConstellation('alnitak'); return; }
   if (spot.action === 'game-request') { orionShowGameRequest(); return; }
-  if (spot.action === 'live-display') { orionShowLiveDisplay(); return; }
+  if (spot.action === 'live-display') { orionOpenSportsbook(); return; }
   if (spot.action === 'ledger') { orionShowLedger(); return; }
   if (spot.action.indexOf('challenge-') === 0) { orionShowChallenge(spot.action.slice(10)); return; }
   if (spot.action.indexOf('game-req-') === 0) { orionRequestGame(spot.action.slice(9)); return; }
