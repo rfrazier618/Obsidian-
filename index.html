@@ -2146,6 +2146,7 @@ body::before {
   transition: border-color 0.3s ease, background 0.3s ease; background: none; text-align: left; width: 100%;
 }
 .cw-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.03); }
+.cw-card.on { border-color: var(--gold); background: rgba(201,168,76,0.08); }
 .cw-card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); margin-bottom: 3px; }
 .cw-card-meta { font-size: 12px; opacity: 0.5; margin-bottom: 6px; }
 .cw-card-tag { font-size: 11px; opacity: 0.4; letter-spacing: 0.05em; }
@@ -2240,13 +2241,24 @@ body::before {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-#dw-sheet, #stage-sheet {
+#dw-sheet, #stage-sheet, #pe-sheet {
   display: none; position: fixed; inset: 0; z-index: 700;
   background: #0a0603; overflow-y: auto; flex-direction: column;
 }
-#dw-sheet.open, #stage-sheet.open { display: flex; }
+#dw-sheet.open, #stage-sheet.open, #pe-sheet.open { display: flex; }
 .dw-sheet-body { max-width: 1150px; margin: 0 auto; padding: 90px 32px 100px; width: 100%; }
 .dw-sheet-page[hidden] { display: none; }
+
+.pe-steps { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 40px; }
+.pe-step {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(242,232,213,0.35); padding: 8px 14px; border: 1px solid rgba(201,168,76,0.14);
+}
+.pe-step.on { color: var(--gold); border-color: var(--gold); background: rgba(201,168,76,0.1); }
+.pe-step.done { color: rgba(242,232,213,0.6); border-color: rgba(201,168,76,0.3); }
+.pe-nav-row { display: flex; justify-content: space-between; margin-top: 34px; gap: 12px; }
+.pe-space-card { border: 1px solid rgba(201,168,76,0.2); padding: 16px 18px; margin: 4px 0 20px; }
+.pe-space-card-modes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 
 /* ══ MAIN PERFORMANCE STAGE — real render, .gh-hero pattern.
    Detail-sheet zone classes below (.stage-live-frame etc.) still
@@ -3671,6 +3683,76 @@ body::before {
     </div>
   </div>
   <div class="vl-toast" id="stage-toast"></div>
+
+  <!-- ══ PRIVATE EVENTS — "Build Your Night at Gemini" configurator.
+       Not a new room, and not a booking engine: this exposes the
+       existing architecture (Gemini Core mode, Main Performance
+       Stage mode, every lounge) as a guest-configurable inquiry.
+       Submission is always a request routed to the events desk —
+       never a confirmed reservation, a fabricated price, or a
+       pretend availability check. ══ -->
+  <div id="pe-sheet">
+    <button class="bar-close" onclick="peClose()">← Return to Gemini</button>
+    <div class="dw-sheet-body">
+      <p class="cw-section-head">Private Events</p>
+      <p class="cw-section-sub">Build Your Night at Gemini — configure the occasion, then send it to the events desk.</p>
+      <div class="pe-steps" id="pe-steps"></div>
+
+      <section class="dw-sheet-page" id="pe-page-0">
+        <p class="cw-modal-label">Step 1 — Choose Your Occasion</p>
+        <div class="cw-grid" id="pe-occasion-grid"></div>
+      </section>
+
+      <section class="dw-sheet-page" id="pe-page-1" hidden>
+        <p class="cw-modal-label">Step 2 — Build Your Experience</p>
+        <p class="cw-section-sub">Select every space this night should include.</p>
+        <div class="cw-tabs" id="pe-spaces-tabs"></div>
+        <div id="pe-space-options"></div>
+        <div class="pe-nav-row">
+          <button class="cw-btn" onclick="peGoStep(0)">← Back</button>
+          <button class="cw-btn" onclick="peGoStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <section class="dw-sheet-page" id="pe-page-2" hidden>
+        <p class="cw-modal-label">Step 3 — Set the Details</p>
+        <div class="cw-form-field"><label for="pe-guests">Guest Count</label><input id="pe-guests" type="number" min="1" placeholder="e.g. 40"></div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <div class="cw-form-field" style="flex:1; min-width:180px;"><label for="pe-date">Preferred Date</label><input id="pe-date" type="date"></div>
+          <div class="cw-form-field" style="flex:1; min-width:180px;"><label for="pe-time">Preferred Time</label><input id="pe-time" type="time"></div>
+        </div>
+        <p class="cw-modal-label">Hospitality &amp; Service</p>
+        <div class="cw-tabs" id="pe-services-tabs"></div>
+        <div class="cw-form-field"><label for="pe-name">Name</label><input id="pe-name" type="text" placeholder="Your name"></div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <div class="cw-form-field" style="flex:1; min-width:180px;"><label for="pe-email">Email</label><input id="pe-email" type="email" placeholder="you@example.com"></div>
+          <div class="cw-form-field" style="flex:1; min-width:180px;"><label for="pe-phone">Phone</label><input id="pe-phone" type="tel" placeholder="Optional"></div>
+        </div>
+        <div class="cw-form-field"><label for="pe-notes">Special Requests</label><textarea id="pe-notes" placeholder="Anything else the desk should know"></textarea></div>
+        <div class="pe-nav-row">
+          <button class="cw-btn" onclick="peGoStep(1)">← Back</button>
+          <button class="cw-btn" onclick="peGoStep(3)">Review →</button>
+        </div>
+      </section>
+
+      <section class="dw-sheet-page" id="pe-page-3" hidden>
+        <p class="cw-modal-label">Step 4 — Review Your Night</p>
+        <div class="cw-modal-facts" id="pe-review-facts"></div>
+        <p class="cw-section-sub" style="margin-top:10px;">This sends an inquiry to the Gemini events desk — not a confirmed reservation. Someone will follow up directly with availability, pricing, and next steps.</p>
+        <div class="pe-nav-row">
+          <button class="cw-btn" onclick="peGoStep(2)">← Back</button>
+          <button class="cw-btn" onclick="peSubmit()">Submit to Gemini</button>
+        </div>
+      </section>
+
+      <section class="dw-sheet-page" id="pe-page-4" hidden>
+        <p class="cw-modal-label">Sent to the Gemini Events Desk</p>
+        <p class="cw-modal-body-text" id="pe-confirm-text"></p>
+        <button class="cw-btn" style="margin-top:20px;" onclick="peClose()">Return to Gemini</button>
+      </section>
+    </div>
+  </div>
+  <div class="vl-toast" id="pe-toast"></div>
 
   <!-- ══ THE ORION LOUNGES — III-601 VIP Mezzanine ══
        Placeholder build (no render yet): a threshold screen plus
@@ -5642,7 +5724,7 @@ const GEMINI_HERO_SPOTS = [
   { key:'vip2',     label:'VIP Mezzanine',
     ix:0.6630, iy:0.900, w:0.109, h:0.11, action:'orion' },
   { key:'private',  label:'Private Events',
-    ix:0.7720, iy:0.900, w:0.109, h:0.11, action:'lock', msg:'Private events are arranged through the concierge.' },
+    ix:0.7720, iy:0.900, w:0.109, h:0.11, action:'private' },
   { key:'estate',   label:'Return to Estate',
     ix:0.8800, iy:0.900, w:0.109, h:0.11, action:'hall' },
 ];
@@ -5683,7 +5765,7 @@ const GEMINI_CORE_SPOTS = [
   { key:'r-vip',    label:'VIP Mezzanine',
     ix:0.775, iy:0.910, w:0.105, h:0.090, action:'orion' },
   { key:'r-private',label:'Private Events',
-    ix:0.868, iy:0.910, w:0.090, h:0.090, action:'lock', msg:'Private events are arranged through the concierge.' },
+    ix:0.868, iy:0.910, w:0.090, h:0.090, action:'private' },
   { key:'r-return', label:'Return to Gemini',
     ix:0.955, iy:0.910, w:0.090, h:0.090, action:'hero' },
 ];
@@ -5697,6 +5779,7 @@ function gcAction(spot) {
   if (spot.action === 'wine') { dwShowLounge(); return; }
   if (spot.action === 'orion') { orionShowLounge('doors'); return; }
   if (spot.action === 'stage') { stageShowLounge(); return; }
+  if (spot.action === 'private') { peOpen(); return; }
   if (spot.action === 'scroll') { ghShowHero(); setTimeout(() => ghAction({ action:'scroll' }), 650); return; }
   if (spot.action === 'lock') { ghShowHero(); setTimeout(() => ghAction(spot), 650); return; }
 }
@@ -9446,7 +9529,8 @@ function stageShowKind(kind, btnEl) {
   const grid = document.getElementById('stage-calendar-grid');
   grid.innerHTML = '';
   if (kind === 'private-event') {
-    grid.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.7;">Private bookings are arranged individually — concerts, celebrations, corporate events, and private showcases. Ask the desk, or request service, to start a conversation.</p>';
+    grid.innerHTML = '<p class="cw-modal-body-text" style="opacity:0.7;">Private bookings are arranged individually — concerts, celebrations, corporate events, and private showcases.</p>' +
+      '<button class="cw-btn" style="margin-top:16px;" onclick="stageCloseSheet(); peOpen();">Build Your Night at Gemini →</button>';
     return;
   }
   GEMINI_STAGE_REPERTOIRE.filter(r => r.kind === kind).forEach(item => grid.appendChild(stageRepCard(item)));
@@ -9685,11 +9769,208 @@ function ghShowCore() {
   layoutGeminiCore();
 }
 
+// ══ PRIVATE EVENTS — "Build Your Night at Gemini" configurator ══
+// Not a new physical room and not a booking engine: this exposes the
+// existing architecture (Gemini Core mode, Main Performance Stage
+// mode, every lounge) as a guest-configurable inquiry. Submission is
+// always a request routed to the events desk — never a confirmed
+// reservation, a fabricated price, or a pretend availability check.
+const PE_OCCASIONS = [
+  { id: 'dinner',    label: 'Private Dinner',          note: 'An intimate seated evening, just your party.' },
+  { id: 'cocktail',  label: 'Cocktail Reception',       note: 'A standing reception across Gemini Core and the lounges.' },
+  { id: 'listening', label: 'Listening Party',          note: 'A private session built around the music.' },
+  { id: 'release',   label: 'Album Release',            note: 'A performance night built around new work.' },
+  { id: 'birthday',  label: 'Birthday / Celebration',   note: 'A night built around someone.' },
+  { id: 'corporate', label: 'Corporate Reception',      note: 'A private evening for your company or clients.' },
+  { id: 'liveperf',  label: 'Live Performance',         note: 'A full Performance Mode night on the Main Stage.' },
+  { id: 'concert',   label: 'Private Concert',          note: 'Gemini transforms end to end for a single show.' },
+];
+const PE_SPACES = [
+  { key: 'core',    label: 'Gemini Core — Center Bar',       modes: ['Standard Bar Service', 'Full Private Buyout'] },
+  { key: 'stage',   label: 'Main Performance Stage',         modes: ['Performance', 'DJ Night', 'Listening Session'] },
+  { key: 'piano',   label: 'Piano Lounge' },
+  { key: 'vinyl',   label: 'Vinyl Lounge' },
+  { key: 'cigar',   label: 'Cigar & Whiskey Lounge' },
+  { key: 'wine',    label: 'DEPMG Wine Bar' },
+  { key: 'mintaka', label: 'Mintaka — West VIP Lounge' },
+  { key: 'alnilam', label: 'Alnilam — Center VIP Lounge' },
+  { key: 'alnitak', label: 'Alnitak — East VIP Lounge' },
+];
+const PE_SERVICES = [
+  'Catering', 'Custom Cocktail Menu', 'Cigar & Whiskey Pairing', 'Wine Pairing',
+  'Live Entertainment Booking', 'Photography / Videography', 'Valet',
+];
+const PE_STEP_LABELS = ['Choose Your Occasion', 'Build Your Experience', 'Set the Details', 'Review Your Night'];
+const PE_STATE = {
+  occasion: null, spaces: new Set(), modes: {}, services: new Set(),
+  guests: '', date: '', time: '', name: '', email: '', phone: '', notes: '',
+};
+let peStep = 0;
+let peSubmitted = false;
+
+function peOpen() {
+  if (peSubmitted) { peReset(); peSubmitted = false; }
+  document.getElementById('pe-sheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  peBuildOccasions();
+  peBuildSpaces();
+  peBuildServices();
+  peGoStep(0);
+}
+function peClose() {
+  document.getElementById('pe-sheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+let peToastTimer;
+function peToast(msg) {
+  const t = document.getElementById('pe-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(peToastTimer);
+  peToastTimer = setTimeout(() => t.classList.remove('show'), 3400);
+}
+function peGoStep(n) {
+  peStep = n;
+  document.querySelectorAll('#pe-sheet .dw-sheet-page').forEach(el => el.hidden = true);
+  document.getElementById('pe-page-' + n).hidden = false;
+  peRenderSteps();
+  document.getElementById('pe-sheet').scrollTop = 0;
+  if (n === 3) peRenderReview();
+}
+function peRenderSteps() {
+  const wrap = document.getElementById('pe-steps');
+  wrap.innerHTML = PE_STEP_LABELS.map((label, i) =>
+    '<span class="pe-step' + (i === peStep ? ' on' : i < peStep ? ' done' : '') + '">' + (i + 1) + '. ' + label + '</span>'
+  ).join('');
+}
+function peBuildOccasions() {
+  const grid = document.getElementById('pe-occasion-grid');
+  if (grid.childElementCount) return;
+  PE_OCCASIONS.forEach(o => {
+    const card = document.createElement('button');
+    card.className = 'cw-card';
+    card.id = 'pe-occasion-' + o.id;
+    card.innerHTML = '<div class="cw-card-title">' + o.label + '</div><div class="cw-card-meta">' + o.note + '</div>';
+    card.addEventListener('click', () => peSelectOccasion(o.id));
+    grid.appendChild(card);
+  });
+}
+function peSelectOccasion(id) {
+  PE_STATE.occasion = id;
+  document.querySelectorAll('#pe-occasion-grid .cw-card').forEach(c => c.classList.remove('on'));
+  document.getElementById('pe-occasion-' + id).classList.add('on');
+  setTimeout(() => peGoStep(1), 300);
+}
+function peBuildSpaces() {
+  const tabs = document.getElementById('pe-spaces-tabs');
+  if (tabs.childElementCount) return;
+  PE_SPACES.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'cw-tab';
+    btn.id = 'pe-space-' + s.key;
+    btn.textContent = s.label;
+    btn.addEventListener('click', () => peToggleSpace(s.key));
+    tabs.appendChild(btn);
+  });
+}
+function peToggleSpace(key) {
+  const btn = document.getElementById('pe-space-' + key);
+  if (PE_STATE.spaces.has(key)) { PE_STATE.spaces.delete(key); btn.classList.remove('on'); delete PE_STATE.modes[key]; }
+  else { PE_STATE.spaces.add(key); btn.classList.add('on'); }
+  peRenderSpaceOptions();
+}
+function peRenderSpaceOptions() {
+  const wrap = document.getElementById('pe-space-options');
+  wrap.innerHTML = '';
+  PE_SPACES.filter(s => s.modes && PE_STATE.spaces.has(s.key)).forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'pe-space-card';
+    card.innerHTML = '<p class="cw-modal-label">' + s.label + ' — Configuration</p><div class="pe-space-card-modes" id="pe-modes-' + s.key + '"></div>';
+    wrap.appendChild(card);
+    const modeWrap = card.querySelector('.pe-space-card-modes');
+    s.modes.forEach(mode => {
+      const b = document.createElement('button');
+      b.className = 'cw-tab' + (PE_STATE.modes[s.key] === mode ? ' on' : '');
+      b.textContent = mode;
+      b.addEventListener('click', () => {
+        PE_STATE.modes[s.key] = mode;
+        modeWrap.querySelectorAll('.cw-tab').forEach(t => t.classList.remove('on'));
+        b.classList.add('on');
+      });
+      modeWrap.appendChild(b);
+    });
+  });
+}
+function peBuildServices() {
+  const wrap = document.getElementById('pe-services-tabs');
+  if (wrap.childElementCount) return;
+  PE_SERVICES.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'cw-tab';
+    btn.textContent = name;
+    btn.addEventListener('click', () => {
+      if (PE_STATE.services.has(name)) { PE_STATE.services.delete(name); btn.classList.remove('on'); }
+      else { PE_STATE.services.add(name); btn.classList.add('on'); }
+    });
+    wrap.appendChild(btn);
+  });
+}
+function peRenderReview() {
+  PE_STATE.guests = document.getElementById('pe-guests').value.trim();
+  PE_STATE.date = document.getElementById('pe-date').value;
+  PE_STATE.time = document.getElementById('pe-time').value;
+  PE_STATE.name = document.getElementById('pe-name').value.trim();
+  PE_STATE.email = document.getElementById('pe-email').value.trim();
+  PE_STATE.phone = document.getElementById('pe-phone').value.trim();
+  PE_STATE.notes = document.getElementById('pe-notes').value.trim();
+
+  const occasion = PE_OCCASIONS.find(o => o.id === PE_STATE.occasion);
+  const spaceLines = PE_SPACES.filter(s => PE_STATE.spaces.has(s.key))
+    .map(s => s.label + (PE_STATE.modes[s.key] ? ' — ' + PE_STATE.modes[s.key] : ''));
+  const facts = [
+    ['Occasion', occasion ? occasion.label : 'Not selected'],
+    ['Spaces Requested', spaceLines.length ? spaceLines.join(' · ') : 'None selected'],
+    ['Guest Count', PE_STATE.guests || 'Not specified'],
+    ['Preferred Date', PE_STATE.date || 'Flexible'],
+    ['Preferred Time', PE_STATE.time || 'Flexible'],
+    ['Hospitality & Service', PE_STATE.services.size ? [...PE_STATE.services].join(' · ') : 'None selected'],
+    ['Contact', [PE_STATE.name, PE_STATE.email, PE_STATE.phone].filter(Boolean).join(' · ') || 'Not provided'],
+    ['Special Requests', PE_STATE.notes || 'None'],
+  ];
+  document.getElementById('pe-review-facts').innerHTML = facts.map(f =>
+    '<div class="cw-modal-fact"><span>' + f[0] + '</span><span>' + f[1] + '</span></div>'
+  ).join('');
+}
+function peSubmit() {
+  if (!PE_STATE.occasion) { peToast('Choose an occasion before submitting.'); peGoStep(0); return; }
+  if (!PE_STATE.name || !PE_STATE.email) { peToast('Add a name and email so the desk can reach you.'); peGoStep(2); return; }
+  const occasion = PE_OCCASIONS.find(o => o.id === PE_STATE.occasion);
+  document.getElementById('pe-confirm-text').innerHTML =
+    'Your <strong>' + (occasion ? occasion.label : 'private event') + '</strong> inquiry has been sent to the Gemini events desk' +
+    (PE_STATE.name ? ', ' + PE_STATE.name : '') + '. This is a request, not a confirmed reservation — ' +
+    'someone from the Estate will follow up directly to confirm availability, pricing, and every detail above.';
+  peSubmitted = true;
+  peGoStep(4);
+}
+function peReset() {
+  PE_STATE.occasion = null; PE_STATE.spaces = new Set(); PE_STATE.modes = {}; PE_STATE.services = new Set();
+  PE_STATE.guests = ''; PE_STATE.date = ''; PE_STATE.time = ''; PE_STATE.name = ''; PE_STATE.email = ''; PE_STATE.phone = ''; PE_STATE.notes = '';
+  document.querySelectorAll('#pe-occasion-grid .cw-card').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('#pe-spaces-tabs .cw-tab').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('#pe-services-tabs .cw-tab').forEach(c => c.classList.remove('on'));
+  const opts = document.getElementById('pe-space-options'); if (opts) opts.innerHTML = '';
+  ['pe-guests', 'pe-date', 'pe-time', 'pe-name', 'pe-email', 'pe-phone', 'pe-notes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+}
+
 function ghAction(spot, btn) {
   if (spot.action === 'bar') { openBar(); return; }
   if (spot.action === 'gc') { ghShowCore(); return; }
   if (spot.action === 'piano') { plShowLounge(); return; }
   if (spot.action === 'vinyl') { vlShowLounge(); return; }
+  if (spot.action === 'private') { peOpen(); return; }
   if (spot.action === 'cigar') { cwShowLounge(); return; }
   if (spot.action === 'wine') { dwShowLounge(); return; }
   if (spot.action === 'orion') { orionShowLounge('doors'); return; }
