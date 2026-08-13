@@ -3319,6 +3319,10 @@ body::before {
       <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">Not every meal here is a performance. Some are simply what a family — chosen or otherwise — does at the end of a long day. Formal Dining holds both without contradiction.</p>
     </div>
     <div class="gold-rule fade-up delay-2"></div>
+    <p style="font-family:Cormorant SC,serif; font-size:9px; letter-spacing:0.45em; color:var(--gold); opacity:0.35; margin-bottom:20px;">Tonight&rsquo;s Table</p>
+    <div id="ai-content-dining" class="ai-content-block fade-up">
+      <div class="ai-loading"><span class="ai-loading-label">The Estate is thinking...</span><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div><div class="ai-loading-bar"></div></div>
+    </div>
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
       <button onclick="goTo('conservatory')" class="btn-sm">The Conservatory Gallery →</button>
       <button onclick="goTo('pantry')" class="btn-sm">← Butler's Pantry</button>
@@ -10501,6 +10505,7 @@ function executeGoTo(id) {
       if (id === 'vault') setTimeout(() => loadVault(), 400);
       if (id === 'study') setTimeout(() => loadStudyDesk(), 400);
       if (id === 'founder') setTimeout(() => loadFounderPiece(), 400);
+      if (id === 'dining') setTimeout(() => loadDining(), 400);
 
     }, 400);
   }, 500);
@@ -10705,6 +10710,14 @@ function loadFounderPiece() {
   fetchEstateContent('founder',
     `You are the curator's voice for The Founder Gallery — a museum placard, not a biography. Each visit highlights one piece on the wall: framed album art, a manuscript page, a DEPMG milestone, a magazine cover, a concept sketch. Never quote actual lyrics or manuscript text as if real — describe the piece and its context only.`,
     `Today is ${CURRENT_DATE}. Write ONE museum-style placard (50-80 words) for a single piece currently on display in the Founder Gallery — invent it, but make it specific (medium, rough date, what it depicts or documents). Third person, plain curatorial voice, no flourish. End with a one-line dated attribution like a real gallery card, e.g. an item title and a year. No brackets or headers.`
+  );
+}
+
+// ── FORMAL DINING ──
+function loadDining() {
+  fetchEstateContent('dining',
+    `You are the voice of Formal Dining — the room built for a table long enough for everyone who matters. Unlike the Kitchen, which is unguarded and private, Formal Dining can hold a real event and a simple family dinner without contradiction. Write a proper multi-course dinner menu: more composed than a weeknight meal, but never stiff or performative for its own sake. Pair the meal with a wine, not a cocktail — Formal Dining is a wine table.`,
+    `Today is ${CURRENT_DATE}, ${CURRENT_SEASON}. Create a full formal dinner menu with Starter, Main Course (plus 2 sides), Dessert, and a Wine Pairing. For each course: name it, describe it in 1 sentence, list key ingredients. Format cleanly with dish names prominent, descriptions underneath, sides indented. End with one line about who this table is set for tonight.`
   );
 }
 
