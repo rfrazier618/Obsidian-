@@ -1034,7 +1034,8 @@ body::before {
 #pantry { background: #080706; }
 .pantry-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #141210 0%, #080706 75%);
+  background-image: url('assets/images/pantry-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 #dining { background: #0a0806; }
@@ -3281,6 +3282,14 @@ body::before {
 <!-- THE BUTLER'S PANTRY -->
 <div id="pantry" class="inner-room">
   <div class="pantry-bg"></div>
+  <div class="room-hotspot-rect" style="left:19.2%; top:70%; width:10%; height:11.5%;" onclick="goTo('kitchen')" title="Chef's Kitchen — Return Path"></div>
+  <div class="room-hotspot-rect" style="left:35.1%; top:70%; width:10%; height:11.5%;" onclick="goTo('dining')" title="Formal Dining — IV-303"></div>
+  <div class="room-hotspot-rect" style="left:46.7%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Wine Service — the curated cellar list is staged and poured from here, never improvised.')" title="Wine Service — Curated Cellar"></div>
+  <div class="room-hotspot-rect" style="left:58.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Service Stations — where every course is prepared and staged before it ever reaches a table.')" title="Service Stations — Preparation & Support"></div>
+  <div class="room-hotspot-rect" style="left:69.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Storage — the Estate&rsquo;s reserve. Supplies kept ready so nothing is ever caught short.')" title="Storage — Supplies & Reserve"></div>
+  <div class="room-hotspot-rect" style="left:15%; top:86%; width:21.5%; height:4.5%;" onclick="goTo('kitchen')" title="Previous Room — Chef's Kitchen"></div>
+  <div class="room-hotspot-rect" style="left:38.5%; top:86%; width:25.5%; height:4.5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:65.5%; top:86%; width:19%; height:4.5%;" onclick="goTo('dining')" title="Next Room — Formal Dining"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Butler's Pantry</span>
@@ -5188,6 +5197,15 @@ function doScrollToBooks() {
 function scrollToKitchenMenu() {
   const el = document.getElementById('ai-content-kitchen');
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+let estateToastTimer;
+function estateToast(msg) {
+  const t = document.getElementById('estate-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(estateToastTimer);
+  estateToastTimer = setTimeout(() => t.classList.remove('show'), 3400);
 }
 
 function playGateVideo() {
@@ -11438,6 +11456,9 @@ m7 = cards/m7-algorhythm.png
   <button onclick="event.stopPropagation(); closeCard()" aria-label="Close" style="position:fixed; top:18px; right:22px; z-index:1210; background:rgba(6,4,2,0.7); border:1px solid rgba(201,168,76,0.3); color:var(--cream); font-family:Cormorant SC,serif; font-size:12px; letter-spacing:0.2em; padding:10px 16px; cursor:pointer;">✕ CLOSE</button>
   <img id="card-lightbox-img" src="" alt="" style="display:block; max-width:680px; width:100%; height:auto; margin:0 auto; border:1px solid rgba(201,168,76,0.15); box-shadow:0 30px 90px rgba(0,0,0,0.7); cursor:default;" onclick="event.stopPropagation()" />
 </div>
+
+<!-- Estate-wide toast, for the older non-Gemini rooms -->
+<div class="vl-toast" id="estate-toast"></div>
 
 <!-- DRINK MODAL -->
 <div id="drink-modal" onclick="closeDrink()" style="display:none; position:fixed; inset:0; z-index:950; background:rgba(4,1,2,0.97); overflow-y:auto; cursor:pointer; flex-direction:column;">
