@@ -993,6 +993,20 @@ body::before {
 @media (max-width: 720px) {
   .room-hotspot { display: none; }
 }
+/* wider pill-button hotspots — same interaction as .room-hotspot, but
+   sized to a rendered button's full box instead of a fixed 46px icon */
+.room-hotspot-rect {
+  position: absolute; z-index: 2; cursor: pointer; border-radius: 30px;
+  background: rgba(201,168,76,0); border: 1px solid rgba(201,168,76,0);
+  transition: all 0.3s ease;
+}
+.room-hotspot-rect:hover {
+  background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.5);
+  box-shadow: 0 0 20px rgba(201,168,76,0.35);
+}
+@media (max-width: 720px) {
+  .room-hotspot-rect { display: none; }
+}
 #book-cutscene-overlay {
   position: fixed; inset: 0; z-index: 550;
   display: none; align-items: center; justify-content: center;
@@ -1056,7 +1070,8 @@ body::before {
 #founder { background: #06040a; }
 .founder-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #100c14 0%, #06040a 75%);
+  background-image: url('assets/images/founder-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 
@@ -3409,6 +3424,10 @@ body::before {
 <!-- THE FOUNDER GALLERY -->
 <div id="founder" class="inner-room">
   <div class="founder-bg"></div>
+  <div class="room-hotspot-rect" style="left:17.5%; top:80.8%; width:19%; height:5%;" onclick="goTo('legacy')" title="Previous Room — Hall of Legacy"></div>
+  <div class="room-hotspot-rect" style="left:37.7%; top:80.8%; width:24.5%; height:5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:63.4%; top:80.8%; width:16.4%; height:5%;" onclick="goTo('morning')" title="Next Room — The Morning Room"></div>
+  <div class="room-hotspot-rect" style="left:32.8%; top:87.6%; width:33.6%; height:3.6%;" onclick="goTo('atrium')" title="Return to Grand Atrium"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Founder Gallery</span>
@@ -3434,6 +3453,7 @@ body::before {
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
       <button onclick="goTo('morning')" class="btn-sm">The Morning Room →</button>
       <button onclick="goTo('legacy')" class="btn-sm">← Hall of Legacy</button>
+      <button onclick="goTo('atrium')" class="btn-sm">← Grand Atrium</button>
     </div>
   </div>
 </div>
