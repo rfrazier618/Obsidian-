@@ -2648,8 +2648,8 @@ body::before {
 .ob-return-icon { font-size: 15px; color: var(--gold); }
 .ob-return-arrow { opacity: 0.6; }
 
-/* ── Alnitak Sportsbook — full-screen dashboard opened from the PNP
-   Event Display hotspot. Real data where the Estate actually has it
+/* ── Alnitak Sportsbook — full-screen dashboard opened from the
+   Live Scores & Odds hotspot. Real data where the Estate actually has it
    (upcoming fixtures via TheSportsDB, the real Ledger, real official
    links); everything else (in-play live scores, individual stat
    leaders, betting odds) has no honest free data source behind it,
@@ -8382,7 +8382,7 @@ function orionBuildNavbar() {
     { id: 'service', label: 'VIP Service', action: () => orionRequestService(
         orionCurrentLounge === 'alnilam' ? 'VIP Host' : orionCurrentLounge === 'alnitak' ? 'Service Staff' : 'Lounge Host') },
     { id: 'tonight', label: 'Tonight’s Performance', action: () => orionShowTonight() },
-    { id: 'doors', label: 'Constellation Doors', action: () => goTo('hall') },
+    { id: 'doors', label: 'Constellation Mezzanine', action: () => orionShowLounge('doors') },
     { id: 'gemini', label: 'Return to Gemini', action: () => ghShowHero() },
   ];
   document.querySelectorAll('.orion-navbar').forEach(nav => {
@@ -8404,8 +8404,8 @@ function orionBuildNavbar() {
 
 // ── the Constellation Mezzanine hub, built on the real render, grid-
 // measured — same architecture as Gemini Hall/Core and DEPMG Wine
-// Bar. Mintaka/Alnilam/Alnitak themselves stay the star-map
-// placeholder until their own renders arrive. ──
+// Bar. Mintaka/Alnilam/Alnitak each have their own real-render
+// screens beyond this hub. ──
 const OM_SPOTS = [
   { key:'return-top',  label:'Constellation Doors — Reception & Estate Return',
     ix:0.865, iy:0.062, w:0.18, h:0.075, action:'hall' },
@@ -8724,8 +8724,8 @@ const ORION_LEAGUE_INFO = {
   Boxing: { sportsdbId: null, officialUrl: 'https://www.espn.com/boxing/schedule',  officialLabel: 'ESPN — Boxing Schedule' },
   Soccer: { sportsdbId: null, officialUrl: 'https://www.espn.com/soccer/fixtures',  officialLabel: 'ESPN — Soccer Fixtures' },
 };
-// ── Alnitak Sportsbook — the full dashboard behind the PNP Event
-// Display hotspot. Real data where it genuinely exists (upcoming
+// ── Alnitak Sportsbook — the full dashboard behind the Live Scores
+// & Odds hotspot. Real data where it genuinely exists (upcoming
 // fixtures per league via TheSportsDB, the real Ledger, real
 // official links); everything the free data landscape can't honestly
 // support (in-play live scores/clocks, individual stat leaders) is
@@ -9031,7 +9031,7 @@ function orionShowQuickSwitch() {
 }
 
 const AT_SPOTS = [
-  { key:'title-return',   label:'Alnitak — Return to Constellation Doors', ix:0.545, iy:0.285, w:0.20, h:0.11, action:'doors' },
+  { key:'title-return',   label:'Alnitak — Return to Constellation Mezzanine', ix:0.545, iy:0.285, w:0.20, h:0.11, action:'doors' },
 
   { key:'header-core',    label:'Gemini Core',       ix:0.145, iy:0.535, w:0.13, h:0.035, action:'core' },
   { key:'cocktail-menu',  label:'Cocktail Menu',     ix:0.145, iy:0.593, w:0.13, h:0.035, action:'cocktails' },
@@ -9055,7 +9055,7 @@ const AT_SPOTS = [
   { key:'challenge-chess',  label:'Chess — Table 07',  ix:0.505, iy:0.745, w:0.075, h:0.10, action:'challenge-chess' },
   { key:'challenge-poker',  label:'Poker — Table 01',  ix:0.575, iy:0.745, w:0.075, h:0.10, action:'challenge-poker' },
 
-  { key:'live-display', label:'Alnitak Live — PNP Event Display', ix:0.855, iy:0.235, w:0.30, h:0.31, action:'live-display' },
+  { key:'live-display', label:'Alnitak Sportsbook — Live Scores & Odds', ix:0.855, iy:0.235, w:0.30, h:0.31, action:'live-display' },
   { key:'ledger',        label:'The Alnitak Ledger', ix:0.805, iy:0.755, w:0.16, h:0.10, action:'ledger' },
 
   { key:'game-chess',      label:'Request: Chess',      ix:0.935, iy:0.585, w:0.12, h:0.024, action:'game-req-Chess' },
@@ -9152,7 +9152,7 @@ window.addEventListener('resize', layoutAtLounge);
 // Social Constellation feature (live for the real party this render
 // depicts; see orionShowSocialConstellation above). ──
 const AL_SPOTS = [
-  { key:'title-return', label:'Alnilam — Return to Constellation Doors', ix:0.640, iy:0.280, w:0.15, h:0.07, action:'doors' },
+  { key:'title-return', label:'Alnilam — Return to Constellation Mezzanine', ix:0.640, iy:0.280, w:0.15, h:0.07, action:'doors' },
 
   { key:'header-core',    label:'Gemini Core',      ix:0.100, iy:0.575, w:0.13, h:0.035, action:'core' },
   { key:'cocktail-menu',  label:'Cocktail Menu',    ix:0.100, iy:0.645, w:0.13, h:0.035, action:'cocktails' },
@@ -9990,7 +9990,7 @@ const PE_NAV_ITEMS = [
   { label: 'Main Performance Stage',   action: () => { peClose(); stageShowLounge(); } },
   { label: 'VIP Mezzanine III-601',    action: () => { peClose(); orionShowLounge('doors'); } },
   { label: 'Private Events',           action: () => {}, current: true },
-  { label: 'Return to Gemini Main Floor', action: () => peClose() },
+  { label: 'Return to Gemini Main Floor', action: () => { peClose(); ghShowHero(); } },
 ];
 const PE_STATE = {
   occasion: null, spaces: new Set(), details: {}, setup: null,
