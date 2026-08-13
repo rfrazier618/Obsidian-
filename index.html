@@ -1013,7 +1013,8 @@ body::before {
 #legacy { background: #070604; }
 .legacy-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #120e0a 0%, #070604 75%);
+  background-image: url('assets/images/legacy-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 #pantry { background: #080706; }
@@ -3236,6 +3237,9 @@ body::before {
 <!-- THE HALL OF LEGACY -->
 <div id="legacy" class="inner-room">
   <div class="legacy-bg"></div>
+  <div class="room-hotspot" style="left:82.7%; top:7.0%;" onclick="goTo('atrium')" title="Return to Grand Atrium"></div>
+  <div class="room-hotspot" style="left:2.7%; top:90.6%;" onclick="goTo('onyx')" title="Onyx Lounge"></div>
+  <div class="room-hotspot" style="left:95.3%; top:90.6%;" onclick="goTo('founder')" title="The Founder Gallery"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Hall of Legacy</span>
@@ -3254,6 +3258,7 @@ body::before {
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
       <button onclick="goTo('founder')" class="btn-sm">The Founder Gallery →</button>
       <button onclick="goTo('onyx')" class="btn-sm">← Onyx Lounge</button>
+      <button onclick="goTo('atrium')" class="btn-sm">← Grand Atrium</button>
     </div>
   </div>
 </div>
