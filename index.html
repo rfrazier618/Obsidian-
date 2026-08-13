@@ -782,8 +782,8 @@ body::before {
 .kitchen-bg {
   position:fixed; inset:0;
   background-image: url('assets/images/kitchen-bg.jpg');
-  background-size:cover; background-position:center 25%;
-  filter: brightness(0.22) saturate(0.8); z-index:0;
+  background-size:cover; background-position:center;
+  z-index:0;
 }
 
 
@@ -4490,6 +4490,13 @@ body::before {
 <!-- THE KITCHEN -->
 <div id="kitchen" class="inner-room">
   <div class="kitchen-bg"></div>
+  <div class="room-hotspot-rect" style="left:20.5%; top:70%; width:14%; height:11.5%;" onclick="goTo('pantry')" title="The Butler's Pantry"></div>
+  <div class="room-hotspot-rect" style="left:34.5%; top:70%; width:14%; height:13%;" onclick="goTo('courtyard')" title="Fountain Court — IV-401"></div>
+  <div class="room-hotspot-rect" style="left:49%; top:70%; width:14%; height:11.5%;" onclick="goTo('onyx')" title="Onyx Lounge — Return Path"></div>
+  <div class="room-hotspot-rect" style="left:63%; top:70%; width:14%; height:11.5%;" onclick="scrollToKitchenMenu()" title="Our Meals — From the Estate Kitchen"></div>
+  <div class="room-hotspot-rect" style="left:16.8%; top:86%; width:18.4%; height:4.5%;" onclick="goTo('atrium')" title="Previous Room — Grand Atrium"></div>
+  <div class="room-hotspot-rect" style="left:37.8%; top:86%; width:24.4%; height:4.5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:63%; top:86%; width:18.2%; height:4.5%;" onclick="goTo('courtyard')" title="Next Room — Fountain Court"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Kitchen</span>
@@ -5176,6 +5183,10 @@ function dismissBookCutscene() {
 
 function doScrollToBooks() {
   const el = document.getElementById('library-books-grid');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function scrollToKitchenMenu() {
+  const el = document.getElementById('ai-content-kitchen');
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
