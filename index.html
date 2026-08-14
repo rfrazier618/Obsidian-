@@ -1054,7 +1054,8 @@ body::before {
 #morning { background: #090807; }
 .morning-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #151311 0%, #090807 75%);
+  background-image: url('assets/images/morning-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 #reflection { background: #05070a; }
@@ -3383,6 +3384,18 @@ body::before {
 <!-- THE MORNING ROOM -->
 <div id="morning" class="inner-room">
   <div class="morning-bg"></div>
+  <div class="room-hotspot-rect" style="left:19.2%; top:70%; width:10%; height:11.5%;" onclick="goTo('courtyard')" title="Fountain Court — IV-401"></div>
+  <div class="room-hotspot-rect" style="left:35.1%; top:70%; width:10%; height:11.5%;" onclick="goTo('founder')" title="Founder Gallery — IV-203"></div>
+  <div class="room-hotspot-rect" style="left:46.7%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Breakfast Service — daily offerings and family favorites, kept simple and unhurried.')" title="Breakfast Service — Daily Offerings"></div>
+  <div class="room-hotspot-rect" style="left:58.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Reading &amp; Reflection — books and journals, kept close for quiet pursuits before the day gets loud.')" title="Reading &amp; Reflection"></div>
+  <div class="room-hotspot-rect" style="left:69.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Private Moments — unwind, recharge, and prepare for the day, without an audience.')" title="Private Moments"></div>
+  <div class="room-hotspot-rect" style="left:15%; top:86%; width:21.5%; height:4.5%;" onclick="goTo('founder')" title="Previous Room — Founder Gallery"></div>
+  <div class="room-hotspot-rect" style="left:38.5%; top:86%; width:25.5%; height:4.5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:65.5%; top:86%; width:19%; height:4.5%;" onclick="goTo('courtyard')" title="Next Room — Fountain Court"></div>
+  <div class="room-hotspot-rect" style="left:81.3%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://www.instagram.com/richfraz','_blank')" title="Instagram — @richfraz"></div>
+  <div class="room-hotspot-rect" style="left:85.5%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://x.com/DEPMG_CEO','_blank')" title="X (Twitter)"></div>
+  <div class="room-hotspot-rect" style="left:89.6%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://www.youtube.com/@RDotDizzle11','_blank')" title="YouTube"></div>
+  <div class="room-hotspot-rect" style="left:93.95%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd','_blank')" title="Spotify"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Morning Room</span>
