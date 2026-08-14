@@ -1047,7 +1047,8 @@ body::before {
 #conservatory { background: #070a06; }
 .conservatory-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #101a10 0%, #070a06 75%);
+  background-image: url('assets/images/conservatory-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 #morning { background: #090807; }
@@ -3342,6 +3343,14 @@ body::before {
 <!-- THE CONSERVATORY GALLERY -->
 <div id="conservatory" class="inner-room">
   <div class="conservatory-bg"></div>
+  <div class="room-hotspot-rect" style="left:19.2%; top:70%; width:10%; height:11.5%;" onclick="goTo('kitchen')" title="Chef's Kitchen — Return Path"></div>
+  <div class="room-hotspot-rect" style="left:35.1%; top:70%; width:10%; height:11.5%;" onclick="goTo('courtyard')" title="Fountain Court — The Grounds"></div>
+  <div class="room-hotspot-rect" style="left:46.7%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Observatory Pavilion — a covered garden folly at the highest point of the grounds, kept for quiet evenings above the trees.')" title="Observatory Pavilion — The Heights"></div>
+  <div class="room-hotspot-rect" style="left:58.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Art & Sculpture — the Estate&rsquo;s curated collection, placed among the greenery rather than sealed behind glass.')" title="Art & Sculpture — Estate Collection"></div>
+  <div class="room-hotspot-rect" style="left:69.4%; top:70%; width:10%; height:11.5%;" onclick="estateToast('Garden Vistas — the grounds change with every season; this is where that beauty is best framed.')" title="Garden Vistas — Estate Views"></div>
+  <div class="room-hotspot-rect" style="left:15%; top:86%; width:21.5%; height:4.5%;" onclick="goTo('kitchen')" title="Previous Room — Chef's Kitchen"></div>
+  <div class="room-hotspot-rect" style="left:38.5%; top:86%; width:25.5%; height:4.5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:65.5%; top:86%; width:19%; height:4.5%;" onclick="goTo('courtyard')" title="Next Room — Fountain Court"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Conservatory Gallery</span>
