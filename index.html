@@ -1068,7 +1068,8 @@ body::before {
 #vista { background: #04050a; }
 .vista-bg {
   position:fixed; inset:0;
-  background: radial-gradient(ellipse at center 30%, #0a0c12 0%, #04050a 75%);
+  background-image: url('assets/images/vista-bg.jpg');
+  background-size: cover; background-position: center;
   z-index:0;
 }
 #founder { background: #06040a; }
@@ -3456,6 +3457,17 @@ body::before {
 <!-- THE NORTHERN ESTATE VISTA -->
 <div id="vista" class="inner-room">
   <div class="vista-bg"></div>
+  <div class="room-hotspot-rect" style="left:20.3%; top:70%; width:9%; height:11.5%;" onclick="goTo('reflection')" title="Reflection Garden — EXT-200"></div>
+  <div class="room-hotspot-rect" style="left:36.3%; top:70%; width:9%; height:11.5%;" onclick="estateToast('The Infinity Pool — the water axis this whole grounds sequence was building toward. You&rsquo;re standing in it.')" title="Infinity Pool — The Water Axis"></div>
+  <div class="room-hotspot-rect" style="left:52.4%; top:70%; width:9%; height:11.5%;" onclick="estateToast('Observatory Pavilion — a covered garden folly beneath the stars, at the far edge of the grounds.')" title="Observatory Pavilion — Beneath the Stars"></div>
+  <div class="room-hotspot-rect" style="left:65.5%; top:70%; width:9%; height:13%;" onclick="goTo('courtyard')" title="Return to Fountain Court — EXT-120"></div>
+  <div class="room-hotspot-rect" style="left:15%; top:86%; width:21.5%; height:4.5%;" onclick="goTo('reflection')" title="Previous Room — Reflection Garden"></div>
+  <div class="room-hotspot-rect" style="left:38.5%; top:86%; width:25.5%; height:4.5%;" onclick="goTo('atrium')" title="District IV Directory"></div>
+  <div class="room-hotspot-rect" style="left:65.5%; top:86%; width:19%; height:4.5%;" onclick="goTo('atrium')" title="Next Room — Grand Atrium"></div>
+  <div class="room-hotspot-rect" style="left:81.3%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://www.instagram.com/richfraz','_blank')" title="Instagram — @richfraz"></div>
+  <div class="room-hotspot-rect" style="left:85.5%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://x.com/DEPMG_CEO','_blank')" title="X (Twitter)"></div>
+  <div class="room-hotspot-rect" style="left:89.6%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://www.youtube.com/@RDotDizzle11','_blank')" title="YouTube"></div>
+  <div class="room-hotspot-rect" style="left:93.95%; top:94.5%; width:3.6%; height:3.2%;" onclick="window.open('https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd','_blank')" title="Spotify"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Northern Estate Vista</span>
