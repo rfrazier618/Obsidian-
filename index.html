@@ -3595,7 +3595,7 @@ body::before {
   <div class="depmg-bg"></div>
   <div class="room-hotspot-rect" style="left:24.5%; top:39.5%; width:22.5%; height:12.5%;" onclick="estateToast('The Recording Complex — glimpsed through acoustic glass, never fully shown. II-102 is a reveal, not a passage.')" title="Recording Complex Reveal — II-102"></div>
   <div class="room-hotspot-rect" style="left:59.8%; top:53.5%; width:13.7%; height:11%;" onclick="depmgOpenThreshold()" title="Secure Creative Threshold — II-110"></div>
-  <div class="room-hotspot-rect" style="left:83.3%; top:2%; width:10.5%; height:2.4%; z-index:55;" onclick="estateToast('The interactive District II floor plan is still being built.')" title="Floor Plan"></div>
+  <div class="room-hotspot-rect" style="left:83.3%; top:2%; width:10.5%; height:2.4%; z-index:55;" onclick="openA202FloorPlan()" title="Floor Plan"></div>
   <div class="room-hotspot-rect" style="left:94.3%; top:2%; width:5.2%; height:2.4%; z-index:55;" onclick="estateToast('District II is still under construction — thanks for exploring early.')" title="Help"></div>
   <div class="room-hotspot-rect" style="left:0.5%; top:92.8%; width:16.5%; height:4.4%;" onclick="goTo('hall')" title="Return to the Estate"></div>
   <div class="room-hotspot-rect" style="left:26.3%; top:89.5%; width:5.7%; height:7%;" onclick="goTo('hall')" title="Return Home"></div>
@@ -10832,6 +10832,17 @@ function closeDrink() {
   document.body.style.overflow = '';
 }
 
+function openA202FloorPlan() {
+  const modal = document.getElementById('a202-floorplan-modal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeA202FloorPlan() {
+  document.getElementById('a202-floorplan-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 
 // ══════════════════════════════════════
 // THE ESTATE AI CONTENT ENGINE
@@ -11673,6 +11684,14 @@ m7 = cards/m7-algorhythm.png
     <div class="dt-display" id="dt-display">&middot; &middot; &middot; &middot;</div>
     <div class="dt-keypad" id="dt-keypad"></div>
     <p class="dt-status" id="dt-status">Enter access code</p>
+  </div>
+</div>
+
+<div id="a202-floorplan-modal" onclick="closeA202FloorPlan()" style="display:none; position:fixed; inset:0; z-index:950; background:rgba(4,1,2,0.97); overflow-y:auto; cursor:pointer; flex-direction:column;">
+  <button onclick="event.stopPropagation(); closeA202FloorPlan()" style="position:fixed; top:24px; right:32px; font-family:Cormorant SC,serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); opacity:0.5; background:rgba(4,1,2,0.9); border:1px solid rgba(201,168,76,0.2); padding:10px 20px; cursor:pointer; z-index:10;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">&larr; Close</button>
+  <div onclick="event.stopPropagation()" style="max-width:1100px; margin:0 auto; padding:80px 24px 100px; cursor:default;">
+    <img src="assets/images/a202-floorplan.jpg" style="width:100%; display:block; border:1px solid rgba(201,168,76,0.2);" alt="A-202 District II Floor Plan">
+    <p style="font-family:Cormorant Garamond,serif; font-style:italic; font-size:13px; color:var(--cream); opacity:0.4; text-align:center; margin-top:16px;">A-202 &middot; District II &middot; DEPMG Headquarters &mdash; concept floor plan, not a dimensioned construction set.</p>
   </div>
 </div>
 
