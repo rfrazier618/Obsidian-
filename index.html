@@ -1079,6 +1079,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#depmg { background: #06050a; }
+.depmg-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-reception-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -2114,6 +2121,59 @@ body::before {
   max-width: 80vw; text-align: center;
 }
 .vl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ══ DEPMG SECURE THRESHOLD — access-code interaction (II-110) ══
+   A designed guest experience, not a claim of real security: any
+   4-digit code is accepted, then honestly explains nothing is built
+   past the threshold yet. */
+#depmg-threshold-modal {
+  display: none; position: fixed; inset: 0; z-index: 960;
+  background: rgba(3,2,1,0.94); align-items: center; justify-content: center;
+  padding: 24px;
+}
+#depmg-threshold-modal.open { display: flex; }
+.dt-card {
+  position: relative; width: 100%; max-width: 380px;
+  background: rgba(10,8,6,0.98); border: 1px solid rgba(201,168,76,0.35);
+  padding: 44px 32px 36px; text-align: center;
+}
+.dt-close {
+  position: absolute; top: 14px; right: 16px; background: none; border: none;
+  color: var(--gold); opacity: 0.5; font-size: 22px; cursor: pointer; line-height: 1;
+}
+.dt-close:hover { opacity: 1; }
+.dt-eyebrow {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 22px;
+}
+.dt-logo {
+  font-family: 'Cormorant SC', serif; font-size: 30px; letter-spacing: 0.12em;
+  color: var(--gold); margin-bottom: 8px;
+}
+.dt-motto {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--cream); opacity: 0.55;
+  border-bottom: 1px solid rgba(201,168,76,0.15); padding-bottom: 22px; margin-bottom: 22px;
+}
+.dt-display {
+  font-family: 'Cormorant SC', serif; font-size: 26px; letter-spacing: 0.4em;
+  color: var(--gold); margin-bottom: 22px;
+}
+.dt-keypad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;
+}
+.dt-key {
+  font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--cream);
+  background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.2);
+  padding: 14px 0; cursor: pointer; transition: all 0.2s ease;
+}
+.dt-key:hover { background: rgba(201,168,76,0.14); border-color: var(--gold); }
+.dt-key-enter { color: var(--gold); }
+.dt-key-clear { font-size: 12px; letter-spacing: 0.1em; }
+.dt-status {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px;
+  color: var(--cream); opacity: 0.55; min-height: 18px;
+}
 
 /* ══ THE CIGAR & WHISKEY LOUNGE — built on the real render, grid-measured ══
    Same architecture as the Piano and Vinyl Lounges: the render is the
@@ -3526,6 +3586,42 @@ body::before {
       <button onclick="goTo('morning')" class="btn-sm">The Morning Room →</button>
       <button onclick="goTo('legacy')" class="btn-sm">← Hall of Legacy</button>
       <button onclick="goTo('atrium')" class="btn-sm">← Grand Atrium</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEPMG EXECUTIVE RECEPTION — DISTRICT II -->
+<div id="depmg" class="inner-room">
+  <div class="depmg-bg"></div>
+  <div class="room-hotspot-rect" style="left:24.5%; top:39.5%; width:22.5%; height:12.5%;" onclick="estateToast('The Recording Complex — glimpsed through acoustic glass, never fully shown. II-102 is a reveal, not a passage.')" title="Recording Complex Reveal — II-102"></div>
+  <div class="room-hotspot-rect" style="left:59.8%; top:53.5%; width:13.7%; height:11%;" onclick="depmgOpenThreshold()" title="Secure Creative Threshold — II-110"></div>
+  <div class="room-hotspot-rect" style="left:83.3%; top:2%; width:10.5%; height:2.4%; z-index:55;" onclick="estateToast('The interactive District II floor plan is still being built.')" title="Floor Plan"></div>
+  <div class="room-hotspot-rect" style="left:94.3%; top:2%; width:5.2%; height:2.4%; z-index:55;" onclick="estateToast('District II is still under construction — thanks for exploring early.')" title="Help"></div>
+  <div class="room-hotspot-rect" style="left:0.5%; top:92.8%; width:16.5%; height:4.4%;" onclick="goTo('hall')" title="Return to the Estate"></div>
+  <div class="room-hotspot-rect" style="left:26.3%; top:89.5%; width:5.7%; height:7%;" onclick="goTo('hall')" title="Return Home"></div>
+  <div class="room-hotspot-rect" style="left:32.5%; top:89.5%; width:7.3%; height:7%;" onclick="estateToast('District I — Foundation hasn&rsquo;t been built yet.')" title="District I — Foundation"></div>
+  <div class="room-hotspot-rect" style="left:48.3%; top:89.5%; width:7.2%; height:7%;" onclick="goTo('gemini')" title="District III — GEMINI Speakeasy"></div>
+  <div class="room-hotspot-rect" style="left:55.8%; top:89.5%; width:7.5%; height:7%;" onclick="goTo('atrium')" title="District IV — The Experience"></div>
+  <div class="room-hotspot-rect" style="left:65%; top:88.8%; width:9.4%; height:9%;" onclick="estateToast('Basement / Power infrastructure hasn&rsquo;t been built yet.')" title="Basement — Power"></div>
+  <div class="room-hotspot-rect" style="left:82.7%; top:79.5%; width:17%; height:8.3%;" onclick="estateToast('More of District II — Studio A and the Recording Complex — is next.')" title="D2 Navigation — Explore District II"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hall')">The Estate</button>
+    <span class="room-nav-title">DEPMG Executive Reception</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="section-label">District II · CREATE — Business &amp; Vision</span>
+      <h1 class="section-title">DEPMG Executive Reception</h1>
+    </div>
+    <div class="fade-up delay-1" style="max-width:640px;">
+      <p style="font-family:Cormorant Garamond,serif; font-size:clamp(18px,2.5vw,26px); font-style:italic; color:var(--cream); line-height:1.6; margin-bottom:20px;">The headquarters organizes the business. The studio reveals why it exists.</p>
+      <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">Arrival, orientation, and the crossroads of District II. Somewhere past the acoustic glass, the Recording Complex is already at work. Somewhere past the smoked-glass doors, it's guarded. Reception is the one place in D2 built to hold both at once.</p>
+    </div>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="depmgOpenThreshold()" class="btn-sm">Secure Creative Threshold — II-110</button>
+      <button onclick="goTo('hall')" class="btn-sm">← The Estate</button>
     </div>
   </div>
 </div>
@@ -5050,7 +5146,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5268,6 +5364,50 @@ function estateToast(msg) {
   t.classList.add('show');
   clearTimeout(estateToastTimer);
   estateToastTimer = setTimeout(() => t.classList.remove('show'), 3400);
+}
+
+// ── DEPMG SECURE THRESHOLD (II-110) ──
+// A real, functioning access-code interaction — not fake security. Any
+// 4-digit code is accepted; the honest outcome is that nothing exists
+// past the threshold yet (Studio A / the Recording Complex aren't built).
+let dtCode = '';
+function depmgOpenThreshold() {
+  dtCode = '';
+  dtRenderDisplay();
+  document.getElementById('dt-status').textContent = 'Enter access code';
+  const kp = document.getElementById('dt-keypad');
+  if (!kp.children.length) {
+    ['1','2','3','4','5','6','7','8','9','clear','0','enter'].forEach(k => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dt-key' + (k === 'enter' ? ' dt-key-enter' : k === 'clear' ? ' dt-key-clear' : '');
+      btn.textContent = k === 'clear' ? 'Clear' : k === 'enter' ? 'Enter' : k;
+      btn.onclick = () => dtPress(k);
+      kp.appendChild(btn);
+    });
+  }
+  document.getElementById('depmg-threshold-modal').classList.add('open');
+}
+function depmgCloseThreshold() {
+  document.getElementById('depmg-threshold-modal').classList.remove('open');
+}
+function dtRenderDisplay() {
+  document.getElementById('dt-display').textContent = dtCode.padEnd(4, '·').split('').join(' ');
+}
+function dtPress(k) {
+  const status = document.getElementById('dt-status');
+  if (k === 'clear') { dtCode = ''; dtRenderDisplay(); status.textContent = 'Enter access code'; return; }
+  if (k === 'enter') {
+    if (dtCode.length < 4) { status.textContent = 'Code must be 4 digits'; return; }
+    status.textContent = 'Access granted.';
+    setTimeout(() => {
+      depmgCloseThreshold();
+      estateToast('The Recording Complex and DEPMG Headquarters are still under construction beyond this threshold. Check back soon.');
+    }, 900);
+    return;
+  }
+  if (dtCode.length < 4) { dtCode += k; dtRenderDisplay(); }
+  if (dtCode.length === 4) status.textContent = 'Press Enter';
 }
 
 function playGateVideo() {
@@ -11523,6 +11663,19 @@ m7 = cards/m7-algorhythm.png
 <div class="vl-toast" id="estate-toast"></div>
 
 <!-- DRINK MODAL -->
+<!-- DEPMG SECURE THRESHOLD — ACCESS CODE MODAL -->
+<div id="depmg-threshold-modal" onclick="depmgCloseThreshold()">
+  <div class="dt-card" onclick="event.stopPropagation()">
+    <button class="dt-close" onclick="depmgCloseThreshold()" aria-label="Close">&times;</button>
+    <p class="dt-eyebrow">DEPMG Secure Creative Threshold &middot; II-110</p>
+    <div class="dt-logo">DEPMG</div>
+    <p class="dt-motto">The Artist Is the Business.</p>
+    <div class="dt-display" id="dt-display">&middot; &middot; &middot; &middot;</div>
+    <div class="dt-keypad" id="dt-keypad"></div>
+    <p class="dt-status" id="dt-status">Enter access code</p>
+  </div>
+</div>
+
 <div id="drink-modal" onclick="closeDrink()" style="display:none; position:fixed; inset:0; z-index:950; background:rgba(4,1,2,0.97); overflow-y:auto; cursor:pointer; flex-direction:column;">
   <button onclick="event.stopPropagation(); closeDrink()" style="position:fixed; top:24px; right:32px; font-family:Cormorant SC,serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); opacity:0.5; background:rgba(4,1,2,0.9); border:1px solid rgba(201,168,76,0.2); padding:10px 20px; cursor:pointer; z-index:10;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">← Close</button>
   <div onclick="event.stopPropagation()" style="max-width:800px; margin:0 auto; padding:80px 24px 100px; cursor:default;">
@@ -11538,6 +11691,13 @@ m7 = cards/m7-algorhythm.png
     <button class="explorer-close" onclick="closeExplorer()">Close</button>
   </div>
   <div class="explorer-grid">
+        <div class="explorer-room" onclick="openExplorerRoom('depmg')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-reception-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">DEPMG Executive Reception</span>
+          </div>
+        </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
           <div class="explorer-room-bg" style="background:#0a0806;"></div>
           <div class="explorer-room-label">
