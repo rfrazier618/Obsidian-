@@ -1086,6 +1086,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#control-room { background: #06050a; }
+.control-room-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-control-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -2173,6 +2180,79 @@ body::before {
 .dt-status {
   font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px;
   color: var(--cream); opacity: 0.55; min-height: 18px;
+}
+
+/* ══ II-202 CONTROL ROOM — panel modal + sound-lock transition ══ */
+#sa-panel-modal {
+  display: none; position: fixed; inset: 0; z-index: 960;
+  background: rgba(3,2,1,0.94); align-items: center; justify-content: center;
+  padding: 24px; overflow-y: auto;
+}
+#sa-panel-modal.open { display: flex; }
+.sa-card {
+  position: relative; width: 100%; max-width: 560px; max-height: 82vh; overflow-y: auto;
+  background: rgba(10,8,6,0.98); border: 1px solid rgba(201,168,76,0.35);
+  padding: 44px 40px 40px;
+}
+.sa-close {
+  position: absolute; top: 14px; right: 16px; background: none; border: none;
+  color: var(--gold); opacity: 0.5; font-size: 22px; cursor: pointer; line-height: 1;
+}
+.sa-close:hover { opacity: 1; }
+.sa-eyebrow {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 14px;
+}
+.sa-title {
+  font-family: 'Cormorant SC', serif; font-size: 24px; letter-spacing: 0.06em;
+  color: var(--gold); margin-bottom: 20px; padding-bottom: 18px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.sa-body {
+  font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.7;
+  color: var(--cream); opacity: 0.85;
+}
+.sa-body p { margin-bottom: 14px; }
+.sa-body p:last-child { margin-bottom: 0; }
+.sa-directory { display: flex; flex-direction: column; gap: 0; }
+.sa-d-row {
+  display: flex; align-items: baseline; gap: 16px; padding: 10px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.sa-d-row:last-child { border-bottom: none; }
+.sa-d-num {
+  font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.08em;
+  color: var(--gold); opacity: 0.7; min-width: 52px; flex-shrink: 0;
+}
+.sa-d-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 14.5px; color: var(--cream); opacity: 0.85;
+}
+.sa-d-here {
+  margin-left: auto; font-family: 'Cormorant SC', serif; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0.6;
+  white-space: nowrap;
+}
+.sa-links { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-top: 18px; }
+.sa-links a {
+  font-family: 'Cormorant SC', serif; font-size: 11px; letter-spacing: 0.25em;
+  color: var(--gold); opacity: 0.7; text-decoration: none; transition: opacity 0.3s ease;
+}
+.sa-links a:hover { opacity: 1; }
+
+#sa-soundlock-transition {
+  display: none; position: fixed; inset: 0; z-index: 970;
+  background: #030202; align-items: center; justify-content: center; flex-direction: column;
+}
+#sa-soundlock-transition.show { display: flex; }
+.sa-sl-text {
+  font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--gold); opacity: 0; animation: saSlFade 1.4s ease forwards;
+}
+@keyframes saSlFade {
+  0% { opacity: 0; }
+  30% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { opacity: 0; }
 }
 
 /* ══ THE CIGAR & WHISKEY LOUNGE — built on the real render, grid-measured ══
@@ -3622,6 +3702,30 @@ body::before {
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
       <button onclick="depmgOpenThreshold()" class="btn-sm">Secure Creative Threshold — II-110</button>
       <button onclick="goTo('hall')" class="btn-sm">← The Estate</button>
+    </div>
+  </div>
+</div>
+
+<!-- II-202 CONTROL ROOM — DISTRICT II RECORDING COMPLEX -->
+<div id="control-room" class="inner-room">
+  <div class="control-room-bg"></div>
+  <div class="room-hotspot-rect" style="left:16.9%; top:22%; width:66.4%; height:18%;" onclick="saEnterStudioA()" title="Enter Studio A — II-201"></div>
+  <div class="room-hotspot-rect" style="left:75.5%; top:29.3%; width:9.1%; height:23.4%;" onclick="saSoundLockTransition()" title="Sound Lock — physical transition to Studio A"></div>
+  <div class="room-hotspot-rect" style="left:9.8%; top:57.1%; width:26.7%; height:27.8%;" onclick="saOpenPanel('console')" title="The Console — II-202"></div>
+  <div class="room-hotspot-rect" style="left:63.2%; top:57.1%; width:24.7%; height:27.8%;" onclick="saOpenPanel('gear')" title="Outboard &amp; Gear"></div>
+  <div class="room-hotspot-rect" style="left:70.96%; top:5.86%; width:18.23%; height:12.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
+  <div class="room-hotspot-rect" style="left:12.37%; top:6.35%; width:17.6%; height:11.7%; z-index:55;" onclick="saOpenPanel('sessions')" title="Now Playing — DEPMG Sessions"></div>
+  <div class="room-hotspot-rect" style="left:79.1%; top:84.2%; width:12%; height:6.6%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('depmg')">DEPMG Reception</button>
+    <span class="room-nav-title">Studio A · Control Room</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-202 · Control Room</h1>
+      <p class="sr-only">The desk that runs the Recording Complex. Studio A's tracking room sits just past the glass, joined to this room through a dedicated acoustic sound lock — not a doorway.</p>
     </div>
   </div>
 </div>
@@ -5146,7 +5250,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5402,12 +5506,76 @@ function dtPress(k) {
     status.textContent = 'Access granted.';
     setTimeout(() => {
       depmgCloseThreshold();
-      estateToast('The Recording Complex and DEPMG Headquarters are still under construction beyond this threshold. Check back soon.');
+      goTo('control-room');
     }, 900);
     return;
   }
   if (dtCode.length < 4) { dtCode += k; dtRenderDisplay(); }
   if (dtCode.length === 4) status.textContent = 'Press Enter';
+}
+
+// ── II-202 CONTROL ROOM ──
+const SA_PANELS = {
+  console: {
+    title: 'The Console · II-202',
+    body: `<p>Every session in the Recording Complex passes through this desk — full-format monitoring, deep outboard integration, and a DAW rig built to keep pace with a tracking room sized for a full band.</p>
+    <p style="opacity:0.6; font-style:italic;">Exact console make, model and monitoring chain are still being finalized and will be documented here once locked in.</p>`
+  },
+  gear: {
+    title: 'Outboard &amp; Gear',
+    body: `<p>The rack lines flanking the console hold the outboard chain that gives DEPMG sessions their sound: compressors, equalizers, microphone preamps, converters and effects processors, curated rather than accumulated.</p>
+    <p style="opacity:0.6; font-style:italic;">A full equipment list is still being assembled and will populate this panel once finalized.</p>`
+  },
+  complex: {
+    title: 'The Recording Complex · District II',
+    body: `<div class="sa-directory">
+      <div class="sa-d-row"><span class="sa-d-num">II-201</span><span class="sa-d-name">Studio A · Flagship Tracking Room</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-202</span><span class="sa-d-name">Studio A Control Room</span><span class="sa-d-here">You are here</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-203</span><span class="sa-d-name">Studio A Vocal Booth</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-204</span><span class="sa-d-name">Isolation Rooms</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-205</span><span class="sa-d-name">Studio B · Production / Writing Studio</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-206</span><span class="sa-d-name">Dolby Atmos Mixing Suite</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-207</span><span class="sa-d-name">Mastering / Critical Listening Room</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-208</span><span class="sa-d-name">Artist Lounge</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-209</span><span class="sa-d-name">Producer Lounge / Writing Room</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-210A&ndash;C</span><span class="sa-d-name">Instrument / Equipment Vault, Machine Room</span></div>
+      <div class="sa-d-row"><span class="sa-d-num">II-211</span><span class="sa-d-name">Studio Kitchenette + Restrooms</span></div>
+    </div>
+    <p style="margin-top:18px; opacity:0.5; font-style:italic; font-size:13px;">Per A-202 Rev. 4 (frozen). Rooms beyond II-202 haven't been built into the Estate yet.</p>`
+  },
+  sessions: {
+    title: 'DEPMG Sessions',
+    body: `<p>Music recorded at DEPMG Studios, starting with RichFraz &mdash; MC, crooner and the artist this headquarters was built around.</p>
+    <p><em>Lost in the Mind of R.S. Frazier</em> &mdash; pre-save now, out August 21, 2026.</p>
+    <div class="sa-links">
+      <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank">Pre-Save the Album</a>
+      <a href="https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd" target="_blank">Spotify</a>
+      <a href="https://soundcloud.com/richfrazmusic" target="_blank">SoundCloud</a>
+      <a href="https://music.apple.com/us/artist/richfraz/1444729870" target="_blank">Apple Music</a>
+    </div>
+    <p style="margin-top:18px; opacity:0.6; font-style:italic; font-size:13px;">Production credits and session stories for other DEPMG artists are still being assembled.</p>`
+  }
+};
+function saOpenPanel(key) {
+  const p = SA_PANELS[key];
+  if (!p) return;
+  document.getElementById('sa-panel-title').innerHTML = p.title;
+  document.getElementById('sa-panel-body').innerHTML = p.body;
+  document.getElementById('sa-panel-modal').classList.add('open');
+}
+function saClosePanel() {
+  document.getElementById('sa-panel-modal').classList.remove('open');
+}
+function saEnterStudioA() {
+  estateToast('Studio A’s tracking room hasn’t been built into the Estate yet — for now, the view through the glass is as close as you can get.');
+}
+function saSoundLockTransition() {
+  const el = document.getElementById('sa-soundlock-transition');
+  el.classList.add('show');
+  setTimeout(() => {
+    el.classList.remove('show');
+    estateToast('The Sound Lock leads to Studio A’s tracking room, which hasn’t been built into the Estate yet. The architecture is real — the room just isn’t finished.');
+  }, 1400);
 }
 
 function playGateVideo() {
@@ -11687,6 +11855,17 @@ m7 = cards/m7-algorhythm.png
   </div>
 </div>
 
+<!-- II-202 CONTROL ROOM — panel modal + sound-lock transition -->
+<div id="sa-panel-modal" onclick="saClosePanel()">
+  <div class="sa-card" onclick="event.stopPropagation()">
+    <button class="sa-close" onclick="saClosePanel()" aria-label="Close">&times;</button>
+    <p class="sa-eyebrow">II-202 &middot; Control Room</p>
+    <h3 class="sa-title" id="sa-panel-title"></h3>
+    <div class="sa-body" id="sa-panel-body"></div>
+  </div>
+</div>
+<div id="sa-soundlock-transition"><span class="sa-sl-text">Passing through the Sound Lock&hellip;</span></div>
+
 <div id="a202-floorplan-modal" onclick="closeA202FloorPlan()" style="display:none; position:fixed; inset:0; z-index:950; background:rgba(4,1,2,0.97); overflow-y:auto; cursor:pointer; flex-direction:column;">
   <button onclick="event.stopPropagation(); closeA202FloorPlan()" style="position:fixed; top:24px; right:32px; font-family:Cormorant SC,serif; font-size:11px; letter-spacing:0.3em; color:var(--gold); opacity:0.5; background:rgba(4,1,2,0.9); border:1px solid rgba(201,168,76,0.2); padding:10px 20px; cursor:pointer; z-index:10;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">&larr; Close</button>
   <div onclick="event.stopPropagation()" style="max-width:1100px; margin:0 auto; padding:80px 24px 100px; cursor:default;">
@@ -11716,6 +11895,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">DEPMG Executive Reception</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('control-room')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-control-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Studio A · Control Room</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
