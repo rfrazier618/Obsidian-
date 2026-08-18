@@ -1093,6 +1093,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#studio-a { background: #06050a; }
+.studio-a-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-studio-a-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -3683,7 +3690,7 @@ body::before {
   <div class="room-hotspot-rect" style="left:48.3%; top:89.5%; width:7.2%; height:7%;" onclick="goTo('gemini')" title="District III — GEMINI Speakeasy"></div>
   <div class="room-hotspot-rect" style="left:55.8%; top:89.5%; width:7.5%; height:7%;" onclick="goTo('atrium')" title="District IV — The Experience"></div>
   <div class="room-hotspot-rect" style="left:65%; top:88.8%; width:9.4%; height:9%;" onclick="estateToast('Basement / Power infrastructure hasn&rsquo;t been built yet.')" title="Basement — Power"></div>
-  <div class="room-hotspot-rect" style="left:82.7%; top:79.5%; width:17%; height:8.3%;" onclick="estateToast('More of District II — Studio A and the Recording Complex — is next.')" title="D2 Navigation — Explore District II"></div>
+  <div class="room-hotspot-rect" style="left:82.7%; top:79.5%; width:17%; height:8.3%;" onclick="estateToast('The Recording Complex is open beyond the secure threshold — enter any 4-digit code at II-110 to step through.')" title="D2 Navigation — Explore District II"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">DEPMG Executive Reception</span>
@@ -3709,13 +3716,12 @@ body::before {
 <!-- II-202 CONTROL ROOM — DISTRICT II RECORDING COMPLEX -->
 <div id="control-room" class="inner-room">
   <div class="control-room-bg"></div>
-  <div class="room-hotspot-rect" style="left:16.9%; top:22%; width:66.4%; height:18%;" onclick="saEnterStudioA()" title="Enter Studio A — II-201"></div>
-  <div class="room-hotspot-rect" style="left:75.5%; top:29.3%; width:9.1%; height:23.4%;" onclick="saSoundLockTransition()" title="Sound Lock — physical transition to Studio A"></div>
-  <div class="room-hotspot-rect" style="left:9.8%; top:57.1%; width:26.7%; height:27.8%;" onclick="saOpenPanel('console')" title="The Console — II-202"></div>
-  <div class="room-hotspot-rect" style="left:63.2%; top:57.1%; width:24.7%; height:27.8%;" onclick="saOpenPanel('gear')" title="Outboard &amp; Gear"></div>
-  <div class="room-hotspot-rect" style="left:70.96%; top:5.86%; width:18.23%; height:12.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
-  <div class="room-hotspot-rect" style="left:12.37%; top:6.35%; width:17.6%; height:11.7%; z-index:55;" onclick="saOpenPanel('sessions')" title="Now Playing — DEPMG Sessions"></div>
-  <div class="room-hotspot-rect" style="left:79.1%; top:84.2%; width:12%; height:6.6%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-hotspot-rect" style="left:38.1%; top:60.5%; width:23.4%; height:14.2%;" onclick="saGoToStudio('studio-a')" title="Enter Studio A — II-201"></div>
+  <div class="room-hotspot-rect" style="left:4.56%; top:36.1%; width:19.2%; height:14.2%;" onclick="saOpenPanel('console')" title="The Console — II-202"></div>
+  <div class="room-hotspot-rect" style="left:75.5%; top:37.1%; width:19.2%; height:15.6%;" onclick="saOpenPanel('gear')" title="Outboard &amp; Gear"></div>
+  <div class="room-hotspot-rect" style="left:4.56%; top:1.95%; width:19.2%; height:14.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
+  <div class="room-hotspot-rect" style="left:75.2%; top:0.98%; width:20.2%; height:16.6%; z-index:55;" onclick="saOpenPanel('sessions')" title="DEPMG Sessions"></div>
+  <div class="room-hotspot-rect" style="left:84.6%; top:83.5%; width:15.4%; height:7.3%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('depmg')">DEPMG Reception</button>
     <span class="room-nav-title">Studio A · Control Room</span>
@@ -3726,6 +3732,30 @@ body::before {
       <span class="sr-only">District II · CREATE — The Recording Complex</span>
       <h1 class="sr-only">II-202 · Control Room</h1>
       <p class="sr-only">The desk that runs the Recording Complex. Studio A's tracking room sits just past the glass, joined to this room through a dedicated acoustic sound lock — not a doorway.</p>
+    </div>
+  </div>
+</div>
+
+<!-- II-201 STUDIO A — DISTRICT II RECORDING COMPLEX -->
+<div id="studio-a" class="inner-room">
+  <div class="studio-a-bg"></div>
+  <div class="room-hotspot-rect" style="left:71.3%; top:5.37%; width:19.9%; height:12.7%; z-index:55;" onclick="saGoToStudio('control-room')" title="Control Room — through the Sound Lock"></div>
+  <div class="room-hotspot-rect" style="left:5.53%; top:5.37%; width:21.2%; height:13.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
+  <div class="room-hotspot-rect" style="left:0%; top:50.8%; width:21.8%; height:32.7%;" onclick="saOpenPanel('piano')" title="Grand Piano"></div>
+  <div class="room-hotspot-rect" style="left:26%; top:39.1%; width:11.7%; height:21.5%;" onclick="saOpenPanel('vocals')" title="Vocal Position"></div>
+  <div class="room-hotspot-rect" style="left:39.1%; top:58.6%; width:35.8%; height:22.5%;" onclick="saOpenPanel('performance')" title="Performance Floor"></div>
+  <div class="room-hotspot-rect" style="left:74.9%; top:44.9%; width:25.1%; height:31.25%;" onclick="saOpenPanel('backline')" title="Backline &amp; Instruments"></div>
+  <div class="room-hotspot-rect" style="left:84.6%; top:83.5%; width:15.4%; height:7.3%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="saGoToStudio('control-room')">Control Room</button>
+    <span class="room-nav-title">Studio A · Tracking Room</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-201 · Studio A</h1>
+      <p class="sr-only">DEPMG's flagship tracking room — full band, drums, grand piano, strings, choir and live-session configurations, joined to the Control Room through a dedicated acoustic sound lock.</p>
     </div>
   </div>
 </div>
@@ -5250,7 +5280,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5528,20 +5558,24 @@ const SA_PANELS = {
   },
   complex: {
     title: 'The Recording Complex · District II',
-    body: `<div class="sa-directory">
-      <div class="sa-d-row"><span class="sa-d-num">II-201</span><span class="sa-d-name">Studio A · Flagship Tracking Room</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-202</span><span class="sa-d-name">Studio A Control Room</span><span class="sa-d-here">You are here</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-203</span><span class="sa-d-name">Studio A Vocal Booth</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-204</span><span class="sa-d-name">Isolation Rooms</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-205</span><span class="sa-d-name">Studio B · Production / Writing Studio</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-206</span><span class="sa-d-name">Dolby Atmos Mixing Suite</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-207</span><span class="sa-d-name">Mastering / Critical Listening Room</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-208</span><span class="sa-d-name">Artist Lounge</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-209</span><span class="sa-d-name">Producer Lounge / Writing Room</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-210A&ndash;C</span><span class="sa-d-name">Instrument / Equipment Vault, Machine Room</span></div>
-      <div class="sa-d-row"><span class="sa-d-num">II-211</span><span class="sa-d-name">Studio Kitchenette + Restrooms</span></div>
-    </div>
-    <p style="margin-top:18px; opacity:0.5; font-style:italic; font-size:13px;">Per A-202 Rev. 4 (frozen). Rooms beyond II-202 haven't been built into the Estate yet.</p>`
+    body: () => {
+      const rows = [
+        ['II-201', 'Studio A · Flagship Tracking Room', 'studio-a'],
+        ['II-202', 'Studio A Control Room', 'control-room'],
+        ['II-203', 'Studio A Vocal Booth', null],
+        ['II-204', 'Isolation Rooms', null],
+        ['II-205', 'Studio B · Production / Writing Studio', null],
+        ['II-206', 'Dolby Atmos Mixing Suite', null],
+        ['II-207', 'Mastering / Critical Listening Room', null],
+        ['II-208', 'Artist Lounge', null],
+        ['II-209', 'Producer Lounge / Writing Room', null],
+        ['II-210A&ndash;C', 'Instrument / Equipment Vault, Machine Room', null],
+        ['II-211', 'Studio Kitchenette + Restrooms', null]
+      ];
+      const list = rows.map(([num, name, id]) => `<div class="sa-d-row"><span class="sa-d-num">${num}</span><span class="sa-d-name">${name}</span>${id === current ? '<span class="sa-d-here">You are here</span>' : ''}</div>`).join('');
+      return `<div class="sa-directory">${list}</div>
+      <p style="margin-top:18px; opacity:0.5; font-style:italic; font-size:13px;">Per A-202 Rev. 4 (frozen). Rooms beyond II-201/II-202 haven't been built into the Estate yet.</p>`;
+    }
   },
   sessions: {
     title: 'DEPMG Sessions',
@@ -5554,27 +5588,44 @@ const SA_PANELS = {
       <a href="https://music.apple.com/us/artist/richfraz/1444729870" target="_blank">Apple Music</a>
     </div>
     <p style="margin-top:18px; opacity:0.6; font-style:italic; font-size:13px;">Production credits and session stories for other DEPMG artists are still being assembled.</p>`
+  },
+  performance: {
+    title: 'Performance Floor',
+    body: `<p>The open tracking floor — reconfigured session to session. One night it's a single vocalist and a mic. The next it's a full rhythm section, strings, horns or a choir, all tracked live in the same room.</p>
+    <p style="opacity:0.6; font-style:italic;">Specific session configurations and stories will populate this panel as they happen.</p>`
+  },
+  piano: {
+    title: 'Grand Piano',
+    body: `<p>A concert grand, positioned to be tracked on its own or live alongside the full room.</p>
+    <p style="opacity:0.6; font-style:italic;">Exact make and model are still being confirmed and will be documented here once locked in.</p>`
+  },
+  vocals: {
+    title: 'Vocal Position',
+    body: `<p>The primary vocal tracking position on the Studio A floor — not an isolated booth. For fully isolated vocal capture, see II-203 Vocal Booth, a separate room not yet built into the Estate.</p>`
+  },
+  backline: {
+    title: 'Backline &amp; Instruments',
+    body: `<p>Guitars, amplifiers and backline equipment on hand for tracking, curated rather than accumulated.</p>
+    <p style="opacity:0.6; font-style:italic;">A full instrument and equipment list is still being assembled and will populate this panel once finalized.</p>`
   }
 };
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
+  document.getElementById('sa-panel-eyebrow').textContent = current === 'studio-a' ? 'II-201 · Studio A' : 'II-202 · Control Room';
   document.getElementById('sa-panel-title').innerHTML = p.title;
-  document.getElementById('sa-panel-body').innerHTML = p.body;
+  document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
   document.getElementById('sa-panel-modal').classList.add('open');
 }
 function saClosePanel() {
   document.getElementById('sa-panel-modal').classList.remove('open');
 }
-function saEnterStudioA() {
-  estateToast('Studio A’s tracking room hasn’t been built into the Estate yet — for now, the view through the glass is as close as you can get.');
-}
-function saSoundLockTransition() {
+function saGoToStudio(destId) {
   const el = document.getElementById('sa-soundlock-transition');
   el.classList.add('show');
   setTimeout(() => {
     el.classList.remove('show');
-    estateToast('The Sound Lock leads to Studio A’s tracking room, which hasn’t been built into the Estate yet. The architecture is real — the room just isn’t finished.');
+    goTo(destId);
   }, 1400);
 }
 
@@ -11859,7 +11910,7 @@ m7 = cards/m7-algorhythm.png
 <div id="sa-panel-modal" onclick="saClosePanel()">
   <div class="sa-card" onclick="event.stopPropagation()">
     <button class="sa-close" onclick="saClosePanel()" aria-label="Close">&times;</button>
-    <p class="sa-eyebrow">II-202 &middot; Control Room</p>
+    <p class="sa-eyebrow" id="sa-panel-eyebrow">II-202 &middot; Control Room</p>
     <h3 class="sa-title" id="sa-panel-title"></h3>
     <div class="sa-body" id="sa-panel-body"></div>
   </div>
@@ -11902,6 +11953,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Studio A · Control Room</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('studio-a')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-studio-a-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Studio A · Tracking Room</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
