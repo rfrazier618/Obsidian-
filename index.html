@@ -1100,6 +1100,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#hq-corridor { background: #06050a; }
+.hq-corridor-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-hq-corridor-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -2222,6 +2229,12 @@ body::before {
 .sa-body p { margin-bottom: 14px; }
 .sa-body p:last-child { margin-bottom: 0; }
 .sa-directory { display: flex; flex-direction: column; gap: 0; }
+.sa-d-group {
+  font-family: 'Cormorant SC', serif; font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.65;
+  margin: 22px 0 4px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+.sa-d-group:first-child { margin-top: 0; }
 .sa-d-row {
   display: flex; align-items: baseline; gap: 16px; padding: 10px 0;
   border-bottom: 1px solid rgba(201,168,76,0.08);
@@ -3690,7 +3703,7 @@ body::before {
   <div class="room-hotspot-rect" style="left:48.3%; top:89.5%; width:7.2%; height:7%;" onclick="goTo('gemini')" title="District III — GEMINI Speakeasy"></div>
   <div class="room-hotspot-rect" style="left:55.8%; top:89.5%; width:7.5%; height:7%;" onclick="goTo('atrium')" title="District IV — The Experience"></div>
   <div class="room-hotspot-rect" style="left:65%; top:88.8%; width:9.4%; height:9%;" onclick="estateToast('Basement / Power infrastructure hasn&rsquo;t been built yet.')" title="Basement — Power"></div>
-  <div class="room-hotspot-rect" style="left:82.7%; top:79.5%; width:17%; height:8.3%;" onclick="estateToast('The Recording Complex is open beyond the secure threshold — enter any 4-digit code at II-110 to step through.')" title="D2 Navigation — Explore District II"></div>
+  <div class="room-hotspot-rect" style="left:82.7%; top:79.5%; width:17%; height:8.3%;" onclick="goTo('hq-corridor')" title="D2 Navigation — Executive, Brand &amp; Media HQ"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">DEPMG Executive Reception</span>
@@ -3719,7 +3732,7 @@ body::before {
   <div class="room-hotspot-rect" style="left:38.1%; top:60.5%; width:23.4%; height:14.2%;" onclick="saGoToStudio('studio-a')" title="Enter Studio A — II-201"></div>
   <div class="room-hotspot-rect" style="left:4.56%; top:36.1%; width:19.2%; height:14.2%;" onclick="saOpenPanel('console')" title="The Console — II-202"></div>
   <div class="room-hotspot-rect" style="left:75.5%; top:37.1%; width:19.2%; height:15.6%;" onclick="saOpenPanel('gear')" title="Outboard &amp; Gear"></div>
-  <div class="room-hotspot-rect" style="left:4.56%; top:1.95%; width:19.2%; height:14.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
+  <div class="room-hotspot-rect" style="left:4.56%; top:1.95%; width:19.2%; height:14.2%; z-index:55;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
   <div class="room-hotspot-rect" style="left:75.2%; top:0.98%; width:20.2%; height:16.6%; z-index:55;" onclick="saOpenPanel('sessions')" title="DEPMG Sessions"></div>
   <div class="room-hotspot-rect" style="left:84.6%; top:83.5%; width:15.4%; height:7.3%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
   <div class="room-nav">
@@ -3740,7 +3753,7 @@ body::before {
 <div id="studio-a" class="inner-room">
   <div class="studio-a-bg"></div>
   <div class="room-hotspot-rect" style="left:71.3%; top:5.37%; width:19.9%; height:12.7%; z-index:55;" onclick="saGoToStudio('control-room')" title="Control Room — through the Sound Lock"></div>
-  <div class="room-hotspot-rect" style="left:5.53%; top:5.37%; width:21.2%; height:13.2%; z-index:55;" onclick="saOpenPanel('complex')" title="Recording Complex — District II directory"></div>
+  <div class="room-hotspot-rect" style="left:5.53%; top:5.37%; width:21.2%; height:13.2%; z-index:55;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
   <div class="room-hotspot-rect" style="left:0%; top:50.8%; width:21.8%; height:32.7%;" onclick="saOpenPanel('piano')" title="Grand Piano"></div>
   <div class="room-hotspot-rect" style="left:26%; top:39.1%; width:11.7%; height:21.5%;" onclick="saOpenPanel('vocals')" title="Vocal Position"></div>
   <div class="room-hotspot-rect" style="left:39.1%; top:58.6%; width:35.8%; height:22.5%;" onclick="saOpenPanel('performance')" title="Performance Floor"></div>
@@ -3756,6 +3769,29 @@ body::before {
       <span class="sr-only">District II · CREATE — The Recording Complex</span>
       <h1 class="sr-only">II-201 · Studio A</h1>
       <p class="sr-only">DEPMG's flagship tracking room — full band, drums, grand piano, strings, choir and live-session configurations, joined to the Control Room through a dedicated acoustic sound lock.</p>
+    </div>
+  </div>
+</div>
+
+<!-- II-3XX EXECUTIVE, BRAND & MEDIA HQ — CORRIDOR HUB -->
+<div id="hq-corridor" class="inner-room">
+  <div class="hq-corridor-bg"></div>
+  <div class="room-hotspot-rect" style="left:7.36%; top:49.3%; width:11.65%; height:37.6%;" onclick="estateToast('The Obsidian Screening Theater hasn’t been built into the Estate yet — something bigger lives further down the hall.')" title="Obsidian Screening Theater — II-311"></div>
+  <div class="room-hotspot-rect" style="left:20.96%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('executive')" title="Executive Suite — II-301–304"></div>
+  <div class="room-hotspot-rect" style="left:34.57%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('brand')" title="Brand Studios — II-305–308"></div>
+  <div class="room-hotspot-rect" style="left:48.1%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('creator')" title="Creator Suites &amp; Lounge — II-309–310"></div>
+  <div class="room-hotspot-rect" style="left:61.65%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:75.26%; top:49.3%; width:11.65%; height:37.6%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('depmg')">DEPMG Reception</button>
+    <span class="room-nav-title">Executive, Brand &amp; Media HQ</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — Executive, Brand &amp; Media HQ</span>
+      <h1 class="sr-only">II-3xx · Executive, Brand &amp; Media HQ</h1>
+      <p class="sr-only">The corridor hub for DEPMG's headquarters wing — executive offices near the entry, the brand studios and Creator Suites further down, with the Obsidian Screening Theater as the wing's flagship destination.</p>
     </div>
   </div>
 </div>
@@ -5280,7 +5316,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5557,25 +5593,63 @@ const SA_PANELS = {
     <p style="opacity:0.6; font-style:italic;">A full equipment list is still being assembled and will populate this panel once finalized.</p>`
   },
   complex: {
-    title: 'The Recording Complex · District II',
+    title: 'District II Directory',
     body: () => {
-      const rows = [
-        ['II-201', 'Studio A · Flagship Tracking Room', 'studio-a'],
-        ['II-202', 'Studio A Control Room', 'control-room'],
-        ['II-203', 'Studio A Vocal Booth', null],
-        ['II-204', 'Isolation Rooms', null],
-        ['II-205', 'Studio B · Production / Writing Studio', null],
-        ['II-206', 'Dolby Atmos Mixing Suite', null],
-        ['II-207', 'Mastering / Critical Listening Room', null],
-        ['II-208', 'Artist Lounge', null],
-        ['II-209', 'Producer Lounge / Writing Room', null],
-        ['II-210A&ndash;C', 'Instrument / Equipment Vault, Machine Room', null],
-        ['II-211', 'Studio Kitchenette + Restrooms', null]
+      const groups = [
+        ['Arrival / Security', [
+          ['II-101', 'Central DEPMG Executive Reception', 'depmg'],
+          ['II-102', 'Recording Complex Reveal', null],
+          ['II-110', 'DEPMG Secure Creative Threshold', null]
+        ]],
+        ['Recording Complex', [
+          ['II-201', 'Studio A · Flagship Tracking Room', 'studio-a'],
+          ['II-202', 'Studio A Control Room', 'control-room'],
+          ['II-203', 'Studio A Vocal Booth', null],
+          ['II-204', 'Isolation Rooms', null],
+          ['II-205', 'Studio B · Production / Writing Studio', null],
+          ['II-206', 'Dolby Atmos Mixing Suite', null],
+          ['II-207', 'Mastering / Critical Listening Room', null],
+          ['II-208', 'Artist Lounge', null],
+          ['II-209', 'Producer Lounge / Writing Room', null],
+          ['II-210A&ndash;C', 'Instrument / Equipment Vault, Machine Room', null],
+          ['II-211', 'Studio Kitchenette + Restrooms', null]
+        ]],
+        ['Executive, Brand &amp; Media HQ', [
+          ['II-301', 'CEO Office', null],
+          ['II-302', 'Vice President Office', null],
+          ['II-303', 'Executive Boardroom', null],
+          ['II-304', 'Small Executive Conference / Meeting Room', null],
+          ['II-305', 'Twin Scales Publishing', null],
+          ['II-306', 'Algorhythm Design Studio', null],
+          ['II-307', 'OMD Creative Studio', null],
+          ['II-308', 'Podcast Studio', null],
+          ['II-309', 'Creator Suites', null],
+          ['II-310', 'Creator Collaboration Lounge', null],
+          ['II-311', 'Obsidian Screening Theater', null],
+          ['II-312', 'Administrative / Support Workspace', null],
+          ['II-313', 'Shared Caf&eacute; / Refreshment', null],
+          ['II-314', 'Restrooms, Storage, Print / Reprographics', null]
+        ]]
       ];
-      const list = rows.map(([num, name, id]) => `<div class="sa-d-row"><span class="sa-d-num">${num}</span><span class="sa-d-name">${name}</span>${id === current ? '<span class="sa-d-here">You are here</span>' : ''}</div>`).join('');
+      const list = groups.map(([label, rows]) => `<div class="sa-d-group">${label}</div>` + rows.map(([num, name, id]) => `<div class="sa-d-row"><span class="sa-d-num">${num}</span><span class="sa-d-name">${name}</span>${id === current ? '<span class="sa-d-here">You are here</span>' : ''}</div>`).join('')).join('');
       return `<div class="sa-directory">${list}</div>
-      <p style="margin-top:18px; opacity:0.5; font-style:italic; font-size:13px;">Per A-202 Rev. 4 (frozen). Rooms beyond II-201/II-202 haven't been built into the Estate yet.</p>`;
+      <p style="margin-top:18px; opacity:0.5; font-style:italic; font-size:13px;">Per A-202 Rev. 4 (frozen). Rooms without a linked destination haven't been built into the Estate yet.</p>`;
     }
+  },
+  executive: {
+    title: 'Executive Suite',
+    body: `<p>CEO Office, Vice President Office, Executive Boardroom, and a small executive conference room (II-301&ndash;304) &mdash; the leadership core nearest the secure threshold.</p>
+    <p style="opacity:0.6; font-style:italic;">These rooms haven't been built into the Estate yet.</p>`
+  },
+  brand: {
+    title: 'Brand Studios',
+    body: `<p>Twin Scales Publishing, Algorhythm Design Studio, OMD Creative Studio, and the Podcast Studio (II-305&ndash;308) &mdash; the working studios behind DEPMG's brand and media output.</p>
+    <p style="opacity:0.6; font-style:italic;">These rooms haven't been built into the Estate yet.</p>`
+  },
+  creator: {
+    title: 'Creator Suites &amp; Lounge',
+    body: `<p>Flexible creator workrooms and a shared collaboration lounge (II-309&ndash;310) for cross-brand work.</p>
+    <p style="opacity:0.6; font-style:italic;">These rooms haven't been built into the Estate yet.</p>`
   },
   sessions: {
     title: 'DEPMG Sessions',
@@ -5612,7 +5686,8 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  document.getElementById('sa-panel-eyebrow').textContent = current === 'studio-a' ? 'II-201 · Studio A' : 'II-202 · Control Room';
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ' };
+  document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
   document.getElementById('sa-panel-modal').classList.add('open');
@@ -11960,6 +12035,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Studio A · Tracking Room</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('hq-corridor')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-hq-corridor-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Executive, Brand &amp; Media HQ</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
