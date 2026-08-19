@@ -1128,6 +1128,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#creator-lounge { background: #06050a; }
+.creator-lounge-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-creator-lounge-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -3800,7 +3807,7 @@ body::before {
   <div class="room-hotspot-rect" style="left:7.36%; top:49.3%; width:11.65%; height:37.6%;" onclick="goTo('screening')" title="Obsidian Screening Theater — II-311"></div>
   <div class="room-hotspot-rect" style="left:20.96%; top:49.3%; width:11.65%; height:37.6%;" onclick="goTo('boardroom')" title="Executive Suite — II-301–304"></div>
   <div class="room-hotspot-rect" style="left:34.57%; top:49.3%; width:11.65%; height:37.6%;" onclick="goTo('brand-studios')" title="Brand Studios — II-305–308"></div>
-  <div class="room-hotspot-rect" style="left:48.1%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('creator')" title="Creator Suites &amp; Lounge — II-309–310"></div>
+  <div class="room-hotspot-rect" style="left:48.1%; top:49.3%; width:11.65%; height:37.6%;" onclick="goTo('creator-lounge')" title="Creator Suites &amp; Lounge — II-309–310"></div>
   <div class="room-hotspot-rect" style="left:61.65%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
   <div class="room-hotspot-rect" style="left:75.26%; top:49.3%; width:11.65%; height:37.6%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
   <div class="room-nav">
@@ -3884,6 +3891,29 @@ body::before {
       <span class="sr-only">District II · CREATE — Executive, Brand &amp; Media HQ</span>
       <h1 class="sr-only">II-305&ndash;308 · Brand Studios</h1>
       <p class="sr-only">The shared creative commons where DEPMG's four brands meet &mdash; Twin Scales Publishing, Algorhythm Design Studio, OMD Creative Studio, and the Podcast Studio, each with its own threshold onto this room.</p>
+    </div>
+  </div>
+</div>
+
+<!-- II-309–310 CREATOR SUITES & LOUNGE — DISTRICT II HQ COLLABORATION -->
+<div id="creator-lounge" class="inner-room">
+  <div class="creator-lounge-bg"></div>
+  <div class="room-hotspot-rect" style="left:4.43%; top:70.6%; width:12.83%; height:28.03%;" onclick="goTo('hq-corridor')" title="HQ Corridor — return to the hub"></div>
+  <div class="room-hotspot-rect" style="left:18.36%; top:70.6%; width:13.54%; height:28.03%;" onclick="saOpenPanel('creatorsuites')" title="Creator Suites — II-309"></div>
+  <div class="room-hotspot-rect" style="left:33.07%; top:70.6%; width:13.15%; height:28.03%;" onclick="saOpenPanel('creatorlounge')" title="Creator Lounge — II-310"></div>
+  <div class="room-hotspot-rect" style="left:47.53%; top:70.6%; width:14%; height:28.03%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:62.37%; top:70.6%; width:14.13%; height:28.03%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-hotspot-rect" style="left:77.47%; top:70.6%; width:14.26%; height:28.03%;" onclick="goTo('screening')" title="Obsidian Screening Theater — II-311"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hq-corridor')">HQ Corridor</button>
+    <span class="room-nav-title">Creator Suites &amp; Lounge</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — Executive, Brand &amp; Media HQ</span>
+      <h1 class="sr-only">II-309&ndash;310 · Creator Suites &amp; Lounge</h1>
+      <p class="sr-only">Where ideas collide and creators build &mdash; the shared collaboration commons of the HQ wing, with flexible creator workrooms opening off the lounge.</p>
     </div>
   </div>
 </div>
@@ -5408,7 +5438,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5716,7 +5746,7 @@ const SA_PANELS = {
           ['II-307', 'OMD Creative Studio', 'brand-studios'],
           ['II-308', 'Podcast Studio', 'brand-studios'],
           ['II-309', 'Creator Suites', null],
-          ['II-310', 'Creator Collaboration Lounge', null],
+          ['II-310', 'Creator Collaboration Lounge', 'creator-lounge'],
           ['II-311', 'Obsidian Screening Theater', 'screening'],
           ['II-312', 'Administrative / Support Workspace', null],
           ['II-313', 'Shared Caf&eacute; / Refreshment', null],
@@ -5763,10 +5793,14 @@ const SA_PANELS = {
     body: `<p>Voices that build ideas into impact.</p>
     <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`
   },
-  creator: {
-    title: 'Creator Suites &amp; Lounge',
-    body: `<p>Flexible creator workrooms and a shared collaboration lounge (II-309&ndash;310) for cross-brand work.</p>
-    <p style="opacity:0.6; font-style:italic;">These rooms haven't been built into the Estate yet.</p>`
+  creatorsuites: {
+    title: 'Creator Suites',
+    body: `<p>Flexible creator workrooms for writers, artists, designers, producers, and guests.</p>
+    <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`
+  },
+  creatorlounge: {
+    title: 'Creator Lounge',
+    body: `<p>The shared commons for collaboration across DEPMG's brands and disciplines &mdash; where ideas collide and creators build.</p>`
   },
   nowscreening: {
     title: 'Now Screening',
@@ -5822,7 +5856,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12199,6 +12233,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Brand Studios</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('creator-lounge')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-creator-lounge-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Creator Suites &amp; Lounge</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
