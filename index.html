@@ -1107,6 +1107,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#screening { background: #06050a; }
+.screening-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-screening-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -3776,7 +3783,7 @@ body::before {
 <!-- II-3XX EXECUTIVE, BRAND & MEDIA HQ — CORRIDOR HUB -->
 <div id="hq-corridor" class="inner-room">
   <div class="hq-corridor-bg"></div>
-  <div class="room-hotspot-rect" style="left:7.36%; top:49.3%; width:11.65%; height:37.6%;" onclick="estateToast('The Obsidian Screening Theater hasn’t been built into the Estate yet — something bigger lives further down the hall.')" title="Obsidian Screening Theater — II-311"></div>
+  <div class="room-hotspot-rect" style="left:7.36%; top:49.3%; width:11.65%; height:37.6%;" onclick="goTo('screening')" title="Obsidian Screening Theater — II-311"></div>
   <div class="room-hotspot-rect" style="left:20.96%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('executive')" title="Executive Suite — II-301–304"></div>
   <div class="room-hotspot-rect" style="left:34.57%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('brand')" title="Brand Studios — II-305–308"></div>
   <div class="room-hotspot-rect" style="left:48.1%; top:49.3%; width:11.65%; height:37.6%;" onclick="saOpenPanel('creator')" title="Creator Suites &amp; Lounge — II-309–310"></div>
@@ -3792,6 +3799,30 @@ body::before {
       <span class="sr-only">District II · CREATE — Executive, Brand &amp; Media HQ</span>
       <h1 class="sr-only">II-3xx · Executive, Brand &amp; Media HQ</h1>
       <p class="sr-only">The corridor hub for DEPMG's headquarters wing — executive offices near the entry, the brand studios and Creator Suites further down, with the Obsidian Screening Theater as the wing's flagship destination.</p>
+    </div>
+  </div>
+</div>
+
+<!-- II-311 OBSIDIAN SCREENING THEATER — DISTRICT II HQ FEATURE DESTINATION -->
+<div id="screening" class="inner-room">
+  <div class="screening-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.52%; top:74.02%; width:11.98%; height:24.4%;" onclick="goTo('hq-corridor')" title="HQ Corridor — return to the hub"></div>
+  <div class="room-hotspot-rect" style="left:13.67%; top:74.02%; width:11.91%; height:24.4%;" onclick="saOpenPanel('nowscreening')" title="Now Screening"></div>
+  <div class="room-hotspot-rect" style="left:26.76%; top:74.02%; width:11.65%; height:24.4%;" onclick="saOpenPanel('seating')" title="Theater Seating"></div>
+  <div class="room-hotspot-rect" style="left:38.54%; top:74.02%; width:11.91%; height:24.4%;" onclick="saOpenPanel('surround')" title="Surround Sound"></div>
+  <div class="room-hotspot-rect" style="left:50.78%; top:74.02%; width:12.04%; height:24.4%;" onclick="saOpenPanel('booth')" title="Projection &amp; Edit Suite"></div>
+  <div class="room-hotspot-rect" style="left:63.93%; top:74.02%; width:11.91%; height:24.4%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:77.02%; top:74.02%; width:12.04%; height:24.4%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hq-corridor')">HQ Corridor</button>
+    <span class="room-nav-title">Obsidian Screening Theater</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — Executive, Brand &amp; Media HQ</span>
+      <h1 class="sr-only">II-311 · Obsidian Screening Theater</h1>
+      <p class="sr-only">The HQ wing's flagship destination — a private screening room for roughly 20 to 30 guests, built for rough cuts, premieres and OMD projects, acoustically isolated from the Recording Complex.</p>
     </div>
   </div>
 </div>
@@ -5316,7 +5347,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5625,7 +5656,7 @@ const SA_PANELS = {
           ['II-308', 'Podcast Studio', null],
           ['II-309', 'Creator Suites', null],
           ['II-310', 'Creator Collaboration Lounge', null],
-          ['II-311', 'Obsidian Screening Theater', null],
+          ['II-311', 'Obsidian Screening Theater', 'screening'],
           ['II-312', 'Administrative / Support Workspace', null],
           ['II-313', 'Shared Caf&eacute; / Refreshment', null],
           ['II-314', 'Restrooms, Storage, Print / Reprographics', null]
@@ -5650,6 +5681,25 @@ const SA_PANELS = {
     title: 'Creator Suites &amp; Lounge',
     body: `<p>Flexible creator workrooms and a shared collaboration lounge (II-309&ndash;310) for cross-brand work.</p>
     <p style="opacity:0.6; font-style:italic;">These rooms haven't been built into the Estate yet.</p>`
+  },
+  nowscreening: {
+    title: 'Now Screening',
+    body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
+    <p style="opacity:0.6; font-style:italic;">A real screening schedule and content library will populate this panel once assembled.</p>`
+  },
+  seating: {
+    title: 'Theater Seating',
+    body: `<p>Tiered, sightlined seating for roughly 20 to 30 guests &mdash; private and curated, not a commercial house.</p>`
+  },
+  surround: {
+    title: 'Surround Sound',
+    body: `<p>Immersive surround audio, engineered into the room's own architecture and acoustic treatment.</p>
+    <p style="opacity:0.6; font-style:italic;">Exact system make and model are still being finalized and will be documented here once locked in.</p>`
+  },
+  booth: {
+    title: 'Projection &amp; Edit Suite',
+    body: `<p>The projection, control and edit support room behind the seating &mdash; where the screening actually gets prepared.</p>
+    <p style="opacity:0.6; font-style:italic;">Not a separately navigable room yet.</p>`
   },
   sessions: {
     title: 'DEPMG Sessions',
@@ -5686,7 +5736,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12042,6 +12092,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Executive, Brand &amp; Media HQ</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('screening')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-screening-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Obsidian Screening Theater</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
