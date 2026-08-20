@@ -1156,6 +1156,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#atmos { background: #06050a; }
+.atmos-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-atmos-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -4008,6 +4015,30 @@ body::before {
   </div>
 </div>
 
+<!-- II-206 DOLBY ATMOS MIXING SUITE — DISTRICT II RECORDING COMPLEX -->
+<div id="atmos" class="inner-room">
+  <div class="atmos-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.33%; top:71.1%; width:13.67%; height:26.56%;" onclick="goTo('studio-b')" title="Studio B — return to the Recording Complex"></div>
+  <div class="room-hotspot-rect" style="left:14.78%; top:71.1%; width:12.43%; height:26.56%;" onclick="saOpenPanel('sweetspot')" title="Sweet Spot"></div>
+  <div class="room-hotspot-rect" style="left:28.13%; top:71.1%; width:13.22%; height:26.56%;" onclick="saOpenPanel('speakerarray')" title="Speaker Array"></div>
+  <div class="room-hotspot-rect" style="left:42.19%; top:71.1%; width:13.54%; height:26.56%;" onclick="saOpenPanel('mixconsole')" title="Mix Console"></div>
+  <div class="room-hotspot-rect" style="left:56.51%; top:71.1%; width:13.54%; height:26.56%;" onclick="saOpenPanel('clientarea')" title="Client Area"></div>
+  <div class="room-hotspot-rect" style="left:70.96%; top:71.1%; width:12.37%; height:26.56%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:84.11%; top:71.1%; width:13.54%; height:26.56%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('studio-b')">Studio B</button>
+    <span class="room-nav-title">Dolby Atmos Mixing Suite</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-206 · Dolby Atmos Mixing Suite</h1>
+      <p class="sr-only">A purpose-built immersive listening environment organized around a single sweet spot &mdash; mixes space, not just records.</p>
+    </div>
+  </div>
+</div>
+
 <!-- THE CLOSET -->
 <div id="closet" class="inner-room">
   <div class="closet-bg"></div>
@@ -5528,7 +5559,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5819,7 +5850,7 @@ const SA_PANELS = {
           ['II-203', 'Studio A Vocal Booth', 'vocal-booth'],
           ['II-204', 'Isolation Rooms', 'isolation-rooms'],
           ['II-205', 'Studio B · Production / Writing Studio', 'studio-b'],
-          ['II-206', 'Dolby Atmos Mixing Suite', null],
+          ['II-206', 'Dolby Atmos Mixing Suite', 'atmos'],
           ['II-207', 'Mastering / Critical Listening Room', null],
           ['II-208', 'Artist Lounge', null],
           ['II-209', 'Producer Lounge / Writing Room', null],
@@ -5904,6 +5935,24 @@ const SA_PANELS = {
     title: 'Sound Lock Status',
     body: `<p>Studio B is acoustically isolated from Studio A. Audio routing is exclusive to Studio A only.</p>`
   },
+  sweetspot: {
+    title: 'Sweet Spot',
+    body: `<p>The true center of the immersive listening field &mdash; the one position where the surround and overhead array converges into a calibrated three-dimensional mix.</p>`
+  },
+  speakerarray: {
+    title: 'Speaker Array',
+    body: `<p>Surround and overhead speakers in a full 3D configuration, built for complete immersive mix translation.</p>
+    <p style="opacity:0.6; font-style:italic;">Exact speaker count, configuration and manufacturer are still being finalized and will be documented here once locked in.</p>`
+  },
+  mixconsole: {
+    title: 'Mix Console',
+    body: `<p>The production console and workstation at the mix position &mdash; where the immersive field actually gets built.</p>
+    <p style="opacity:0.6; font-style:italic;">Exact console make and model are still being finalized and will be documented here once locked in.</p>`
+  },
+  clientarea: {
+    title: 'Client Area',
+    body: `<p>Restrained seating behind the primary mix position &mdash; room for a client or collaborator to sit in on a mix without occupying the sweet spot.</p>`
+  },
   nowscreening: {
     title: 'Now Screening',
     body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
@@ -5958,7 +6007,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12363,6 +12412,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Studio B</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('atmos')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-atmos-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Dolby Atmos Mixing Suite</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
