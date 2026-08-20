@@ -1149,6 +1149,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#studio-b { background: #06050a; }
+.studio-b-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-studio-b-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -3978,6 +3985,29 @@ body::before {
   </div>
 </div>
 
+<!-- II-205 STUDIO B — DISTRICT II RECORDING COMPLEX -->
+<div id="studio-b" class="inner-room">
+  <div class="studio-b-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.52%; top:71.3%; width:13.48%; height:26.86%;" onclick="goTo('studio-a')" title="Studio A — return to the tracking room"></div>
+  <div class="room-hotspot-rect" style="left:14.84%; top:71.3%; width:12.5%; height:26.86%;" onclick="goTo('control-room')" title="Control Room — II-202"></div>
+  <div class="room-hotspot-rect" style="left:28.19%; top:71.3%; width:12.63%; height:26.86%;" onclick="goTo('vocal-booth')" title="Studio A Vocal Booth — II-203"></div>
+  <div class="room-hotspot-rect" style="left:41.67%; top:71.3%; width:12.89%; height:26.86%;" onclick="goTo('isolation-rooms')" title="Isolation Rooms — II-204"></div>
+  <div class="room-hotspot-rect" style="left:69.14%; top:71.3%; width:11.26%; height:26.86%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-hotspot-rect" style="left:81.9%; top:71.3%; width:13.8%; height:26.86%;" onclick="saOpenPanel('sbsoundlock')" title="Sound Lock Status"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('studio-a')">Studio A</button>
+    <span class="room-nav-title">Studio B</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-205 · Studio B · Production/Writing Studio</h1>
+      <p class="sr-only">Where records are built &mdash; production, writing, arranging and creating, distinct from Studio A's performance-driven identity.</p>
+    </div>
+  </div>
+</div>
+
 <!-- THE CLOSET -->
 <div id="closet" class="inner-room">
   <div class="closet-bg"></div>
@@ -5498,7 +5528,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5788,7 +5818,7 @@ const SA_PANELS = {
           ['II-202', 'Studio A Control Room', 'control-room'],
           ['II-203', 'Studio A Vocal Booth', 'vocal-booth'],
           ['II-204', 'Isolation Rooms', 'isolation-rooms'],
-          ['II-205', 'Studio B · Production / Writing Studio', null],
+          ['II-205', 'Studio B · Production / Writing Studio', 'studio-b'],
           ['II-206', 'Dolby Atmos Mixing Suite', null],
           ['II-207', 'Mastering / Critical Listening Room', null],
           ['II-208', 'Artist Lounge', null],
@@ -5870,6 +5900,10 @@ const SA_PANELS = {
     title: 'Sound Lock Status',
     body: `<p>Isolation Rooms are acoustically isolated from Studio A. Audio routing is exclusive to Studio A only.</p>`
   },
+  sbsoundlock: {
+    title: 'Sound Lock Status',
+    body: `<p>Studio B is acoustically isolated from Studio A. Audio routing is exclusive to Studio A only.</p>`
+  },
   nowscreening: {
     title: 'Now Screening',
     body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
@@ -5924,7 +5958,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12322,6 +12356,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Isolation Rooms</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('studio-b')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-studio-b-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Studio B</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
