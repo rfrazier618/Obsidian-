@@ -1205,6 +1205,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#kitchenette { background: #06050a; }
+.kitchenette-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-kitchenette-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -4225,6 +4232,30 @@ body::before {
   </div>
 </div>
 
+<!-- II-211 STUDIO KITCHENETTE + RESTROOMS — DISTRICT II RECORDING COMPLEX SUPPORT -->
+<div id="kitchenette" class="inner-room">
+  <div class="kitchenette-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.35%; top:70.78%; width:13.59%; height:29.22%;" onclick="goTo('machine-room')" title="Machine Room — II-210C"></div>
+  <div class="room-hotspot-rect" style="left:14.64%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('kitchenetteoverview')" title="Kitchenette"></div>
+  <div class="room-hotspot-rect" style="left:28.92%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('coffeerefresh')" title="Coffee &amp; Refreshments"></div>
+  <div class="room-hotspot-rect" style="left:43.21%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('guestseating')" title="Guest Seating"></div>
+  <div class="room-hotspot-rect" style="left:57.49%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('restrooms')" title="Restrooms"></div>
+  <div class="room-hotspot-rect" style="left:71.78%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:86.06%; top:70.78%; width:13.59%; height:29.22%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('machine-room')">Machine Room</button>
+    <span class="room-nav-title">Studio Kitchenette</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-211 · Studio Kitchenette + Restrooms</h1>
+      <p class="sr-only">The studios support the work. This room supports the people doing it.</p>
+    </div>
+  </div>
+</div>
+
 <!-- THE CLOSET -->
 <div id="closet" class="inner-room">
   <div class="closet-bg"></div>
@@ -5745,7 +5776,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault','machine-room'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault','machine-room','kitchenette'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -6043,7 +6074,7 @@ const SA_PANELS = {
           ['II-210A', 'Instrument Vault', 'instrument-vault'],
           ['II-210B', 'Microphone / Equipment Vault', 'mic-vault'],
           ['II-210C', 'Machine / Technical Room', 'machine-room'],
-          ['II-211', 'Studio Kitchenette + Restrooms', null]
+          ['II-211', 'Studio Kitchenette + Restrooms', 'kitchenette']
         ]],
         ['Executive, Brand &amp; Media HQ', [
           ['II-301', 'CEO Office', null],
@@ -6171,7 +6202,7 @@ const SA_PANELS = {
   hospitality: {
     title: 'Hospitality',
     body: `<p>Drinks, snacks and light service, available without leaving the Recording Complex.</p>
-    <p style="opacity:0.6; font-style:italic;">This is a hospitality element within the Lounge, not the full II-211 Studio Kitchenette &mdash; a separate room not yet built.</p>`
+    <p style="opacity:0.6; font-style:italic;">This is a hospitality element within the Lounge, not the full II-211 Studio Kitchenette &mdash; a separate room down the wing.</p>`
   },
   writingtable: {
     title: 'Writing Table',
@@ -6238,6 +6269,23 @@ const SA_PANELS = {
     body: `<p>Operational oversight for the systems that keep the Complex running &mdash; status, not sound.</p>
     <p style="opacity:0.6; font-style:italic;">A diagnostics position, not a recording workstation.</p>`
   },
+  kitchenetteoverview: {
+    title: 'Kitchenette',
+    body: `<p>A studio support kitchenette built for long sessions &mdash; coffee, food and a place to reset before heading back to work.</p>`
+  },
+  coffeerefresh: {
+    title: 'Coffee &amp; Refreshments',
+    body: `<p>Coffee, water and light refreshments, kept stocked for artists, engineers, producers and guests through a long session.</p>`
+  },
+  guestseating: {
+    title: 'Guest Seating',
+    body: `<p>A small café-style seating area for a quick break or a casual conversation.</p>
+    <p style="opacity:0.6; font-style:italic;">A reset space, not a second lounge.</p>`
+  },
+  restrooms: {
+    title: 'Restrooms',
+    body: `<p>Restroom facilities for artists, engineers, producers and guests, located along this wing of the Recording Complex.</p>`
+  },
   nowscreening: {
     title: 'Now Screening',
     body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
@@ -6292,7 +6340,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room', 'instrument-vault': 'II-210A · Instrument Vault', 'mic-vault': 'II-210B · Mic Vault', 'machine-room': 'II-210C · Machine Room' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room', 'instrument-vault': 'II-210A · Instrument Vault', 'mic-vault': 'II-210B · Mic Vault', 'machine-room': 'II-210C · Machine Room', 'kitchenette': 'II-211 · Studio Kitchenette + Restrooms' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12746,6 +12794,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Machine Room</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('kitchenette')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-kitchenette-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Studio Kitchenette</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
