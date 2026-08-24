@@ -1184,6 +1184,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#instrument-vault { background: #06050a; }
+.instrument-vault-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-instrument-vault-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -4132,6 +4139,30 @@ body::before {
   </div>
 </div>
 
+<!-- II-210A INSTRUMENT VAULT — DISTRICT II RECORDING COMPLEX SUPPORT -->
+<div id="instrument-vault" class="inner-room">
+  <div class="instrument-vault-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.52%; top:70.6%; width:13.48%; height:27.54%;" onclick="goTo('producer-lounge')" title="Producer Lounge / Writing Room — II-209"></div>
+  <div class="room-hotspot-rect" style="left:14.78%; top:70.6%; width:12.43%; height:27.54%;" onclick="saOpenPanel('guitarcollection')" title="Guitar &amp; Bass Collection"></div>
+  <div class="room-hotspot-rect" style="left:28.13%; top:70.6%; width:13.54%; height:27.54%;" onclick="saOpenPanel('acousticspecialty')" title="Acoustic &amp; Specialty Instruments"></div>
+  <div class="room-hotspot-rect" style="left:42.51%; top:70.6%; width:13.28%; height:27.54%;" onclick="saOpenPanel('instrumentprep')" title="Instrument Prep"></div>
+  <div class="room-hotspot-rect" style="left:56.51%; top:70.6%; width:13.8%; height:27.54%;" onclick="saOpenPanel('vaultpreservation')" title="Vault Preservation"></div>
+  <div class="room-hotspot-rect" style="left:71.09%; top:70.6%; width:13.22%; height:27.54%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:84.96%; top:70.6%; width:13.35%; height:27.54%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('producer-lounge')">Producer Lounge</button>
+    <span class="room-nav-title">Instrument Vault</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-210A · Instrument Vault</h1>
+      <p class="sr-only">The lounges hold ideas. The vault holds the tools that give those ideas a voice &mdash; stored, protected, catalogued and accessible, never staged for performance.</p>
+    </div>
+  </div>
+</div>
+
 <!-- THE CLOSET -->
 <div id="closet" class="inner-room">
   <div class="closet-bg"></div>
@@ -5652,7 +5683,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -5947,7 +5978,9 @@ const SA_PANELS = {
           ['II-207', 'Mastering / Critical Listening Room', 'mastering'],
           ['II-208', 'Artist Lounge', 'artist-lounge'],
           ['II-209', 'Producer Lounge / Writing Room', 'producer-lounge'],
-          ['II-210A&ndash;C', 'Instrument / Equipment Vault, Machine Room', null],
+          ['II-210A', 'Instrument Vault', 'instrument-vault'],
+          ['II-210B', 'Microphone / Equipment Vault', null],
+          ['II-210C', 'Machine / Technical Room', null],
           ['II-211', 'Studio Kitchenette + Restrooms', null]
         ]],
         ['Executive, Brand &amp; Media HQ', [
@@ -6095,6 +6128,23 @@ const SA_PANELS = {
     title: 'Producer Library',
     body: `<p>Records, books and creative references kept close at hand for whatever the next idea needs.</p>`
   },
+  guitarcollection: {
+    title: 'Guitar &amp; Bass Collection',
+    body: `<p>Electric guitars and basses, stored and ready &mdash; catalogued in secure, illuminated cabinetry rather than staged for performance.</p>`
+  },
+  acousticspecialty: {
+    title: 'Acoustic &amp; Specialty Instruments',
+    body: `<p>Acoustic instruments, keyboard and synth-sized cases, percussion cases and specialty hard cases, held in purpose-built storage bays.</p>`
+  },
+  instrumentprep: {
+    title: 'Instrument Prep',
+    body: `<p>A central inspection surface where an instrument comes out of storage to be inspected, restrung, cleaned or prepared for a session.</p>
+    <p style="opacity:0.6; font-style:italic;">A prep position, not a performance or recording position.</p>`
+  },
+  vaultpreservation: {
+    title: 'Vault Preservation',
+    body: `<p>Preserve. Protect. Prepare. Tools are maintained at the highest standard so creativity never waits &mdash; secure storage, climate-conscious, catalogued and ready when the moment demands it.</p>`
+  },
   nowscreening: {
     title: 'Now Screening',
     body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
@@ -6149,7 +6199,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room', 'instrument-vault': 'II-210A · Instrument Vault' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12582,6 +12632,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Producer Lounge / Writing Room</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('instrument-vault')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-instrument-vault-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Instrument Vault</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
