@@ -1198,6 +1198,13 @@ body::before {
   background-size: cover; background-position: center;
   z-index:0;
 }
+#machine-room { background: #06050a; }
+.machine-room-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/images/depmg-machine-room-bg.jpg');
+  background-size: cover; background-position: center;
+  z-index:0;
+}
 
 /* WINE CELLAR */
 #cellar { background: #030202; }
@@ -4194,6 +4201,30 @@ body::before {
   </div>
 </div>
 
+<!-- II-210C MACHINE ROOM — DISTRICT II RECORDING COMPLEX SUPPORT -->
+<div id="machine-room" class="inner-room">
+  <div class="machine-room-bg"></div>
+  <div class="room-hotspot-rect" style="left:0.35%; top:70.78%; width:13.59%; height:29.22%;" onclick="goTo('mic-vault')" title="Mic Vault — II-210B"></div>
+  <div class="room-hotspot-rect" style="left:14.64%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('sysinfra')" title="Systems Infrastructure"></div>
+  <div class="room-hotspot-rect" style="left:28.92%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('powercond')" title="Power &amp; Conditioning"></div>
+  <div class="room-hotspot-rect" style="left:43.21%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('techdist')" title="Technical Distribution"></div>
+  <div class="room-hotspot-rect" style="left:57.49%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('sysmonitoring')" title="Systems Monitoring"></div>
+  <div class="room-hotspot-rect" style="left:71.78%; top:70.78%; width:13.59%; height:29.22%;" onclick="saOpenPanel('complex')" title="District II Directory"></div>
+  <div class="room-hotspot-rect" style="left:86.06%; top:70.78%; width:13.59%; height:29.22%;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('mic-vault')">Mic Vault</button>
+    <span class="room-nav-title">Machine Room</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="sr-only">District II · CREATE — The Recording Complex</span>
+      <h1 class="sr-only">II-210C · Machine Room</h1>
+      <p class="sr-only">The creative rooms make the work. The Machine Room keeps the environment capable of making it.</p>
+    </div>
+  </div>
+</div>
+
 <!-- THE CLOSET -->
 <div id="closet" class="inner-room">
   <div class="closet-bg"></div>
@@ -5714,7 +5745,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault'];
+const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault','machine-room'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -6011,7 +6042,7 @@ const SA_PANELS = {
           ['II-209', 'Producer Lounge / Writing Room', 'producer-lounge'],
           ['II-210A', 'Instrument Vault', 'instrument-vault'],
           ['II-210B', 'Microphone / Equipment Vault', 'mic-vault'],
-          ['II-210C', 'Machine / Technical Room', null],
+          ['II-210C', 'Machine / Technical Room', 'machine-room'],
           ['II-211', 'Studio Kitchenette + Restrooms', null]
         ]],
         ['Executive, Brand &amp; Media HQ', [
@@ -6189,6 +6220,24 @@ const SA_PANELS = {
     body: `<p>The selection, inspection and preparation counter &mdash; where a microphone is chosen and readied with care.</p>
     <p style="opacity:0.6; font-style:italic;">A handling position, not a recording position.</p>`
   },
+  sysinfra: {
+    title: 'Systems Infrastructure',
+    body: `<p>The room nobody designed to impress a guest &mdash; power, distribution and monitoring systems that keep every other room in the Recording Complex capable of working.</p>`
+  },
+  powercond: {
+    title: 'Power &amp; Conditioning',
+    body: `<p>Power distribution and conditioning for the Recording Complex, kept clean and stable for the equipment downstream.</p>
+    <p style="opacity:0.6; font-style:italic;">Specific capacities and ratings aren't published here.</p>`
+  },
+  techdist: {
+    title: 'Technical Distribution',
+    body: `<p>Cabling, signal and network pathways &mdash; the connective tissue that ties the Recording Complex's rooms together, run and managed out of sight.</p>`
+  },
+  sysmonitoring: {
+    title: 'Systems Monitoring',
+    body: `<p>Operational oversight for the systems that keep the Complex running &mdash; status, not sound.</p>
+    <p style="opacity:0.6; font-style:italic;">A diagnostics position, not a recording workstation.</p>`
+  },
   nowscreening: {
     title: 'Now Screening',
     body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
@@ -6243,7 +6292,7 @@ const SA_PANELS = {
 function saOpenPanel(key) {
   const p = SA_PANELS[key];
   if (!p) return;
-  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room', 'instrument-vault': 'II-210A · Instrument Vault', 'mic-vault': 'II-210B · Mic Vault' };
+  const eyebrows = { 'studio-a': 'II-201 · Studio A', 'control-room': 'II-202 · Control Room', 'hq-corridor': 'II-3xx · Executive, Brand &amp; Media HQ', 'screening': 'II-311 · Obsidian Screening Theater', 'boardroom': 'II-303 · Executive Boardroom', 'brand-studios': 'II-305&ndash;308 · Brand Studios', 'creator-lounge': 'II-309&ndash;310 · Creator Suites &amp; Lounge', 'vocal-booth': 'II-203 · Studio A Vocal Booth', 'isolation-rooms': 'II-204 · Isolation Rooms', 'studio-b': 'II-205 · Studio B', 'atmos': 'II-206 · Dolby Atmos Mixing Suite', 'mastering': 'II-207 · Mastering / Critical Listening Room', 'artist-lounge': 'II-208 · Artist Lounge', 'producer-lounge': 'II-209 · Producer Lounge / Writing Room', 'instrument-vault': 'II-210A · Instrument Vault', 'mic-vault': 'II-210B · Mic Vault', 'machine-room': 'II-210C · Machine Room' };
   document.getElementById('sa-panel-eyebrow').innerHTML = eyebrows[current] || 'District II';
   document.getElementById('sa-panel-title').innerHTML = p.title;
   document.getElementById('sa-panel-body').innerHTML = typeof p.body === 'function' ? p.body() : p.body;
@@ -12690,6 +12739,13 @@ m7 = cards/m7-algorhythm.png
           <div class="explorer-room-label">
             <span class="explorer-room-sub">District II</span>
             <span class="explorer-room-name">Mic Vault</span>
+          </div>
+        </div>
+        <div class="explorer-room" onclick="openExplorerRoom('machine-room')">
+          <div class="explorer-room-bg" style="background-image:url('assets/images/depmg-machine-room-bg.jpg');"></div>
+          <div class="explorer-room-label">
+            <span class="explorer-room-sub">District II</span>
+            <span class="explorer-room-name">Machine Room</span>
           </div>
         </div>
         <div class="explorer-room" onclick="openExplorerRoom('atrium')">
