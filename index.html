@@ -1293,6 +1293,14 @@ body::before {
   z-index: 10;
 }
 .bar-close:hover { opacity: 1; border-color: var(--gold); }
+.bar-order-btn {
+  position: fixed; top: 24px; left: 32px;
+  font-family: Cormorant SC, serif; font-size: 11px; letter-spacing: 0.3em;
+  color: var(--gold); opacity: 0.85;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.4);
+  padding: 10px 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10;
+}
+.bar-order-btn:hover { opacity: 1; background: rgba(201,168,76,0.18); border-color: var(--gold); }
 
 .bar-menu-content {
   padding: 60px 80px 100px;
@@ -4800,7 +4808,7 @@ body::before {
       <div class="orion-cart-panel">
         <p class="orion-cart-title">Your Order <span class="orion-cart-lounge" id="orion-cart-lounge-label"></span></p>
         <div id="orion-cart-list"></div>
-        <p class="orion-deliver-to">Deliver to: <span id="orion-cart-table"></span></p>
+        <p class="orion-deliver-to"><span id="orion-cart-deliver-label">Deliver to:</span> <span id="orion-cart-table"></span></p>
         <button class="cw-btn" onclick="orionPlaceOrder()">Place Order</button>
         <div id="orion-order-status"></div>
       </div>
@@ -9630,13 +9638,26 @@ const ORION_TABLES = {
   alnilam: ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8'],
   alnitak: ['K1', 'K2', 'K3', 'K4'],
 };
-const ORION_LOUNGE_NAMES = { mintaka: 'Mintaka', alnilam: 'Alnilam', alnitak: 'Alnitak' };
+// 'gemini-bar' is bar-service ordering, not a fourth VIP Lounge — no
+// table/seat routing (ORION_TABLES has no entry for it, deliberately),
+// its own framing ("Order at the Bar" / pickup, not "Order to X" /
+// delivery), and its own fulfillment steps ending in COLLECTED rather
+// than DELIVERED. See orionCurrentTable(), orionOpenOrder(),
+// orionRenderCart(), and orionRunStatusSimulation().
+const ORION_LOUNGE_NAMES = { mintaka: 'Mintaka', alnilam: 'Alnilam', alnitak: 'Alnitak', 'gemini-bar': 'Gemini Main Bar' };
 const ORION_SOURCE_NAMES = {
   'gemini-core': 'Gemini Core',
   'cigar-whiskey': 'Cigar & Whiskey Lounge',
   'depmg-wine-bar': 'DEPMG Wine Bar',
 };
 const ORION_STATUS_STEPS = ['ORDER RECEIVED', 'IN PREPARATION', 'PARTIALLY READY', 'OUT FOR SERVICE', 'DELIVERED'];
+const ORION_STATUS_STEPS_BAR = ['ORDER RECEIVED', 'IN PREPARATION', 'READY AT BAR', 'COLLECTED'];
+// Fulfillment label a future staff queue would sort/group by — data is
+// ready for that view even though no such view exists in this guest-
+// facing site today.
+function orionFulfillmentLabel(loungeId) {
+  return ORION_LOUNGE_NAMES[loungeId].toUpperCase() + ' · ' + (loungeId === 'gemini-bar' ? 'BAR PICKUP' : 'LOUNGE DELIVERY');
+}
 
 let orionCurrentLounge = 'mintaka';
 let orionOrderSource = 'gemini-core';
@@ -9652,6 +9673,7 @@ function orionGuestSessionId() {
   return id;
 }
 function orionCurrentTable() {
+  if (orionCurrentLounge === 'gemini-bar') return null; // bar-service pickup — no table/seat routing
   let t = localStorage.getItem('orionTable_' + orionCurrentLounge);
   if (!t) {
     t = ORION_TABLES[orionCurrentLounge][0];
@@ -10718,7 +10740,13 @@ function orionRenderCart() {
   if (!list) return;
   const lounge = orionCurrentLounge;
   document.getElementById('orion-cart-lounge-label').textContent = '— ' + ORION_LOUNGE_NAMES[lounge];
-  document.getElementById('orion-cart-table').textContent = ORION_LOUNGE_NAMES[lounge] + ' ' + orionCurrentTable();
+  if (lounge === 'gemini-bar') {
+    document.getElementById('orion-cart-deliver-label').textContent = 'Pickup Location:';
+    document.getElementById('orion-cart-table').textContent = 'Gemini Main Bar';
+  } else {
+    document.getElementById('orion-cart-deliver-label').textContent = 'Deliver to:';
+    document.getElementById('orion-cart-table').textContent = ORION_LOUNGE_NAMES[lounge] + ' ' + orionCurrentTable();
+  }
   const items = orionCart.filter(c => c.loungeId === lounge && c.orderStatus === 'CART');
   list.innerHTML = '';
   if (!items.length) {
@@ -10750,7 +10778,8 @@ function orionRenderCart() {
 
 function orionOpenOrder(loungeId) {
   orionCurrentLounge = loungeId;
-  document.getElementById('orion-order-title').textContent = 'Order to ' + ORION_LOUNGE_NAMES[loungeId];
+  document.getElementById('orion-order-title').textContent =
+    loungeId === 'gemini-bar' ? 'Order at the Bar' : ('Order to ' + ORION_LOUNGE_NAMES[loungeId]);
   document.getElementById('orion-order-status').innerHTML = '';
   orionRenderCatalog('gemini-core');
   orionRenderCart();
@@ -10765,31 +10794,39 @@ function orionCloseOrder() {
 function orionPlaceOrder() {
   const items = orionCart.filter(c => c.loungeId === orionCurrentLounge && c.orderStatus === 'CART');
   if (!items.length) { orionToast('Add something to your order first.'); return; }
+  const isBar = orionCurrentLounge === 'gemini-bar';
   const sources = [...new Set(items.map(c => ORION_SOURCE_NAMES[c.sourceVenue]))];
-  items.forEach(c => { c.orderStatus = 'ORDER RECEIVED'; c.timestamp = Date.now(); });
+  const fulfillmentLabel = orionFulfillmentLabel(orionCurrentLounge);
+  items.forEach(c => { c.orderStatus = 'ORDER RECEIVED'; c.timestamp = Date.now(); c.fulfillmentLabel = fulfillmentLabel; });
   orionSaveCart();
   orionRenderCart();
-  orionToast('Order placed — routed to ' + sources.join(', ') + '.');
+  orionToast(isBar ?
+    'Your order has been sent to the Gemini Main Bar. We’ll let you know when it’s ready for pickup.' :
+    'Order placed — routed to ' + sources.join(', ') + '.');
   orionRunStatusSimulation();
 }
 function orionRunStatusSimulation() {
+  const isBar = orionCurrentLounge === 'gemini-bar';
+  const steps = isBar ? ORION_STATUS_STEPS_BAR : ORION_STATUS_STEPS;
+  const finalStatus = isBar ? 'COLLECTED' : 'DELIVERED';
   const track = document.getElementById('orion-order-status');
   let stepIndex = 0;
   function render() {
     track.innerHTML = '<div class="orion-status-track">' +
-      ORION_STATUS_STEPS.map((s, i) => '<div class="orion-status-step ' +
+      steps.map((s, i) => '<div class="orion-status-step ' +
         (i < stepIndex ? 'done' : i === stepIndex ? 'active' : '') + '">' + s + '</div>').join('') +
       '</div>';
   }
   render();
   clearInterval(orionStatusTimer);
+  const lounge = orionCurrentLounge;
   orionStatusTimer = setInterval(() => {
     stepIndex++;
-    if (stepIndex >= ORION_STATUS_STEPS.length - 1) {
-      stepIndex = ORION_STATUS_STEPS.length - 1;
+    if (stepIndex >= steps.length - 1) {
+      stepIndex = steps.length - 1;
       render();
       clearInterval(orionStatusTimer);
-      orionCart.filter(c => c.loungeId === orionCurrentLounge).forEach(c => c.orderStatus = 'DELIVERED');
+      orionCart.filter(c => c.loungeId === lounge).forEach(c => c.orderStatus = finalStatus);
       orionSaveCart();
       return;
     }
@@ -12560,6 +12597,7 @@ updateAudioBtn();
 
 <div id="bar-overlay">
   <button class="bar-close" onclick="closeBar()">← Back to GEMINI</button>
+  <button class="bar-order-btn" onclick="orionOpenOrder('gemini-bar')">Order at the Bar →</button>
 
   <div style="max-width:1200px; margin:0 auto; padding:60px 24px 100px; width:100%;">
     <img src="assets/images/img-album-magnificent-7-collection-2.png" alt="The Album and The Magnificent 7 Collection — Signature Cocktails of The Obsidian Estate" style="width:100%; height:auto; display:block; border:1px solid rgba(201,168,76,0.12); box-shadow:0 24px 80px rgba(0,0,0,0.6);" />
