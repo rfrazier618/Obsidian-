@@ -2804,6 +2804,26 @@ body::before {
   padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.3s ease;
 }
 .orion-add-btn:hover { background: rgba(201,168,76,0.14); }
+.orion-catalog-item { border-bottom: 1px solid rgba(201,168,76,0.08); }
+.orion-catalog-item .orion-catalog-row { border-bottom: none; }
+.orion-catalog-subtitle { display:block; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:12.5px; color:var(--cream); opacity:0.4; margin-top:2px; }
+.orion-detail-btn {
+  font-family:'Cormorant SC', serif; font-size:9.5px; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--gold); opacity:0.55; background:none; border:none; cursor:pointer; padding:4px 0; margin-right:14px;
+  transition:opacity 0.25s ease; flex:none;
+}
+.orion-detail-btn:hover, .orion-detail-btn.on { opacity:1; }
+.orion-catalog-details {
+  display:none; padding:4px 0 18px; font-size:13px; line-height:1.7; color:var(--cream); opacity:0.7;
+}
+.orion-catalog-details.open { display:block; }
+.orion-catalog-details .ocd-row { margin-bottom:8px; }
+.orion-catalog-details .ocd-row:last-child { margin-bottom:0; }
+.orion-catalog-details .ocd-label {
+  font-family:'Cormorant SC', serif; font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gold); opacity:0.6; margin-right:8px;
+}
+.orion-catalog-details .ocd-desc { font-style:italic; opacity:0.85; }
 
 .orion-cart-panel { position: sticky; bottom: 0; margin-top: 40px; background: rgba(10,6,3,0.97); border: 1px solid rgba(201,168,76,0.3); padding: 26px 28px; }
 .orion-cart-title { font-family: 'Cormorant SC', serif; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
@@ -7179,17 +7199,16 @@ function buildGeminiCore() {
     }
   });
 
+  // id -> card-image-filename overrides, for the one menu id that
+  // doesn't match its asset filename (see the GEMINI_CORE_MENU comment).
+  const GC_CARD_FILE_OVERRIDES = { 'what-are-we-doing': 'what-are-we-doin' };
   buildGeminiCarousel('gc-cocktail-carousel',
     { ix:0.8925, iy:0.210, w:0.185, h:0.110,
       arrowIy:0.305, dotsIy:0.305, arrowInsetX:0.093 },
-    [
-      { img:'assets/cards/img-gemini-speakeasy-cocktail-card.jpg', name:'Gemini Speakeasy' },
-      { img:'assets/cards/img-untouchable-cocktail-card.jpg',      name:'Untouchable' },
-      { img:'assets/cards/img-bad-way-cocktail-card.jpg',          name:'Bad Way' },
-      { img:'assets/cards/img-driver-cocktail-card.jpg',           name:'Driver' },
-      { img:'assets/cards/img-mine-cocktail-card.jpg',             name:'Mine' },
-      { img:'assets/cards/img-cinnamon-cocktail-card.jpg',         name:'Cinnamon' },
-    ]);
+    GEMINI_CORE_MENU.map(item => ({
+      img: 'assets/cards/img-' + (GC_CARD_FILE_OVERRIDES[item.id] || item.id) + '-cocktail-card.jpg',
+      name: item.name
+    })));
 
   buildGeminiCarousel('gc-bite-carousel',
     { ix:0.8925, iy:0.430, w:0.185, h:0.110,
@@ -8370,27 +8389,113 @@ function vlShowLounge() {
 // ordering system. The 20 names here are the same 13 Album tracks +
 // 7 Magnificent 7 cocktails already established in the bar overlay —
 // this does not invent a new menu, it structures the existing one. ══
+// Full recipe/flavor data transcribed from the cocktail card renders in
+// assets/cards/ (img-*-cocktail-card.jpg) — real ingredients and copy
+// baked into each card, not invented. "id":'what-are-we-doing' is kept
+// as-is for backward compatibility even though the card/asset filename
+// spells the track "what-are-we-doin" (no g) — a pre-existing mismatch,
+// noted rather than silently changed since other code may reference it.
 const GEMINI_CORE_MENU = [
-  { id:'gemini-speakeasy', name:'Gemini Speakeasy', category:'Signature Cocktails', collection:'The Album', tag:'Track 01' },
-  { id:'potentially', name:'Potentially', category:'Signature Cocktails', collection:'The Album', tag:'Track 02' },
-  { id:'untouchable', name:'Untouchable', category:'Signature Cocktails', collection:'The Album', tag:'Track 03' },
-  { id:'bad-way', name:'Bad Way', category:'Signature Cocktails', collection:'The Album', tag:'Track 04' },
-  { id:'4-the-night', name:'4 the Night', category:'Signature Cocktails', collection:'The Album', tag:'Track 05' },
-  { id:'sticky', name:'Sticky', category:'Signature Cocktails', collection:'The Album', tag:'Track 06' },
-  { id:'cinnamon', name:'Cinnamon', category:'Signature Cocktails', collection:'The Album', tag:'Track 07' },
-  { id:'clock-it', name:'Clock It', category:'Signature Cocktails', collection:'The Album', tag:'Track 08' },
-  { id:'driver', name:'DRIVER', category:'Signature Cocktails', collection:'The Album', tag:'Track 09' },
-  { id:'mine', name:'MINE', category:'Signature Cocktails', collection:'The Album', tag:'Track 10' },
-  { id:'what-are-we-doing', name:"What Are We Doin'?", category:'Signature Cocktails', collection:'The Album', tag:'Track 11' },
-  { id:'fixation', name:'Fixation', category:'Signature Cocktails', collection:'The Album', tag:'Track 12' },
-  { id:'ghost', name:'Ghost', category:'Signature Cocktails', collection:'The Album', tag:'Track 13' },
-  { id:'richfraz', name:'RichFraz', category:'Classics', collection:'The Magnificent 7', tag:'No. 1' },
-  { id:'depmg', name:'DEPMG', category:'Classics', collection:'The Magnificent 7', tag:'No. 2' },
-  { id:'jungle', name:'Jungle', category:'Classics', collection:'The Magnificent 7', tag:'No. 3' },
-  { id:'phantom', name:'Phantom', category:'Classics', collection:'The Magnificent 7', tag:'No. 4' },
-  { id:'the-saxman', name:'The Saxman', category:'Classics', collection:'The Magnificent 7', tag:'No. 5' },
-  { id:'noise-cancellation', name:'Noise Cancellation', category:'Classics', collection:'The Magnificent 7', tag:'No. 6' },
-  { id:'algorhythm', name:'Algorhythm', category:'Classics', collection:'The Magnificent 7', tag:'No. 7' },
+  { id:'gemini-speakeasy', name:'Gemini Speakeasy', category:'Signature Cocktails', collection:'The Album', tag:'Track 01',
+    subtitle:'"Welcome To The Mind."', glass:'Crystal Nick & Nora',
+    ingredients:['Rémy Martin 1738 Cognac','Amontillado Sherry','Benedictine','Orange Bitters','Black Walnut Bitters','Orange Peel Oils'],
+    flavor:['Warm','Sophisticated','Smooth','Layered','Timeless'],
+    desc:'The sound of the front door opening. Cognac brings warmth, sherry brings depth, Benedictine adds mystery — the first step into a world built on music, memory and conversation.' },
+  { id:'potentially', name:'Potentially', category:'Signature Cocktails', collection:'The Album', tag:'Track 02',
+    subtitle:'"Maybe Is A Beautiful Place."', glass:'Stemmed Coffee Coupe',
+    ingredients:['Vanilla Vodka','Irish Cream','Cold Brew Concentrate','Honey Syrup','Cinnamon Syrup','Orange Bitters','Light Cream Float'],
+    flavor:['Smooth','Warm','Sweet','Comforting','Hopeful'],
+    desc:'Lives somewhere between friendship and fate. Coffee for the conversation, honey for the warmth, cream for the comfort — the drink you order when you\'re not ready to leave.' },
+  { id:'untouchable', name:'Untouchable', category:'Signature Cocktails', collection:'The Album', tag:'Track 03',
+    subtitle:'"Nothing Can Touch Me Today."', glass:'Nick & Nora Coupe',
+    ingredients:['VSOP Cognac','Elderflower Liqueur','Fresh Lemon Juice','Honey Syrup','Sparkling White Tea','Champagne Float'],
+    flavor:['Bright','Sophisticated','Clean','Effortless','Confident'],
+    desc:'Tastes like the day everything finally makes sense — the bills are paid, the phone is quiet, the future looks exactly how you imagined it. Or at least that\'s what you tell yourself.' },
+  { id:'bad-way', name:'Bad Way', category:'Signature Cocktails', collection:'The Album', tag:'Track 04',
+    subtitle:'"The Second One Is The Mistake."', glass:'Coupe Glass',
+    ingredients:['Dark Rum','Espresso Liqueur','Black Cherry Liqueur','Red Wine Reduction Syrup','Chocolate Bitters','Smoked Cinnamon'],
+    flavor:['Dark','Rich','Bitter-Sweet','Seductive'],
+    desc:'Some choices feel like comfort, some feel like escape — Bad Way feels like both. It\'s the detour you didn\'t plan, but took anyway.' },
+  { id:'4-the-night', name:'4 the Night', category:'Signature Cocktails', collection:'The Album', tag:'Track 05',
+    subtitle:'"We Both Knew."', glass:'Champagne Coupe',
+    ingredients:['Grey Goose Vodka','St-Germain Elderflower Liqueur','Pear Liqueur','Fresh Lemon Juice','Honey Syrup','Brut Champagne','Edible Gold Shimmer'],
+    flavor:['Elegant','Bright','Floral','Smooth','Expensive'],
+    desc:'Isn\'t about love — it\'s about recognition. That moment across the room when two people already know where the evening is headed. No games, no speeches, just chemistry dressed in expensive clothes.' },
+  { id:'sticky', name:'Sticky', category:'Signature Cocktails', collection:'The Album', tag:'Track 06',
+    subtitle:'"Got Me Fiendin\' For Your Sticky Sweet."', glass:'Nick & Nora Coupe',
+    ingredients:['Rémy Martin 1738 Cognac','Peach Liqueur','Nectarine Syrup','Honey Syrup','Fresh Lemon Juice','Orange Bitters','Vanilla Cream'],
+    flavor:['Sweet','Juicy','Velvety','Addictive','Seductive'],
+    desc:'Isn\'t love — it\'s the part you crave after. Peach, nectarine, honey, heat: sweet enough to pull you in, dangerous enough to keep you there.' },
+  { id:'cinnamon', name:'Cinnamon', category:'Signature Cocktails', collection:'The Album', tag:'Track 07',
+    subtitle:'"The Room Changed When She Walked In."', glass:'Nick & Nora Glass',
+    ingredients:['Rémy Martin 1738 Cognac','Vanilla Bean Syrup','Cinnamon Cream','Maple Syrup','Fresh Espresso','Nutmeg'],
+    flavor:['Warm','Velvety','Spiced','Creamy','Intimate'],
+    desc:'Warmth in motion. She\'s soft, she\'s dangerous, and the room changes when she walks in — velvet, spice, and something sweet you\'ll never forget.' },
+  { id:'clock-it', name:'Clock It', category:'Signature Cocktails', collection:'The Album', tag:'Track 08',
+    subtitle:'"She Is The Beat."', glass:'Black Coupe Glass',
+    ingredients:['Vanilla Vodka','Mr Black Coffee Liqueur','Crème de Violette','Cold Brew Concentrate','Vanilla Syrup','Chocolate Bitters','Edible Gold Shimmer'],
+    flavor:['Rich','Floral','Coffee','Velvet','Magnetic'],
+    desc:'Isn\'t about seeing her — it\'s about feeling her. The room notices, the lights notice, the music notices, and before your mind catches up, your body already made the decision.' },
+  { id:'driver', name:'DRIVER', category:'Signature Cocktails', collection:'The Album', tag:'Track 09',
+    subtitle:'"Real Or Illusion?"', glass:'Tall Highball Glass',
+    ingredients:['Premium Tequila Blanco','Passionfruit Puree','Blood Orange Juice','Fresh Lime Juice','Agave Syrup','Chili Tincture','Sparkling Citrus Soda'],
+    flavor:['Tropical','Citrus','Passionfruit','Heat','Addictive'],
+    desc:'The feeling that takes the wheel before you know where you\'re going. Bright, dangerous, impossible to hold onto — you swear you\'ll catch it, then it\'s gone.' },
+  { id:'mine', name:'MINE', category:'Signature Cocktails', collection:'The Album', tag:'Track 10',
+    subtitle:'"The Decision Was Already Made."', glass:'Crystal Nick & Nora',
+    ingredients:['Rye Whiskey','Cognac','Blackberry Liqueur','Black Cherry Syrup','Black Walnut Bitters','Chocolate Bitters','Orange Oil Mist'],
+    flavor:['Dark Fruit','Smoke','Oak','Rich','Seductive'],
+    desc:'Some people flirt, some people chase — MINE is what happens after both of those are over. The room already knows; everybody\'s just waiting for it to happen.' },
+  { id:'what-are-we-doing', name:"What Are We Doin'?", category:'Signature Cocktails', collection:'The Album', tag:'Track 11',
+    subtitle:'"The Lie Tastes Better."', glass:'Black Coupe Glass',
+    ingredients:['Vanilla Vodka','Espresso Liqueur','Black Cherry Liqueur','Red Wine Reduction Syrup','Fresh Espresso','Chocolate Bitters'],
+    flavor:['Dark Cherry','Coffee','Chocolate','Rich','Addictive'],
+    desc:'Lives in the space between desire and consequence. The texts get deleted, the memories don\'t — and somehow that\'s never enough to make anybody stop.' },
+  { id:'fixation', name:'Fixation', category:'Signature Cocktails', collection:'The Album', tag:'Track 12',
+    subtitle:'"Look What You Made Me Love."', glass:'Smoked Coupe Glass',
+    ingredients:['Rye Whiskey','Amaro Averna','Espresso Liqueur','Black Walnut Bitters','Chocolate Bitters','Burnt Orange Oil'],
+    flavor:['Bitter','Dark Coffee','Burnt Orange','Oak','Addictive'],
+    desc:'It never starts with the addiction — it starts with the reward. Fixation is the moment pleasure becomes dependence, and dependence starts calling itself love.' },
+  { id:'ghost', name:'Ghost', category:'Signature Cocktails', collection:'The Album', tag:'Track 13',
+    subtitle:'"The Moment You Realize They\'re Not Coming Back."', glass:'Nick & Nora Glass',
+    ingredients:['Grey Goose Vodka','St-Germain Elderflower Liqueur','White Cranberry Juice','Fresh Lemon Juice','Lavender Honey Syrup','Saline Solution'],
+    flavor:['Floral','Delicate','Clean','Melancholy','Beautiful'],
+    desc:'Isn\'t about death — it\'s about the people who leave fingerprints on your soul, and the version of yourself that leaves with them.' },
+  { id:'richfraz', name:'RichFraz', category:'Classics', collection:'The Magnificent 7', tag:'No. 1',
+    subtitle:'"Three Cities. One Soul."', glass:'Rocks Glass',
+    ingredients:['Hennessy VSOP Cognac','Woodford Reserve Bourbon','Brown Sugar Syrup','Black Walnut Bitters','Smoked Cherry Syrup','Peach Liqueur','Orange Peel'],
+    flavor:['Warm','Smoky','Smooth','Slightly Sweet'],
+    desc:'The official house drink of GEMINI, where three worlds collide — Harlem\'s soul, the Poconos\' solitude, and Atlanta\'s pulse. Smooth, warm, and layered with intention.' },
+  { id:'depmg', name:'DEPMG', category:'Classics', collection:'The Magnificent 7', tag:'No. 2',
+    subtitle:'"Warp Velocity."', glass:'Smoked Coupe',
+    ingredients:['Japanese Whisky','Black Vodka','Blackberry Liqueur','Elderflower Liqueur','Fresh Lemon Juice','Activated Charcoal','Egg White (optional)','Silver Shimmer'],
+    flavor:['Floral','Dark Berry','Citrus','Mysterious'],
+    desc:'A tribute to exploration, intelligence and the unknown — cold, infinite, calculated, elegant. This is not just a drink. This is warp velocity.' },
+  { id:'jungle', name:'Jungle', category:'Classics', collection:'The Magnificent 7', tag:'No. 3',
+    subtitle:'"Some Places Change You."', glass:'Cut Crystal Highball',
+    ingredients:['Plantation Pineapple Rum','Aged Dark Rum','Fresh Pineapple Juice','Passionfruit Puree','Fresh Lime Juice','Honey Syrup','Aromatic Bitters'],
+    flavor:['Tropical','Bright','Rich','Exotic','Smooth'],
+    desc:'Adventure dressed in a tailored suit — sweet enough to invite you in, complex enough to keep you there. The wild, refined.' },
+  { id:'phantom', name:'Phantom', category:'Classics', collection:'The Magnificent 7', tag:'No. 4',
+    subtitle:'"You Never Saw It Coming."', glass:'Copper Mule Mug',
+    ingredients:['Premium Vodka','Cranberry Juice','Fresh Apple Cider','Fresh Lime Juice','Premium Ginger Beer'],
+    flavor:['Crisp Apple','Tart Cranberry','Bright Ginger','Clean','Refreshing','Mysterious'],
+    desc:'The memory that lingers after the last song — bright on the surface, haunted underneath. A toast to the ones who never really leave.' },
+  { id:'the-saxman', name:'The Saxman', category:'Classics', collection:'The Magnificent 7', tag:'No. 5',
+    subtitle:'"You\'re In Danger, Girl."', glass:'Nick & Nora Glass',
+    ingredients:['Reposado Tequila','Velvet Falernum','Passionfruit Liqueur','Fresh Lime Juice','Honey Syrup','Orange Bitters','Champagne Float'],
+    flavor:['Smooth','Velvet','Seductive','Dangerous','Unexpected'],
+    desc:'Doesn\'t arrive loudly — it leans against the bar, orders something expensive, and watches. Sweet enough to lower your guard, strong enough to ruin your plans.' },
+  { id:'noise-cancellation', name:'Noise Cancellation', category:'Classics', collection:'The Magnificent 7', tag:'No. 6',
+    subtitle:'"Frequency Over Noise."', glass:'Smoked Coupe',
+    ingredients:['Japanese Gin','Elderflower Liqueur','Cucumber Juice','Green Tea Syrup','Fresh Lemon Juice','Sea Salt Solution','Edible Silver Shimmer'],
+    flavor:['Clean','Crisp','Complex','Controlled','Modern'],
+    desc:'Most people spend their lives chasing attention. This one isn\'t interested — it removes distractions and leaves only what matters. Clean signal, pure frequency.' },
+  { id:'algorhythm', name:'Algorhythm', category:'Classics', collection:'The Magnificent 7', tag:'No. 7',
+    subtitle:'"The Beat Was Already There."', glass:'Heavy Crystal Rocks Glass',
+    ingredients:['Japanese Whisky','Cognac','Blackberry Liqueur','Ginger Liqueur','Black Walnut Bitters','Orange Bitters','Orange Oil Mist'],
+    flavor:['Bold','Layered','Smooth','Creative','Visionary'],
+    desc:'Isn\'t luck — it\'s pattern recognition. The ability to hear music where other people hear noise, and to find rhythm hidden inside chaos.' },
 ];
 
 // ══ THE CIGAR & WHISKEY LOUNGE — savor: smoke, spirits, ritual ══
@@ -10490,18 +10595,55 @@ function orionItemId(item, source) {
   return source === 'depmg-wine-bar' ? ('wine-' + item.winery + '-' + item.vintage) : (source + '-' + (item.id || item.name));
 }
 function orionCatalogRow(item, meta, source) {
+  const wrap = document.createElement('div');
+  wrap.className = 'orion-catalog-item';
+
   const row = document.createElement('div');
   row.className = 'orion-catalog-row';
   const label = document.createElement('span');
-  label.innerHTML = '<span class="orion-catalog-name">' + orionItemName(item, source) +
-    '</span><span class="orion-catalog-meta">' + meta + '</span>';
+  label.innerHTML = '<span class="orion-catalog-name">' + orionItemName(item, source) + '</span>' +
+    (item.subtitle ? '<span class="orion-catalog-subtitle">' + item.subtitle + '</span>' : '') +
+    '<span class="orion-catalog-meta">' + meta + '</span>';
   row.appendChild(label);
+
+  const controls = document.createElement('span');
+  controls.style.display = 'flex';
+  controls.style.alignItems = 'center';
+  controls.style.flex = 'none';
+
+  let details = null;
+  if (item.desc) {
+    const detailBtn = document.createElement('button');
+    detailBtn.className = 'orion-detail-btn';
+    detailBtn.textContent = 'Details';
+    detailBtn.addEventListener('click', () => {
+      const open = details.classList.toggle('open');
+      detailBtn.classList.toggle('on', open);
+      detailBtn.textContent = open ? 'Close' : 'Details';
+    });
+    controls.appendChild(detailBtn);
+  }
+
   const btn = document.createElement('button');
   btn.className = 'orion-add-btn';
   btn.textContent = 'Add';
   btn.addEventListener('click', () => orionAddToCart(item, source));
-  row.appendChild(btn);
-  return row;
+  controls.appendChild(btn);
+  row.appendChild(controls);
+  wrap.appendChild(row);
+
+  if (item.desc) {
+    details = document.createElement('div');
+    details.className = 'orion-catalog-details';
+    details.innerHTML =
+      (item.ingredients ? '<div class="ocd-row"><span class="ocd-label">Ingredients</span>' + item.ingredients.join(' &middot; ') + '</div>' : '') +
+      (item.glass ? '<div class="ocd-row"><span class="ocd-label">Glass</span>' + item.glass + '</div>' : '') +
+      (item.flavor ? '<div class="ocd-row"><span class="ocd-label">Flavor</span>' + item.flavor.join(' &middot; ') + '</div>' : '') +
+      '<div class="ocd-row ocd-desc">' + item.desc + '</div>';
+    wrap.appendChild(details);
+  }
+
+  return wrap;
 }
 function orionRenderCatalog(source) {
   orionOrderSource = source;
