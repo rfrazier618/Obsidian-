@@ -990,9 +990,6 @@ body::before {
   background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.5);
   box-shadow: 0 0 20px rgba(201,168,76,0.35);
 }
-@media (max-width: 720px) {
-  .room-hotspot { display: none; }
-}
 /* wider pill-button hotspots — same interaction as .room-hotspot, but
    sized to a rendered button's full box instead of a fixed 46px icon */
 .room-hotspot-rect {
@@ -1004,9 +1001,10 @@ body::before {
   background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.5);
   box-shadow: 0 0 20px rgba(201,168,76,0.35);
 }
-@media (max-width: 720px) {
-  .room-hotspot-rect { display: none; }
-}
+/* Both hotspot classes stay visible and tappable at every breakpoint —
+   they're the site's only interaction primitive; hiding them below
+   720px silently disabled navigation, Directory, Floor Plan, and every
+   informational panel on mobile. See the relaunch audit. */
 #book-cutscene-overlay {
   position: fixed; inset: 0; z-index: 550;
   display: none; align-items: center; justify-content: center;
@@ -3187,8 +3185,7 @@ body::before {
       </div>
     </div>
     <button class="enter-btn" onclick="showWelcome()"><span>Enter the Estate</span></button>
-    <a href="obsidian_estate_app.html" style="display:block; margin-top:12px; font-family:Cormorant SC,serif; font-size:10px; letter-spacing:0.4em; color:rgba(201,168,76,0.5); text-decoration:none; transition:all 0.3s ease; padding:8px 16px; border:1px solid rgba(201,168,76,0.25);" onmouseover="this.style.color='var(--gold)'; this.style.borderColor='var(--gold)'; this.style.opacity='0.9';" onmouseout="this.style.color='rgba(201,168,76,0.5)'; this.style.borderColor='rgba(201,168,76,0.25)'; this.style.opacity='0.7';">Mobile App Version</a>
-    <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank" style="display:block; margin-top:20px; font-family:Cormorant SC,serif; font-size:10px; letter-spacing:0.4em; color:var(--gold); opacity:0.35; text-decoration:none; transition:opacity 0.3s ease;" onmouseover="this.style.opacity=0.75" onmouseout="this.style.opacity=0.35">Pre-Save · August 21, 2026</a>
+    <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank" style="display:block; margin-top:20px; font-family:Cormorant SC,serif; font-size:10px; letter-spacing:0.4em; color:var(--gold); opacity:0.35; text-decoration:none; transition:opacity 0.3s ease;" onmouseover="this.style.opacity=0.75" onmouseout="this.style.opacity=0.35">Pre-Save the Album</a>
   </div>
 </div>
 
@@ -3801,7 +3798,7 @@ body::before {
   <div class="room-hotspot-rect" style="left:24.5%; top:39.5%; width:22.5%; height:12.5%;" onclick="estateToast('The Recording Complex — glimpsed through acoustic glass, never fully shown. II-102 is a reveal, not a passage.')" title="Recording Complex Reveal — II-102"></div>
   <div class="room-hotspot-rect" style="left:59.8%; top:53.5%; width:13.7%; height:11%;" onclick="depmgOpenThreshold()" title="Secure Creative Threshold — II-110"></div>
   <div class="room-hotspot-rect" style="left:83.3%; top:2%; width:10.5%; height:2.4%; z-index:55;" onclick="openA202FloorPlan()" title="Floor Plan — A-202"></div>
-  <div class="room-hotspot-rect" style="left:94.3%; top:2%; width:5.2%; height:2.4%; z-index:55;" onclick="estateToast('District II is still under construction — thanks for exploring early.')" title="Help"></div>
+  <div class="room-hotspot-rect" style="left:94.3%; top:2%; width:5.2%; height:2.4%; z-index:55;" onclick="estateToast('The Recording Complex is fully built — explore below. The Executive, Brand &amp; Media HQ side is still being added, room by room.')" title="Help"></div>
   <div class="room-hotspot-rect" style="left:0.5%; top:92.8%; width:16.5%; height:4.4%;" onclick="goTo('hall')" title="Return to the Estate"></div>
   <div class="room-hotspot-rect" style="left:26.3%; top:89.5%; width:5.7%; height:7%;" onclick="goTo('hall')" title="Return Home"></div>
   <div class="room-hotspot-rect" style="left:32.5%; top:89.5%; width:7.3%; height:7%;" onclick="estateToast('District I — Foundation hasn&rsquo;t been built yet.')" title="District I — Foundation"></div>
@@ -6308,7 +6305,7 @@ const SA_PANELS = {
   sessions: {
     title: 'DEPMG Sessions',
     body: `<p>Music recorded at DEPMG Studios, starting with RichFraz &mdash; MC, crooner and the artist this headquarters was built around.</p>
-    <p><em>Lost in the Mind of R.S. Frazier</em> &mdash; pre-save now, out August 21, 2026.</p>
+    <p><em>Lost in the Mind of R.S. Frazier</em> &mdash; pre-save now.</p>
     <div class="sa-links">
       <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank">Pre-Save the Album</a>
       <a href="https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd" target="_blank">Spotify</a>
@@ -6329,7 +6326,7 @@ const SA_PANELS = {
   },
   vocals: {
     title: 'Vocal Position',
-    body: `<p>The primary vocal tracking position on the Studio A floor — not an isolated booth. For fully isolated vocal capture, see II-203 Vocal Booth, a separate room not yet built into the Estate.</p>`
+    body: `<p>The primary vocal tracking position on the Studio A floor — not an isolated booth. For fully isolated vocal capture, see II-203 Vocal Booth, a separate room down the cluster.</p>`
   },
   backline: {
     title: 'Backline &amp; Instruments',
