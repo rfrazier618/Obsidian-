@@ -771,9 +771,34 @@ body::before {
 #courtyard { background: #040302; }
 .courtyard-bg {
   position:fixed; inset:0;
-  background-image: url('assets/images/courtyard-bg.jpg');
+  background-image: url('assets/renders/fountain-court.png');
   background-size:cover; background-position:center 30%;
-  filter: brightness(0.32) saturate(0.85); z-index:0;
+  filter: brightness(0.55) saturate(0.9); z-index:0;
+}
+
+/* ARRIVAL SEQUENCE — SECURITY GATE / FOUNDER'S WAY / LEGACY CIRCLE
+   Pure cinematic stills, no baked signage — same simple full-bleed
+   pattern as the rest of the grounds rooms. */
+#security-gate { background: #050403; }
+.security-gate-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/renders/security-gate-open.png');
+  background-size:cover; background-position:center;
+  filter: brightness(0.5) saturate(0.9); z-index:0;
+}
+#founders-way { background: #050403; }
+.founders-way-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/renders/founders-way.png');
+  background-size:cover; background-position:center;
+  filter: brightness(0.5) saturate(0.9); z-index:0;
+}
+#legacy-circle { background: #050403; }
+.legacy-circle-bg {
+  position:fixed; inset:0;
+  background-image: url('assets/renders/legacy-circle.png');
+  background-size:cover; background-position:center;
+  filter: brightness(0.5) saturate(0.9); z-index:0;
 }
 
 
@@ -964,21 +989,18 @@ body::before {
 }
 
 
-/* DISTRICT IV — NEW ROOMS (placeholder backgrounds, ready for real renders) */
+/* GRAND ATRIUM / ONYX LOUNGE — hero art is baked with its own wayfinding
+   signage, so it's rendered as an inline, full-width <img> inside
+   room-content (not a fixed cover background) with hotspots positioned
+   in percentages against the image's own box. That's the only way the
+   hotspots stay pinned to the baked buttons at every viewport size —
+   a fixed cover background crops unpredictably against page height. */
 #atrium { background: #0a0806; }
-.atrium-bg {
-  position:fixed; inset:0;
-  background-image: url('assets/images/atrium-bg.jpg');
-  background-size: cover; background-position: center;
-  z-index:0;
-}
 #onyx { background: #08070a; }
-.onyx-bg {
-  position:fixed; inset:0;
-  background-image: url('assets/images/onyx-bg.jpg');
-  background-size: cover; background-position: center;
-  z-index:0;
+.hero-render-wrap {
+  position:relative; margin-bottom:40px; border-radius:2px; overflow:hidden;
 }
+.hero-render-wrap img { width:100%; display:block; }
 .room-hotspot {
   position: absolute; z-index: 2; cursor: pointer;
   border-radius: 50%; width: 46px; height: 46px;
@@ -3217,6 +3239,80 @@ body::before {
   </div>
 </div>
 
+<!-- SECURITY GATE — arrival sequence, step 1 -->
+<div id="security-gate" class="inner-room">
+  <div class="security-gate-bg"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hall')">The Estate</button>
+    <span class="room-nav-title">Security Gate</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="section-label">Arrival · The Perimeter</span>
+      <h1 class="section-title">The Gate Opens</h1>
+    </div>
+    <div class="fade-up delay-1" style="max-width:640px;">
+      <p style="font-family:Cormorant Garamond,serif; font-size:clamp(18px,2.5vw,26px); font-style:italic; color:var(--cream); opacity:0.75; line-height:1.8; margin-bottom:28px;">Every visit starts the same way — the crest, the name, the weight of a gate swinging open for you specifically.</p>
+      <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">Beyond this line is Founder's Way, the driveway that carries every guest, every year, past the same monogram, toward the same house.</p>
+    </div>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="goTo('founders-way')" class="btn-sm">Founder's Way →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOUNDER'S WAY — arrival sequence, step 2 -->
+<div id="founders-way" class="inner-room">
+  <div class="founders-way-bg"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hall')">The Estate</button>
+    <span class="room-nav-title">Founder's Way</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="section-label">Arrival · The Driveway</span>
+      <h1 class="section-title">Founder's Way</h1>
+    </div>
+    <div class="fade-up delay-1" style="max-width:640px;">
+      <p style="font-family:Cormorant Garamond,serif; font-size:clamp(18px,2.5vw,26px); font-style:italic; color:var(--cream); opacity:0.75; line-height:1.8; margin-bottom:28px;">The RSF monogram is in the paving here. The gates carry his initials, not the institution's.</p>
+      <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">This stretch belongs to one man before it belongs to anything bigger. Everyone walks it. Only he's ever driven it feeling like it was built for him.</p>
+    </div>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="goTo('security-gate')" class="btn-sm">← Security Gate</button>
+      <button onclick="goTo('legacy-circle')" class="btn-sm">Legacy Circle →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEGACY CIRCLE — arrival sequence, step 3 -->
+<div id="legacy-circle" class="inner-room">
+  <div class="legacy-circle-bg"></div>
+  <div class="room-nav">
+    <button class="back-btn" onclick="goTo('hall')">The Estate</button>
+    <span class="room-nav-title">Legacy Circle</span>
+    <span class="room-nav-rsf">RSF</span>
+  </div>
+  <div class="room-content">
+    <div class="fade-up">
+      <span class="section-label">Arrival · The Roundabout</span>
+      <h1 class="section-title">Legacy Circle</h1>
+    </div>
+    <div class="fade-up delay-1" style="max-width:640px;">
+      <p style="font-family:Cormorant Garamond,serif; font-size:clamp(18px,2.5vw,26px); font-style:italic; color:var(--cream); opacity:0.75; line-height:1.8; margin-bottom:28px;">Here the crest changes. Founder's Way carried his name. The Circle carries the institution's — the crown, the laurel, the OE.</p>
+      <p style="font-size:17px; color:var(--cream); opacity:0.55; line-height:1.9;">This is where a personal drive becomes a public arrival. The fountain, the valets, the cars with OE plates. What R.S. Frazier built is bigger than R.S. Frazier now, and the Circle says so before you've even reached the door.</p>
+    </div>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="goTo('founders-way')" class="btn-sm">← Founder's Way</button>
+      <button onclick="goTo('courtyard')" class="btn-sm">Fountain Court →</button>
+    </div>
+  </div>
+</div>
+
 <!-- MAIN HALL -->
 <div id="hall">
   <div class="hall-bg"></div>
@@ -3417,13 +3513,13 @@ body::before {
     <span class="room-nav-rsf">RSF</span>
   </div>
   <div class="room-content">
-    <div class="fade-up" style="position:relative; margin-bottom:40px; border-radius:2px; overflow:hidden;">
-      <img src="assets/images/img-the-library.jpg" style="width:100%; display:block;" alt="The Library">
-      <div class="room-hotspot" style="left:12%; top:40%;" onclick="goTo('reflection')" title="Reflection Garden"></div>
-      <div class="room-hotspot" style="left:32%; top:44%;" onclick="goTo('founder')" title="Founder Gallery"></div>
-      <div class="room-hotspot" style="left:70%; top:44%;" onclick="scrollToBooks()" title="Reading Alcove"></div>
-      <div class="room-hotspot" style="left:91%; top:44%;" onclick="goTo('gemini')" title="Discover More — Enter GEMINI"></div>
-      <div class="room-hotspot" style="left:53%; top:96%;" onclick="goTo('atrium')" title="Return to Grand Atrium"></div>
+    <div class="fade-up hero-render-wrap">
+      <img src="assets/renders/library.png" alt="The Library">
+      <div class="room-hotspot-rect" style="left:4%; top:35%; width:14%; height:11%;" onclick="goTo('reflection')" title="Reflection Garden"></div>
+      <div class="room-hotspot-rect" style="left:25%; top:42%; width:15%; height:9%;" onclick="goTo('founder')" title="Founder Gallery"></div>
+      <div class="room-hotspot-rect" style="left:66%; top:42%; width:11%; height:9%;" onclick="scrollToBooks()" title="Reading Alcove"></div>
+      <div class="room-hotspot-rect" style="left:86%; top:36%; width:12%; height:10%;" onclick="goTo('gemini')" title="Discover More — Enter GEMINI"></div>
+      <div class="room-hotspot-rect" style="left:37%; top:92%; width:26%; height:7%;" onclick="goTo('atrium')" title="Return to Grand Atrium"></div>
     </div>
     <div class="fade-up">
       <span class="section-label">Featured Works · Richard S. Frazier · Author</span>
@@ -3475,17 +3571,19 @@ body::before {
 
 <!-- THE GRAND ATRIUM -->
 <div id="atrium" class="inner-room">
-  <div class="atrium-bg"></div>
-  <div class="room-hotspot" style="left:50%; top:52%;" onclick="goTo('onyx')" title="The Onyx Lounge"></div>
-  <div class="room-hotspot" style="left:22%; top:83%;" onclick="goTo('library')" title="The Library"></div>
-  <div class="room-hotspot" style="left:78%; top:83%;" onclick="goTo('kitchen')" title="Chef's Kitchen"></div>
-  <div class="room-hotspot" style="left:50%; top:94%;" onclick="goTo('courtyard')" title="Fountain Court"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Grand Atrium</span>
     <span class="room-nav-rsf">RSF</span>
   </div>
   <div class="room-content">
+    <div class="fade-up hero-render-wrap">
+      <img src="assets/renders/grand-atrium.png" alt="The Grand Atrium">
+      <div class="room-hotspot-rect" style="left:44%; top:43%; width:13%; height:16%;" onclick="goTo('onyx')" title="Onyx Lounge — IV-102"></div>
+      <div class="room-hotspot-rect" style="left:18%; top:74%; width:13%; height:8%;" onclick="goTo('library')" title="The Library — IV-201"></div>
+      <div class="room-hotspot-rect" style="left:70%; top:74%; width:13%; height:8%;" onclick="goTo('kitchen')" title="Chef's Kitchen — IV-301"></div>
+      <div class="room-hotspot-rect" style="left:38%; top:85%; width:24%; height:13%;" onclick="goTo('courtyard')" title="Fountain Court — EXT-120"></div>
+    </div>
     <div class="fade-up">
       <span class="section-label">Main Level · Arrival & Welcome</span>
       <h1 class="section-title">The Grand Atrium</h1>
@@ -3496,32 +3594,34 @@ body::before {
     </div>
     <div class="gold-rule fade-up delay-2"></div>
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="goTo('courtyard')" class="btn-sm">← Fountain Court</button>
       <button onclick="goTo('onyx')" class="btn-sm">The Onyx Lounge →</button>
       <button onclick="goTo('library')" class="btn-sm">The Library →</button>
       <button onclick="goTo('kitchen')" class="btn-sm">Chef's Kitchen →</button>
-      <button onclick="goTo('courtyard')" class="btn-sm">Fountain Court →</button>
       <button onclick="goTo('gemini')" class="btn-sm">GEMINI →</button>
     </div>
   </div>
 </div>
 <!-- THE ONYX LOUNGE -->
 <div id="onyx" class="inner-room">
-  <div class="onyx-bg"></div>
-  <div class="room-hotspot" style="left:7%; top:29%;" onclick="goTo('library')" title="The Library"></div>
-  <div class="room-hotspot" style="left:50%; top:30%;" onclick="goTo('legacy')" title="Hall of Legacy"></div>
-  <div class="room-hotspot" style="left:68%; top:31%;" onclick="goTo('founder')" title="Founder Gallery"></div>
-  <div class="room-hotspot" style="left:84%; top:29%;" onclick="goTo('kitchen')" title="Chef's Kitchen"></div>
-  <div class="room-hotspot" style="left:15%; top:93%;" onclick="goTo('pantry')" title="Butler's Pantry"></div>
-  <div class="room-hotspot" style="left:30%; top:90%;" onclick="goTo('dining')" title="Formal Dining"></div>
-  <div class="room-hotspot" style="left:50%; top:97%;" onclick="goTo('courtyard')" title="Fountain Court"></div>
-  <div class="room-hotspot" style="left:68%; top:90%;" onclick="goTo('conservatory')" title="Conservatory Gallery"></div>
-  <div class="room-hotspot" style="left:83%; top:90%;" onclick="goTo('morning')" title="Morning Room"></div>
   <div class="room-nav">
     <button class="back-btn" onclick="goTo('hall')">The Estate</button>
     <span class="room-nav-title">The Onyx Lounge</span>
     <span class="room-nav-rsf">RSF</span>
   </div>
   <div class="room-content">
+    <div class="fade-up hero-render-wrap">
+      <img src="assets/renders/onyx-lounge.png" alt="The Onyx Lounge">
+      <div class="room-hotspot-rect" style="left:2%; top:21%; width:11%; height:18%;" onclick="goTo('library')" title="The Library"></div>
+      <div class="room-hotspot-rect" style="left:43%; top:22%; width:14%; height:10%;" onclick="goTo('legacy')" title="Hall of Legacy"></div>
+      <div class="room-hotspot-rect" style="left:64%; top:22%; width:14%; height:18%;" onclick="goTo('founder')" title="Founder Gallery"></div>
+      <div class="room-hotspot-rect" style="left:79%; top:22%; width:14%; height:10%;" onclick="goTo('kitchen')" title="Chef's Kitchen"></div>
+      <div class="room-hotspot-rect" style="left:11%; top:85%; width:13%; height:14%;" onclick="goTo('pantry')" title="Butler's Pantry"></div>
+      <div class="room-hotspot-rect" style="left:26%; top:85%; width:13%; height:14%;" onclick="goTo('dining')" title="Formal Dining"></div>
+      <div class="room-hotspot-rect" style="left:43%; top:86%; width:14%; height:16%;" onclick="goTo('courtyard')" title="Fountain Court"></div>
+      <div class="room-hotspot-rect" style="left:64%; top:85%; width:13%; height:14%;" onclick="goTo('conservatory')" title="Conservatory Gallery"></div>
+      <div class="room-hotspot-rect" style="left:79%; top:85%; width:13%; height:14%;" onclick="goTo('morning')" title="Morning Room"></div>
+    </div>
     <div class="fade-up">
       <span class="section-label">Main Level · Hospitality & Connection</span>
       <h1 class="section-title">The Onyx Lounge</h1>
@@ -5368,6 +5468,8 @@ body::before {
     </div>
     <div class="gold-rule fade-up delay-2"></div>
     <div style="display:flex; gap:20px; flex-wrap:wrap;" class="fade-up delay-3">
+      <button onclick="goTo('legacy-circle')" class="btn-sm">← Legacy Circle</button>
+      <button onclick="goTo('atrium')" class="btn-sm">Grand Atrium →</button>
       <button onclick="goTo('reflection')" class="btn-sm">The Reflection Garden →</button>
       <button onclick="goTo('library')" class="btn-sm">The Library →</button>
       <button onclick="goTo('gemini')" class="btn-sm">GEMINI →</button>
@@ -5801,7 +5903,7 @@ body::before {
 </div>
 
 <script>
-const rooms = ['entrance','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault','machine-room','kitchenette'];
+const rooms = ['entrance','security-gate','founders-way','legacy-circle','hall','study','library','closet','gemini','courtyard','kitchen','rooftop','studio','garage','cellar','mechanical','sitting','bath','suite','grief','vault','observatory','atrium','onyx','legacy','pantry','dining','conservatory','morning','reflection','vista','founder','depmg','control-room','studio-a','hq-corridor','screening','boardroom','brand-studios','creator-lounge','vocal-booth','isolation-rooms','studio-b','atmos','mastering','artist-lounge','producer-lounge','instrument-vault','mic-vault','machine-room','kitchenette'];
 let current = 'entrance';
 let monClicks = 0;
 let monTimer = null;
@@ -6394,9 +6496,11 @@ function playGateVideo() {
     wrap.style.opacity = '0';
     setTimeout(() => {
       wrap.style.display = 'none';
-      // The film's own aerial pull-back already delivers the "arrival" beat,
-      // so go straight into the Hall instead of the separate hallway-walk transition.
-      goTo('hall');
+      // The film's aerial pull-back ends at the gate — from here the guest
+      // walks the full canonical arrival sequence (Security Gate → Founder's
+      // Way → Legacy Circle → Fountain Court → Grand Atrium → Onyx Lounge)
+      // before reaching the Hall, instead of jumping straight there.
+      goTo('security-gate');
     }, 500);
   };
 
