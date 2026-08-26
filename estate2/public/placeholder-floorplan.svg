@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#050403"/>
+  <rect x="40" y="40" width="1320" height="820" fill="none" stroke="#3a2c1b" stroke-width="2"/>
+  <text x="700" y="90" text-anchor="middle" font-family="monospace" font-size="14" fill="#8a7238" letter-spacing="3">FOUNDATION FIXTURE &#183; PLAN REF FF-01 &#183; NON-CANON INTERNAL LABELING</text>
+
+  <rect x="120" y="150" width="340" height="280" fill="none" stroke="#5f8fae" stroke-width="1.5"/>
+  <text x="290" y="300" text-anchor="middle" font-family="monospace" font-size="18" fill="#5f8fae">ROOM A</text>
+
+  <rect x="530" y="150" width="340" height="280" fill="none" stroke="#7c9a6b" stroke-width="1.5"/>
+  <text x="700" y="300" text-anchor="middle" font-family="monospace" font-size="18" fill="#7c9a6b">ROOM B</text>
+
+  <rect x="940" y="150" width="340" height="280" fill="none" stroke="#9b7bc4" stroke-width="1.5"/>
+  <text x="1110" y="300" text-anchor="middle" font-family="monospace" font-size="18" fill="#9b7bc4">ROOM C</text>
+
+  <rect x="530" y="500" width="340" height="280" fill="none" stroke="#5a4a3a" stroke-width="1.5" stroke-dasharray="10 8"/>
+  <text x="700" y="650" text-anchor="middle" font-family="monospace" font-size="18" fill="#5a4a3a">ROOM D — NOT BUILT</text>
+</svg>

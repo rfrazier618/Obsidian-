@@ -18,7 +18,7 @@ export function Hub() {
         the same destination id.
       </p>
       <button
-        onClick={() => navigateTo('dummy-room')}
+        onClick={() => navigateTo('room-a')}
         style={{
           background: 'none',
           border: '1px solid var(--gold-dim)',
@@ -29,7 +29,7 @@ export function Hub() {
           fontSize: 13,
         }}
       >
-        Enter the Dummy Room &rarr;
+        Enter Room A &rarr;
       </button>
     </div>
   );

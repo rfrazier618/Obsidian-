@@ -51,16 +51,30 @@ describe('Registry integrity acceptance tests', () => {
     expect(assertNoUnreachableLiveDestinations(withOrphan)).toContain('test-orphan');
   });
 
-  it('resolves contextual-chain reachability (a room only reachable via another live room)', () => {
+  it('resolves contextual-chain reachability for room-b (explorer + hotspot both apply)', () => {
     const verdicts = computeDiscoveryVerdicts(REGISTRY);
-    const annex = verdicts.find((v) => v.id === 'dummy-room-annex');
-    expect(annex?.reachable).toBe(true);
-    expect(annex?.via).toContain('explorer');
+    const roomB = verdicts.find((v) => v.id === 'room-b');
+    expect(roomB?.reachable).toBe(true);
+    expect(roomB?.via).toContain('explorer');
+  });
+
+  it('resolves room-c as reachable ONLY via the contextual chain from room-b (no Explorer, no Global Nav)', () => {
+    const verdicts = computeDiscoveryVerdicts(REGISTRY);
+    const roomC = verdicts.find((v) => v.id === 'room-c');
+    expect(roomC?.reachable).toBe(true);
+    expect(roomC?.via).toEqual(['contextual']);
+  });
+
+  it('does NOT count a status:"planned" destination as reachable/live for graph purposes', () => {
+    const verdicts = computeDiscoveryVerdicts(REGISTRY);
+    const roomD = verdicts.find((v) => v.id === 'room-d');
+    // planned destinations are reported but explicitly not evaluated as live
+    expect(roomD?.reason).toContain('status:planned');
   });
 
   it('exempts declared secrets without requiring a discovery path', () => {
     const verdicts = computeDiscoveryVerdicts(REGISTRY);
-    const secret = verdicts.find((v) => v.id === 'dummy-secret');
+    const secret = verdicts.find((v) => v.id === 'fixture-secret');
     expect(secret?.reachable).toBe(true);
     expect(secret?.via).toEqual(['secret-exempt']);
   });

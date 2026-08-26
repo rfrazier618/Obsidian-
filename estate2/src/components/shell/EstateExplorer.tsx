@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useEstateNavigation } from '@/state/useEstateNavigation';
 import type { Destination } from '@/registry/types';
+import { Overlay } from '@/components/primitives/Overlay';
 import styles from './EstateExplorer.module.css';
 
 interface EstateExplorerProps {
@@ -31,42 +32,38 @@ export function EstateExplorer({ open, onClose }: EstateExplorerProps) {
     return byDistrict;
   }, [registry]);
 
-  if (!open) return null;
-
   return (
-    <div className={styles.backdrop} role="presentation" onClick={onClose}>
-      <div className={styles.panel} role="dialog" aria-modal="true" aria-label="Estate Explorer" onClick={(e) => e.stopPropagation()}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Estate Explorer</h2>
-          <button className={styles.close} onClick={onClose} aria-label="Close">
-            &times;
-          </button>
-        </div>
-        {[...grouped.entries()].map(([district, wings]) => (
-          <div key={district} className={styles.districtBlock}>
-            <h3 className={styles.districtLabel}>District {district}</h3>
-            {[...wings.entries()].map(([wing, destinations]) => (
-              <div key={wing} className={styles.wingBlock}>
-                {wing !== '—' && <span className={styles.wingLabel}>{wing}</span>}
-                <div className={styles.grid}>
-                  {destinations.map((d) => (
-                    <button
-                      key={d.id}
-                      className={styles.card}
-                      onClick={() => {
-                        navigateTo(d.id);
-                        onClose();
-                      }}
-                    >
-                      {d.displayName}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
+    <Overlay open={open} onClose={onClose} ariaLabel="Estate Explorer" size="wide">
+      <div className={styles.header}>
+        <h2 className={styles.title}>Estate Explorer</h2>
+        <button className={styles.close} onClick={onClose} aria-label="Close">
+          &times;
+        </button>
       </div>
-    </div>
+      {[...grouped.entries()].map(([district, wings]) => (
+        <div key={district} className={styles.districtBlock}>
+          <h3 className={styles.districtLabel}>District {district}</h3>
+          {[...wings.entries()].map(([wing, destinations]) => (
+            <div key={wing} className={styles.wingBlock}>
+              {wing !== '—' && <span className={styles.wingLabel}>{wing}</span>}
+              <div className={styles.grid}>
+                {destinations.map((d) => (
+                  <button
+                    key={d.id}
+                    className={styles.card}
+                    onClick={() => {
+                      navigateTo(d.id);
+                      onClose();
+                    }}
+                  >
+                    {d.displayName}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </Overlay>
   );
 }

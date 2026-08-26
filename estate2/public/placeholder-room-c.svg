@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e0d17"/><stop offset="1" stop-color="#07060c"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1600" height="900" fill="none" stroke="#241e3a" stroke-width="2"/>
+  <text x="800" y="120" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="46" fill="#9b7bc4">Room C</text>
+  <text x="800" y="160" text-anchor="middle" font-family="monospace" font-size="16" fill="#8f6bb0" letter-spacing="3">FLOOR PLAN CAPABILITY &#183; REACHED VIA DIRECTORY</text>
+</svg>
