@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Destination } from '@/registry/types';
+import type { Destination, HotspotAction } from '@/registry/types';
 import { REGISTRY, FLOOR_PLAN_SHEETS } from '@/registry/data';
 import { HotspotLayer } from './HotspotLayer';
 import { EstateDirectory } from './EstateDirectory';
 import { FloorPlanViewer, type FloorPlanMarker } from './FloorPlanViewer';
+import { ThresholdKeypad } from './ThresholdKeypad';
 import { useAudio } from '@/state/AudioContext';
 import { useOverlay } from '@/state/OverlayContext';
 import { useEstateNavigation } from '@/state/useEstateNavigation';
@@ -23,15 +24,15 @@ interface RoomSceneProps {
  * Room/session state (which panels are open) lives here as local
  * component state — it's naturally torn down when React unmounts this
  * component on navigation, which is the "no leaked state between
- * rooms" guarantee from the Architecture Spec. Directory and Floor
- * Plan open/closed are exactly that kind of ephemeral, per-room state.
+ * rooms" guarantee from the Architecture Spec.
  */
 export function RoomScene({ destination }: RoomSceneProps) {
   const { navigateTo } = useEstateNavigation();
+  const { openModal, showToast } = useOverlay();
   const { setProfile } = useAudio();
-  const { openModal } = useOverlay();
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const [floorPlanOpen, setFloorPlanOpen] = useState(false);
+  const [thresholdOpen, setThresholdOpen] = useState(false);
 
   useEffect(() => {
     setProfile(destination.audioProfile);
@@ -44,6 +45,7 @@ export function RoomScene({ destination }: RoomSceneProps) {
   useEffect(() => {
     setDirectoryOpen(false);
     setFloorPlanOpen(false);
+    setThresholdOpen(false);
   }, [destination.id]);
 
   const sheet = destination.floorPlanRef ? FLOOR_PLAN_SHEETS[destination.floorPlanRef.sheet] : null;
@@ -55,13 +57,64 @@ export function RoomScene({ destination }: RoomSceneProps) {
       }))
     : [];
 
+  /**
+   * The generic hotspot dispatcher — one switch, four action kinds,
+   * zero per-room branching. This is what lets 18 District II rooms'
+   * worth of SA_PANELS-style "hotspot opens an info panel" behavior
+   * become Registry data instead of 18 more hand-written components.
+   */
+  const handleHotspotAction = (action: HotspotAction) => {
+    switch (action.kind) {
+      case 'navigate':
+        navigateTo(action.targetId);
+        return;
+      case 'toast':
+        showToast(action.message);
+        return;
+      case 'panel':
+        openModal({
+          id: `panel-${action.title}`,
+          title: action.title,
+          body: <div dangerouslySetInnerHTML={{ __html: action.body }} />,
+        });
+        return;
+      case 'capability':
+        activateCapability(action.capability);
+        return;
+    }
+  };
+
+  const activateCapability = (capability: string) => {
+    if (capability === 'directory') setDirectoryOpen(true);
+    else if (capability === 'floorplan') setFloorPlanOpen(true);
+    else if (capability === 'threshold') setThresholdOpen(true);
+    else if (capability === 'media') {
+      openModal({
+        id: 'media-proof',
+        title: 'Shared Modal',
+        body: (
+          <p>
+            This is the one EstateModal instance for the whole Estate, opened from a room's
+            <code> media</code> capability — not a per-room modal implementation.
+          </p>
+        ),
+      });
+    }
+  };
+
   return (
     <div className={styles.room}>
       <header className={styles.nav}>
-        <button className={styles.back} onClick={() => navigateTo('estate-hall')}>
-          &larr; The Estate
+        <button
+          className={styles.back}
+          onClick={() => navigateTo(destination.backTarget ?? 'estate-hall')}
+        >
+          &larr; {destination.backTarget ? REGISTRY.find((d) => d.id === destination.backTarget)?.displayName : 'The Estate'}
         </button>
-        <span className={styles.title}>{destination.displayName}</span>
+        <span className={styles.title}>
+          {destination.reference && <span className={styles.reference}>{destination.reference}</span>}
+          {destination.displayName}
+        </span>
         <span className={styles.district}>District {destination.district}</span>
       </header>
 
@@ -70,7 +123,7 @@ export function RoomScene({ destination }: RoomSceneProps) {
           backgroundAsset={destination.backgroundAsset}
           alt={destination.displayName}
           hotspots={destination.hotspots}
-          onActivate={navigateTo}
+          onActivate={handleHotspotAction}
         />
       ) : (
         <div className={styles.noAsset}>No background asset configured for this destination.</div>
@@ -78,21 +131,7 @@ export function RoomScene({ destination }: RoomSceneProps) {
 
       <div className={styles.actions}>
         {destination.capabilities.includes('media') && (
-          <button
-            className={styles.actionBtn}
-            onClick={() =>
-              openModal({
-                id: 'media-proof',
-                title: 'Shared Modal',
-                body: (
-                  <p>
-                    This is the one EstateModal instance for the whole Estate, opened from a room's
-                    <code> media</code> capability — not a per-room modal implementation.
-                  </p>
-                ),
-              })
-            }
-          >
+          <button className={styles.actionBtn} onClick={() => activateCapability('media')}>
             View Media
           </button>
         )}
@@ -104,6 +143,11 @@ export function RoomScene({ destination }: RoomSceneProps) {
         {destination.capabilities.includes('floorplan') && sheet && (
           <button className={styles.actionBtn} onClick={() => setFloorPlanOpen(true)}>
             Floor Plan
+          </button>
+        )}
+        {destination.capabilities.includes('threshold') && destination.thresholdConfig && (
+          <button className={styles.actionBtn} onClick={() => setThresholdOpen(true)}>
+            {destination.thresholdConfig.eyebrow}
           </button>
         )}
       </div>
@@ -130,6 +174,15 @@ export function RoomScene({ destination }: RoomSceneProps) {
           reference={sheet.reference}
           canonNotice={sheet.canonNotice}
           markers={markers}
+        />
+      )}
+
+      {destination.thresholdConfig && (
+        <ThresholdKeypad
+          open={thresholdOpen}
+          onClose={() => setThresholdOpen(false)}
+          config={destination.thresholdConfig}
+          onComplete={navigateTo}
         />
       )}
     </div>

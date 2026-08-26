@@ -37,6 +37,7 @@ describe('Registry integrity acceptance tests', () => {
       status: 'live',
       parent: null,
       adjacentDestinations: [],
+      backTarget: null,
       explorerVisibility: false,
       globalNavVisibility: false,
       directoryVisibility: false,

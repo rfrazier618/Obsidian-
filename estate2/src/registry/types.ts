@@ -22,12 +22,36 @@ export type Capability =
   | 'ai-content'
   | 'directory'
   | 'floorplan'
-  | 'audio-profile';
+  | 'audio-profile'
+  /** Added during the D2 reference migration — an access-code interaction
+   *  gating entry to another destination. See ThresholdConfig below. */
+  | 'threshold';
+
+/**
+ * A hotspot's behavior, extracted from the D2 reference migration where
+ * a single room's hotspots turned out to need three distinct behaviors
+ * (Reception alone has all three) — generalized as reusable action kinds
+ * rather than one-off onClick handlers per room:
+ *  - navigate: go to another destination (through the edge-transition
+ *    system — see registry/transitions.ts — so Sound Lock-style effects
+ *    apply by construction, not by each hotspot remembering to ask for one)
+ *  - toast: informational only, no destination exists yet or ever will
+ *  - panel: opens the one shared EstateModal with static title/body
+ *    content — the direct replacement for the legacy SA_PANELS pattern
+ *    used by all 18 District II rooms
+ *  - capability: triggers a named capability's local overlay on the
+ *    CURRENT destination (directory / floorplan / threshold), for
+ *    hotspots baked into a render rather than the fallback action row
+ */
+export type HotspotAction =
+  | { kind: 'navigate'; targetId: string }
+  | { kind: 'toast'; message: string }
+  | { kind: 'panel'; title: string; body: string }
+  | { kind: 'capability'; capability: Capability };
 
 /** A single tappable/clickable region layered over a room's rendered image. */
 export interface Hotspot {
-  /** Destination id this hotspot navigates to. */
-  targetId: string;
+  action: HotspotAction;
   shape: 'rect';
   /**
    * Percentage coordinates against the room's own rendered image box —
@@ -45,6 +69,14 @@ export interface FloorPlanRef {
   marker: { x: number; y: number };
 }
 
+/** Config for a destination with the 'threshold' capability — an
+ *  access-code interaction that, on completion, navigates to targetId. */
+export interface ThresholdConfig {
+  targetId: string;
+  eyebrow: string;
+  motto: string;
+}
+
 export interface Destination {
   /** Stable forever. Never reused, even after a destination retires. */
   id: string;
@@ -53,10 +85,15 @@ export interface Destination {
   /** UI copy. May differ from canonicalName on purpose — but this is the
    *  only field any renderer is allowed to display. */
   displayName: string;
+  /** Canon room number, e.g. "II-201" — shown in Directory rows and room
+   *  nav. Added during the D2 migration; absent for non-numbered destinations. */
+  reference?: string;
   district: District;
   wing: string | null;
-  /** Route segment — e.g. "/district-ii/mic-vault". Drives direct-link resolution. */
-  route: string;
+  /** Route segment. Null for destinations that are registered (for Directory/
+   *  canon completeness) but are never their own navigable page — e.g. a
+   *  threshold gate or a reveal-only hotspot target. */
+  route: string | null;
   type: DestinationType;
   status: DestinationStatus;
   /** Parent destination id, for sub-screens nested inside a mega-room (e.g. Gemini). */
@@ -68,6 +105,10 @@ export interface Destination {
    * finding in the demolition survey).
    */
   adjacentDestinations: string[];
+  /** Explicit back-navigation target for this destination's room-nav back
+   *  button. Not assumed to be the Estate hub — Control Room backs to
+   *  Reception, Studio A backs to Control Room, etc. Null only for hubs. */
+  backTarget: string | null;
   explorerVisibility: boolean;
   globalNavVisibility: boolean;
   directoryVisibility: boolean;
@@ -75,6 +116,8 @@ export interface Destination {
   backgroundAsset: string | null;
   audioProfile: string | null;
   capabilities: Capability[];
+  /** Required and used only when capabilities includes 'threshold'. */
+  thresholdConfig?: ThresholdConfig | null;
   hotspots: Hotspot[];
   /**
    * Declared trigger for status:'secret' destinations. Secrets are allowed

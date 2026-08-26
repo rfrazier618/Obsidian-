@@ -42,7 +42,7 @@ describe('Estate 2.0 foundation — closing integration fixture', () => {
 
     // Directory capability: Room B -> Directory -> Room C
     fireEvent.click(screen.getByText('Directory'));
-    const directory = screen.getByRole('dialog', { name: 'District II Directory' });
+    const directory = screen.getByRole('dialog', { name: 'District I Directory' });
     fireEvent.click(within(directory).getByText('Foundation Fixture — Room C'));
     expect(screen.getByText('Room C')).toBeInTheDocument();
   });
@@ -50,7 +50,7 @@ describe('Estate 2.0 foundation — closing integration fixture', () => {
   it('Directory shows current room as "You are here" and never as a button', () => {
     renderApp('/foundation/room-b');
     fireEvent.click(screen.getByText('Directory'));
-    const directory = screen.getByRole('dialog', { name: 'District II Directory' });
+    const directory = screen.getByRole('dialog', { name: 'District I Directory' });
     const currentRow = within(directory).getByText('Foundation Fixture — Room B');
     expect(currentRow.tagName).toBe('SPAN'); // not a <button>
     expect(within(directory).getByText('You are here')).toBeInTheDocument();
@@ -59,10 +59,14 @@ describe('Estate 2.0 foundation — closing integration fixture', () => {
   it('Directory shows a planned/unbuilt destination as visible but not navigable', () => {
     renderApp('/foundation/room-b');
     fireEvent.click(screen.getByText('Directory'));
-    const directory = screen.getByRole('dialog', { name: 'District II Directory' });
+    const directory = screen.getByRole('dialog', { name: 'District I Directory' });
     const plannedRow = within(directory).getByText('Foundation Fixture — Room D');
     expect(plannedRow.tagName).toBe('SPAN'); // not a <button> — visible, not falsely navigable
-    expect(within(directory).getByText('Not yet built')).toBeInTheDocument();
+    // Directory now also lists every un-migrated A-202 Rev. 4 room as
+    // "Not yet built" (District II reference slice) — assert Room D's
+    // own row carries the tag, not that it's the only such row.
+    const roomDRow = plannedRow.closest('li')!;
+    expect(within(roomDRow).getByText('Not yet built')).toBeInTheDocument();
   });
 
   it('Floor Plan opens with the correct plan asset, canon notice, and markers for every room on that sheet', () => {

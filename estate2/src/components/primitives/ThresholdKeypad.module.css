@@ -1,0 +1,78 @@
+.eyebrow {
+  font-family: monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-align: center;
+  margin: 0 0 18px;
+}
+
+.logo {
+  font-family: 'Cormorant SC', serif;
+  font-size: 26px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.motto {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--cream-dim);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.display {
+  font-family: monospace;
+  font-size: 26px;
+  letter-spacing: 0.3em;
+  color: var(--cream);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.key,
+.keyEnter,
+.keyClear {
+  background: var(--panel-2);
+  border: 1px solid var(--walnut);
+  color: var(--cream);
+  font-size: 15px;
+  padding: 14px 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.key:hover,
+.keyEnter:hover,
+.keyClear:hover {
+  border-color: var(--gold-dim);
+}
+
+.keyEnter {
+  color: var(--gold);
+}
+
+.keyClear {
+  color: var(--cream-dim);
+  font-size: 11px;
+}
+
+.status {
+  font-size: 12.5px;
+  color: var(--cream-dim);
+  text-align: center;
+  margin: 0;
+  min-height: 1.4em;
+}

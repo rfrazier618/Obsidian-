@@ -33,6 +33,15 @@
   color: var(--cream);
 }
 
+.reference {
+  font-family: monospace;
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--gold-dim);
+  margin-right: 10px;
+}
+
 .district {
   margin-left: auto;
   font-family: monospace;

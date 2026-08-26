@@ -17,14 +17,13 @@ interface EstateDirectoryProps {
  * the audit's clearest "looks like navigation, isn't" finding. Every
  * row comes from the Registry; nothing here is a second dataset.
  *
- * Three states per row, matching the existing D2 behavior the owner
- * asked to preserve:
- *  - current destination        → "You are here", never a button
- *  - status:'live' + directoryVisibility → a real, clickable destination
- *  - anything else (status:'planned', or directoryVisibility:false
- *    entries that still belong in the listing for canon completeness)
- *    → visible as plain text with an explicit "not yet built" label,
- *      never rendered as an interactive control
+ * Four states per row:
+ *  - current destination                      → "You are here", never a button
+ *  - status:'live', type room/hub              → a real, clickable destination
+ *  - status:'live', type overlay/secret        → "Reference only" — it exists
+ *    and functions (e.g. a threshold gate), but was never its own room
+ *  - status:'planned'                          → "Not yet built"
+ * Only the second state is ever rendered as a button.
  */
 export function EstateDirectory({ open, onClose, district, currentId, onNavigate }: EstateDirectoryProps) {
   const rows = useMemo(() => {
@@ -52,9 +51,18 @@ export function EstateDirectory({ open, onClose, district, currentId, onNavigate
           <ul className={styles.list}>
             {destinations.map((d) => {
               const isCurrent = d.id === currentId;
-              const isNavigable = !isCurrent && d.status === 'live';
+              const isRoom = d.type === 'room' || d.type === 'hub';
+              const isNavigable = !isCurrent && d.status === 'live' && isRoom;
+              const tag = isCurrent
+                ? 'You are here'
+                : d.status === 'planned'
+                  ? 'Not yet built'
+                  : d.status === 'live' && !isRoom
+                    ? 'Reference only'
+                    : null;
               return (
                 <li key={d.id} className={styles.row}>
+                  {d.reference && <span className={styles.num}>{d.reference}</span>}
                   {isNavigable ? (
                     <button
                       className={styles.rowNavigable}
@@ -70,8 +78,7 @@ export function EstateDirectory({ open, onClose, district, currentId, onNavigate
                       {d.canonicalName}
                     </span>
                   )}
-                  {isCurrent && <span className={styles.tag}>You are here</span>}
-                  {!isCurrent && d.status !== 'live' && <span className={styles.tagDim}>Not yet built</span>}
+                  {tag && <span className={isCurrent ? styles.tag : styles.tagDim}>{tag}</span>}
                 </li>
               );
             })}

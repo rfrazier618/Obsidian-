@@ -1,0 +1,43 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 970;
+  background: #030202;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  font-family: 'Cormorant SC', serif;
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation-name: fade;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text {
+    animation: none;
+    opacity: 0.8;
+  }
+}

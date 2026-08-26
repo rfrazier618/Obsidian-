@@ -19,7 +19,7 @@ export function computeDiscoveryVerdicts(registry: Destination[]): DiscoveryVerd
   const verdicts = new Map<string, DiscoveryVerdict>();
 
   const reachableSeed = registry.filter(
-    (d) => d.status === 'live' && (d.globalNavVisibility || d.explorerVisibility)
+    (d) => d.status === 'live' && d.route && (d.globalNavVisibility || d.explorerVisibility)
   );
 
   for (const d of reachableSeed) {
@@ -65,6 +65,14 @@ export function computeDiscoveryVerdicts(registry: Destination[]): DiscoveryVerd
     }
     if (d.status !== 'live') {
       return { id: d.id, reachable: true, via: [], reason: `status:${d.status}, not evaluated` };
+    }
+    if (!d.route) {
+      return {
+        id: d.id,
+        reachable: true,
+        via: [],
+        reason: 'No route — registered for canon/Directory completeness, never its own navigable page.',
+      };
     }
     const verdict = verdicts.get(d.id);
     if (verdict) return verdict;

@@ -54,6 +54,14 @@
   border-bottom: none;
 }
 
+.num {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--gold-dim);
+  min-width: 56px;
+  flex-shrink: 0;
+}
+
 .rowNavigable {
   background: none;
   border: none;

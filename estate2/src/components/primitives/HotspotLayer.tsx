@@ -1,11 +1,11 @@
-import type { Hotspot } from '@/registry/types';
+import type { Hotspot, HotspotAction } from '@/registry/types';
 import styles from './HotspotLayer.module.css';
 
 interface HotspotLayerProps {
   backgroundAsset: string;
   alt: string;
   hotspots: Hotspot[];
-  onActivate: (targetId: string) => void;
+  onActivate: (action: HotspotAction) => void;
 }
 
 /**
@@ -19,6 +19,10 @@ interface HotspotLayerProps {
  * Source render dimensions never need to be assumed anywhere in this
  * component — they're read from the image itself at layout time.
  *
+ * A hotspot's action (navigate/toast/panel/capability) is opaque to
+ * this component — it just reports which action fired. RoomScene owns
+ * the dispatch, so HotspotLayer never grows room-specific logic.
+ *
  * Each hotspot also gets a minimum touch-target size independent of its
  * visual rect, so a small baked-in render button still resolves to a
  * comfortably tappable area on mobile — the direct fix for the Estate
@@ -28,9 +32,9 @@ export function HotspotLayer({ backgroundAsset, alt, hotspots, onActivate }: Hot
   return (
     <div className={styles.wrap}>
       <img src={backgroundAsset} alt={alt} className={styles.image} />
-      {hotspots.map((h) => (
+      {hotspots.map((h, i) => (
         <button
-          key={h.targetId + h.label}
+          key={i}
           type="button"
           className={styles.hotspot}
           style={{
@@ -39,7 +43,7 @@ export function HotspotLayer({ backgroundAsset, alt, hotspots, onActivate }: Hot
             width: `${h.coords.width}%`,
             height: `${h.coords.height}%`,
           }}
-          onClick={() => onActivate(h.targetId)}
+          onClick={() => onActivate(h.action)}
           aria-label={h.label}
           title={h.label}
         />
