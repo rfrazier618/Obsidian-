@@ -1,0 +1,68 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px clamp(20px, 4vw, 56px);
+  background: rgba(11, 9, 6, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--walnut);
+}
+
+.brand {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.link,
+.linkActive {
+  background: none;
+  border: none;
+  font-size: 12.5px;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.link {
+  color: var(--cream-dim);
+}
+
+.link:hover {
+  color: var(--cream);
+  background: var(--panel-2);
+}
+
+.linkActive {
+  color: var(--gold);
+  background: var(--panel-2);
+}
+
+.audioBtn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--walnut);
+  color: var(--cream-dim);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}

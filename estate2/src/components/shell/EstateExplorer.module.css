@@ -1,0 +1,88 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 4, 2, 0.8);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 400;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--walnut);
+  border-radius: 6px;
+  max-width: 760px;
+  width: 100%;
+  padding: 28px 32px 36px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 24px;
+  margin: 0;
+  color: var(--cream);
+}
+
+.close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--cream-dim);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.districtBlock {
+  margin-bottom: 26px;
+}
+
+.districtLabel {
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin: 0 0 10px;
+}
+
+.wingBlock {
+  margin-bottom: 14px;
+}
+
+.wingLabel {
+  display: block;
+  font-size: 11.5px;
+  color: var(--cream-dim);
+  margin-bottom: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.card {
+  background: var(--panel-2);
+  border: 1px solid var(--walnut);
+  color: var(--cream);
+  font-size: 13px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.card:hover {
+  border-color: var(--gold-dim);
+}

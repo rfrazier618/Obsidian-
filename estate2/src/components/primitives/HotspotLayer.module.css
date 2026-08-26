@@ -1,0 +1,46 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--walnut);
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+/*
+ * Visual rect is exactly the coordinate the registry declares. The
+ * minimum touch target is applied via a transparent expanded hit-area
+ * (::after) rather than growing the visible rect itself — so alignment
+ * against a baked-in render stays precise while the tappable area never
+ * drops below a comfortable minimum on small screens.
+ */
+.hotspot {
+  position: absolute;
+  box-sizing: border-box;
+  background: rgba(201, 168, 76, 0);
+  border: 1px solid rgba(201, 168, 76, 0);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.hotspot::after {
+  content: '';
+  position: absolute;
+  inset: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
+.hotspot:hover,
+.hotspot:focus-visible {
+  background: rgba(201, 168, 76, 0.14);
+  border-color: rgba(201, 168, 76, 0.55);
+}

@@ -1,0 +1,38 @@
+/*
+ * Foundation-phase tokens only — enough to prove the shell works and
+ * stay legible. This is NOT the Estate 2.0 visual design pass; per the
+ * build order, no redesign happens before the engine is proven. Carries
+ * forward the existing brand's obsidian/walnut/gold/cream language so
+ * the dummy room doesn't look like a stray generic app.
+ */
+:root {
+  --obsidian: #0b0906;
+  --panel: #15100a;
+  --panel-2: #1c1610;
+  --walnut: #2e2015;
+  --gold: #c9a84c;
+  --gold-dim: #8a7238;
+  --cream: #ece5d4;
+  --cream-dim: rgba(236, 229, 212, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--obsidian);
+  color: var(--cream);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+button {
+  font-family: inherit;
+}

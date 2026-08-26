@@ -1,0 +1,26 @@
+# Proposed deploy config for Estate 2.0 — NOT wired into the live site's
+# netlify.toml at the repo root. That file keeps serving the current
+# production Estate untouched, per the strangler-migration requirement.
+#
+# This file describes how Estate 2.0 would deploy as its own Netlify
+# site (e.g. a preview/staging site, or its own subdomain) while it's
+# developed alongside Estate 1.0. Cutover — pointing the real domain at
+# this build, or merging the two configs — is a decision for when a
+# district is actually ready to replace its Estate 1.0 counterpart, not
+# part of the foundation phase.
+
+[build]
+  base = "estate2"
+  command = "npm run build"
+  publish = "estate2/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Client-side routing fallback — also present as public/_redirects,
+# which Vite copies into dist/ automatically. Both are declared so the
+# rule survives however this ends up deployed.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

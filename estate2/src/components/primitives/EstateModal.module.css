@@ -1,0 +1,55 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 4, 2, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: 20px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--walnut);
+  border-radius: 6px;
+  max-width: 520px;
+  width: 100%;
+  padding: 28px 28px 24px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  margin: 0;
+  color: var(--cream);
+}
+
+.close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--cream-dim);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.close:hover {
+  color: var(--cream);
+}
+
+.body {
+  font-size: 14px;
+  color: var(--cream-dim);
+  line-height: 1.6;
+}
