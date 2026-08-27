@@ -23,6 +23,18 @@ const DEPMG_SESSIONS_PANEL = {
 } as const;
 
 /**
+ * Vault Preservation — legacy already reuses this exact saOpenPanel('vaultpreservation')
+ * call from both the Instrument Vault and the Mic Vault, verbatim. Extracted
+ * here for the same reason as DEPMG_SESSIONS_PANEL: the two vaults are
+ * siblings that share one preservation philosophy, not two rooms that
+ * happen to say something similar. Do not fork this content per room.
+ */
+const VAULT_PRESERVATION_PANEL = {
+  title: 'Vault Preservation',
+  body: `<p>Preserve. Protect. Prepare. Tools are maintained at the highest standard so creativity never waits &mdash; secure storage, climate-conscious, catalogued and ready when the moment demands it.</p>`,
+} as const;
+
+/**
  * The Estate Registry.
  *
  * Two bodies of data live here side by side:
@@ -915,9 +927,259 @@ export const REGISTRY: Destination[] = [
     ],
     secretTrigger: null,
   },
-  stub('producer-lounge', 'II-209', 'Producer Lounge / Writing Room', 'Recording Complex'),
-  stub('instrument-vault', 'II-210A', 'Instrument Vault', 'Recording Complex'),
-  stub('mic-vault', 'II-210B', 'Microphone / Equipment Vault', 'Recording Complex'),
+  // ─── II-200 batch 3: Producer Lounge / Instrument Vault / Mic Vault ───
+  // Backward-only chain continues exactly as legacy has it (artist-lounge
+  // has no forward hotspot into producer-lounge; producer-lounge has none
+  // into instrument-vault; instrument-vault has none into mic-vault; and
+  // mic-vault has none into machine-room, which stays a stub this batch).
+  // Preserved, not repaired — this is compiled into the later canonical-
+  // adjacency pass, not fixed room by room during migration.
+  {
+    id: 'producer-lounge',
+    canonicalName: 'Producer Lounge / Writing Room',
+    displayName: 'Producer Lounge / Writing Room',
+    reference: 'II-209',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/producer-lounge',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['artist-lounge'],
+    backTarget: 'artist-lounge',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.9, y: 0.9 } },
+    backgroundAsset: '/d2/depmg-producer-lounge-bg.jpg',
+    audioProfile: 'producer-lounge',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'artist-lounge' },
+        shape: 'rect',
+        coords: { left: 0.33, top: 70.6, width: 13.48, height: 27.54 },
+        label: 'Artist Lounge — II-208',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Writing Table',
+          body: `<p>Where the next record starts before it's a session &mdash; lyrics, arrangement ideas, and songwriting worked out by hand around one communal table.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.65, top: 70.6, width: 12.57, height: 27.54 },
+        label: 'Writing Table',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Idea Wall',
+          body: `<p>Notes, concepts and song structures, pinned and worked through in the open.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.13, top: 70.6, width: 12.7, height: 27.54 },
+        label: 'Idea Wall',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Reference Listening',
+          body: `<p>Pull something up, compare it, discuss it, rethink the record. This isn't relaxed listening &mdash; it's evaluation, and it's not mixing or mastering either.</p>
+          <p style="opacity:0.6; font-style:italic;">A different behavior from II-208's Now Playing, on purpose.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 41.67, top: 70.6, width: 13.22, height: 27.54 },
+        label: 'Reference Listening',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Producer Library',
+          body: `<p>Records, books and creative references kept close at hand for whatever the next idea needs.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 55.79, top: 70.6, width: 12.89, height: 27.54 },
+        label: 'Producer Library',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 69.53, top: 70.6, width: 13.48, height: 27.54 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 83.85, top: 70.6, width: 13.15, height: 27.54 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'instrument-vault',
+    canonicalName: 'Instrument Vault',
+    displayName: 'Instrument Vault',
+    reference: 'II-210A',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/instrument-vault',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['producer-lounge'],
+    backTarget: 'producer-lounge',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.88, y: 0.98 } },
+    backgroundAsset: '/d2/depmg-instrument-vault-bg.jpg',
+    audioProfile: 'instrument-vault',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'producer-lounge' },
+        shape: 'rect',
+        coords: { left: 0.52, top: 70.6, width: 13.48, height: 27.54 },
+        label: 'Producer Lounge / Writing Room — II-209',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Guitar &amp; Bass Collection',
+          body: `<p>Electric guitars and basses, stored and ready &mdash; catalogued in secure, illuminated cabinetry rather than staged for performance.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.78, top: 70.6, width: 12.43, height: 27.54 },
+        label: 'Guitar & Bass Collection',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Acoustic &amp; Specialty Instruments',
+          body: `<p>Acoustic instruments, keyboard and synth-sized cases, percussion cases and specialty hard cases, held in purpose-built storage bays.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.13, top: 70.6, width: 13.54, height: 27.54 },
+        label: 'Acoustic & Specialty Instruments',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Instrument Prep',
+          body: `<p>A central inspection surface where an instrument comes out of storage to be inspected, restrung, cleaned or prepared for a session.</p>
+          <p style="opacity:0.6; font-style:italic;">A prep position, not a performance or recording position.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 42.51, top: 70.6, width: 13.28, height: 27.54 },
+        label: 'Instrument Prep',
+      },
+      {
+        // Same shared VAULT_PRESERVATION_PANEL constant as the Mic Vault's
+        // hotspot below — legacy already reused this content verbatim
+        // between the two vaults, so the migration makes that reuse
+        // explicit at the data layer rather than forking it per room.
+        action: { kind: 'panel', ...VAULT_PRESERVATION_PANEL },
+        shape: 'rect',
+        coords: { left: 56.51, top: 70.6, width: 13.8, height: 27.54 },
+        label: 'Vault Preservation',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 71.09, top: 70.6, width: 13.22, height: 27.54 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 84.96, top: 70.6, width: 13.35, height: 27.54 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'mic-vault',
+    canonicalName: 'Microphone / Equipment Vault',
+    displayName: 'Mic Vault',
+    reference: 'II-210B',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/mic-vault',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['instrument-vault'],
+    backTarget: 'instrument-vault',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.95, y: 0.98 } },
+    backgroundAsset: '/d2/depmg-mic-vault-bg.jpg',
+    audioProfile: 'mic-vault',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'instrument-vault' },
+        shape: 'rect',
+        coords: { left: 0.48, top: 75.11, width: 13.27, height: 24.57 },
+        label: 'Instrument Vault — II-210A',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Microphone Collection',
+          body: `<p>The curated collection, organized by type and use &mdash; large-diaphragm, small-diaphragm, dynamic and ribbon-style microphones, each in its own illuminated storage.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.4, top: 75.11, width: 13.04, height: 24.57 },
+        label: 'Microphone Collection',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Matched &amp; Specialty Sets',
+          body: `<p>Matched pairs and specialty microphones, selected for unique recording applications.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.1, top: 75.11, width: 14.29, height: 24.57 },
+        label: 'Matched & Specialty Sets',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Mic Prep &amp; Handling',
+          body: `<p>The selection, inspection and preparation counter &mdash; where a microphone is chosen and readied with care.</p>
+          <p style="opacity:0.6; font-style:italic;">A handling position, not a recording position.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 43.04, top: 75.11, width: 14.17, height: 24.57 },
+        label: 'Mic Prep & Handling',
+      },
+      {
+        // Same shared VAULT_PRESERVATION_PANEL as the Instrument Vault.
+        action: { kind: 'panel', ...VAULT_PRESERVATION_PANEL },
+        shape: 'rect',
+        coords: { left: 57.62, top: 75.11, width: 14.11, height: 24.57 },
+        label: 'Vault Preservation',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 72.5, top: 75.11, width: 13.81, height: 24.57 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 87.02, top: 75.11, width: 12.5, height: 24.57 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('machine-room', 'II-210C', 'Machine / Technical Room', 'Recording Complex'),
   stub('kitchenette', 'II-211', 'Studio Kitchenette + Restrooms', 'Recording Complex'),
   stub('d2-301-ceo', 'II-301', 'CEO Office', 'Executive, Brand & Media HQ'),
