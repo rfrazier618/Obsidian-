@@ -106,7 +106,7 @@ describe('District II reference slice — Reception → II-110 → Control Room 
     fireEvent.keyDown(window, { key: 'Escape' });
 
     fireEvent.click(screen.getByTitle('Outboard & Gear'));
-    expect(screen.getByRole('dialog', { name: 'Outboard &amp; Gear' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Outboard & Gear' })).toBeInTheDocument();
     fireEvent.keyDown(window, { key: 'Escape' });
 
     fireEvent.click(screen.getByTitle('DEPMG Sessions'));

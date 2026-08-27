@@ -350,7 +350,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Outboard &amp; Gear',
+          title: 'Outboard & Gear',
           body: `<p>The rack lines flanking the console hold the outboard chain that gives DEPMG sessions their sound: compressors, equalizers, microphone preamps, converters and effects processors, curated rather than accumulated.</p>
           <p style="opacity:0.6; font-style:italic;">A full equipment list is still being assembled and will populate this panel once finalized.</p>`,
         },
@@ -447,7 +447,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Backline &amp; Instruments',
+          title: 'Backline & Instruments',
           body: `<p>Guitars, amplifiers and backline equipment on hand for tracking, curated rather than accumulated.</p>
           <p style="opacity:0.6; font-style:italic;">A full instrument and equipment list is still being assembled and will populate this panel once finalized.</p>`,
         },
@@ -1047,7 +1047,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Guitar &amp; Bass Collection',
+          title: 'Guitar & Bass Collection',
           body: `<p>Electric guitars and basses, stored and ready &mdash; catalogued in secure, illuminated cabinetry rather than staged for performance.</p>`,
         },
         shape: 'rect',
@@ -1057,7 +1057,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Acoustic &amp; Specialty Instruments',
+          title: 'Acoustic & Specialty Instruments',
           body: `<p>Acoustic instruments, keyboard and synth-sized cases, percussion cases and specialty hard cases, held in purpose-built storage bays.</p>`,
         },
         shape: 'rect',
@@ -1140,7 +1140,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Matched &amp; Specialty Sets',
+          title: 'Matched & Specialty Sets',
           body: `<p>Matched pairs and specialty microphones, selected for unique recording applications.</p>`,
         },
         shape: 'rect',
@@ -1150,7 +1150,7 @@ export const REGISTRY: Destination[] = [
       {
         action: {
           kind: 'panel',
-          title: 'Mic Prep &amp; Handling',
+          title: 'Mic Prep & Handling',
           body: `<p>The selection, inspection and preparation counter &mdash; where a microphone is chosen and readied with care.</p>
           <p style="opacity:0.6; font-style:italic;">A handling position, not a recording position.</p>`,
         },
@@ -1180,8 +1180,192 @@ export const REGISTRY: Destination[] = [
     ],
     secretTrigger: null,
   },
-  stub('machine-room', 'II-210C', 'Machine / Technical Room', 'Recording Complex'),
-  stub('kitchenette', 'II-211', 'Studio Kitchenette + Restrooms', 'Recording Complex'),
+  // ─── II-200 batch 4 (final Recording Complex batch): Machine Room / Kitchenette ───
+  // Backward-only chain continues once more (mic-vault -> machine-room ->
+  // kitchenette, each linking only to the previous room) — preserved
+  // exactly, as with every prior batch. This closes out the chain that
+  // began at studio-b; the canonical-adjacency review report (produced
+  // alongside the branch closure audit) is what finally deals with it.
+  {
+    id: 'machine-room',
+    canonicalName: 'Machine / Technical Room',
+    displayName: 'Machine Room',
+    reference: 'II-210C',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/machine-room',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['mic-vault'],
+    backTarget: 'mic-vault',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.98, y: 0.9 } },
+    backgroundAsset: '/d2/depmg-machine-room-bg.jpg',
+    audioProfile: 'machine-room',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'mic-vault' },
+        shape: 'rect',
+        coords: { left: 0.35, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Mic Vault — II-210B',
+      },
+      {
+        // Deliberately conceptual, exactly as legacy has it — no fabricated
+        // capacities, ratings, or equipment models. See sysinfra/powercond
+        // below: legacy itself explicitly disclaims specifics.
+        action: {
+          kind: 'panel',
+          title: 'Systems Infrastructure',
+          body: `<p>The room nobody designed to impress a guest &mdash; power, distribution and monitoring systems that keep every other room in the Recording Complex capable of working.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.64, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Systems Infrastructure',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Power & Conditioning',
+          body: `<p>Power distribution and conditioning for the Recording Complex, kept clean and stable for the equipment downstream.</p>
+          <p style="opacity:0.6; font-style:italic;">Specific capacities and ratings aren't published here.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.92, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Power & Conditioning',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Technical Distribution',
+          body: `<p>Cabling, signal and network pathways &mdash; the connective tissue that ties the Recording Complex's rooms together, run and managed out of sight.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 43.21, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Technical Distribution',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Systems Monitoring',
+          body: `<p>Operational oversight for the systems that keep the Complex running &mdash; status, not sound.</p>
+          <p style="opacity:0.6; font-style:italic;">A diagnostics position, not a recording workstation.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 57.49, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Systems Monitoring',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 71.78, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 86.06, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'kitchenette',
+    canonicalName: 'Studio Kitchenette + Restrooms',
+    displayName: 'Studio Kitchenette',
+    reference: 'II-211',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/kitchenette',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['machine-room'],
+    backTarget: 'machine-room',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.98, y: 0.98 } },
+    backgroundAsset: '/d2/depmg-kitchenette-bg.jpg',
+    audioProfile: 'kitchenette',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'machine-room' },
+        shape: 'rect',
+        coords: { left: 0.35, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Machine Room — II-210C',
+      },
+      {
+        // The render's own baked callout card #2 body text reads "studio
+        // kicthenette" — a typo in the image artifact itself, not in any
+        // canonical or interactive-layer text. That misspelling is NOT
+        // reproduced here: the panel title/body and all interactive copy
+        // stay correctly spelled "Kitchenette," exactly as legacy's own
+        // SA_PANELS content already has it.
+        action: {
+          kind: 'panel',
+          title: 'Kitchenette',
+          body: `<p>A studio support kitchenette built for long sessions &mdash; coffee, food and a place to reset before heading back to work.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.64, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Kitchenette',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Coffee & Refreshments',
+          body: `<p>Coffee, water and light refreshments, kept stocked for artists, engineers, producers and guests through a long session.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.92, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Coffee & Refreshments',
+      },
+      {
+        // Guest Seating stays a reset space, not a second Artist Lounge —
+        // legacy's own disclaimer is preserved verbatim below.
+        action: {
+          kind: 'panel',
+          title: 'Guest Seating',
+          body: `<p>A small caf&eacute;-style seating area for a quick break or a casual conversation.</p>
+          <p style="opacity:0.6; font-style:italic;">A reset space, not a second lounge.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 43.21, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Guest Seating',
+      },
+      {
+        // Restrooms stay a reference/threshold panel, not an invented
+        // room experience — matches legacy's plain facilities notice.
+        action: {
+          kind: 'panel',
+          title: 'Restrooms',
+          body: `<p>Restroom facilities for artists, engineers, producers and guests, located along this wing of the Recording Complex.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 57.49, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Restrooms',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 71.78, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 86.06, top: 70.78, width: 13.59, height: 29.22 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('d2-301-ceo', 'II-301', 'CEO Office', 'Executive, Brand & Media HQ'),
   stub('d2-302-vp', 'II-302', 'Vice President Office', 'Executive, Brand & Media HQ'),
   stub('boardroom', 'II-303', 'Executive Boardroom', 'Executive, Brand & Media HQ'),

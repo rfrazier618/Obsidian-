@@ -76,18 +76,18 @@ describe('II-200 Batch 3 — Producer Lounge / Instrument Vault / Mic Vault', ()
     expect(screen.getByText('← Instrument Vault')).toBeInTheDocument();
   });
 
-  it('II-210C Machine Room stays planned and non-navigable: no route, no forward hotspot from Mic Vault', () => {
+  it('Mic Vault never had a forward hotspot to Machine Room, in Batch 3 or after: no forward link was manufactured merely because Machine Room was later promoted in Batch 4', () => {
     renderApp('/district-ii/mic-vault');
     expect(screen.queryByTitle('Machine Room — II-210C')).not.toBeInTheDocument();
-
-    const machineRoom = REGISTRY.find((d) => d.id === 'machine-room')!;
-    expect(machineRoom.status).toBe('planned');
-    expect(machineRoom.route).toBeNull();
   });
 
-  it('/district-ii/machine-room has no live route — direct navigation does not resolve to a room', () => {
-    renderApp('/district-ii/machine-room');
-    expect(screen.queryByText('II-210C')).not.toBeInTheDocument();
+  // Machine Room itself was a status:'planned' stub at Batch 3 time and was
+  // promoted to live in Batch 4 — see App.d2-batch4.test.tsx for its own
+  // coverage. A genuinely still-planned HQ stub, untouched by any District
+  // II batch, is used here instead to keep this regression test meaningful.
+  it('/district-ii/d2-301-ceo has no live route — a genuinely still-planned stub does not resolve to a room', () => {
+    renderApp('/district-ii/d2-301-ceo');
+    expect(screen.queryByText('II-301')).not.toBeInTheDocument();
   });
 
   it('none of the three Batch 3 edges trigger Sound Lock', () => {
@@ -97,7 +97,7 @@ describe('II-200 Batch 3 — Producer Lounge / Instrument Vault / Mic Vault', ()
     expect(screen.getByText('Producer Lounge / Writing Room')).toBeInTheDocument();
   });
 
-  it('Directory now shows all three Batch 3 rooms as navigable, and Machine Room as not yet built', () => {
+  it('Directory now shows all three Batch 3 rooms as navigable', () => {
     renderApp('/district-ii/control-room');
     fireEvent.click(screen.getByTitle('District II Directory'));
     const dir = screen.getByRole('dialog', { name: 'District II Directory' });
@@ -106,7 +106,6 @@ describe('II-200 Batch 3 — Producer Lounge / Instrument Vault / Mic Vault', ()
     // Directory lists canonicalName, not the shorter displayName used elsewhere
     // (e.g. the back-button / room-nav-title) — 'Microphone / Equipment Vault'.
     expect(within(dir).getByText('Microphone / Equipment Vault').tagName).toBe('BUTTON');
-    expect(within(dir).getByText('Machine / Technical Room').tagName).not.toBe('BUTTON');
   });
 
   it('Floor Plan markers include all three new destinations', () => {
@@ -133,7 +132,7 @@ describe('II-200 Batch 3 — Producer Lounge / Instrument Vault / Mic Vault', ()
     expect(screen.getByText('II-209')).toBeInTheDocument();
   });
 
-  it('reachability: all three Batch 3 rooms are genuinely reachable via a chain; Machine Room is correctly EXEMPT (not evaluated) rather than falsely marked reachable', () => {
+  it('reachability: all three Batch 3 rooms are genuinely reachable via a chain', () => {
     const verdicts = computeDiscoveryVerdicts(REGISTRY);
     const byId = Object.fromEntries(verdicts.map((v) => [v.id, v]));
     expect(byId['producer-lounge'].reachable).toBe(true);
@@ -142,9 +141,5 @@ describe('II-200 Batch 3 — Producer Lounge / Instrument Vault / Mic Vault', ()
     expect(byId['instrument-vault'].via?.length).toBeGreaterThan(0);
     expect(byId['mic-vault'].reachable).toBe(true);
     expect(byId['mic-vault'].via?.length).toBeGreaterThan(0);
-    // machine-room is status:'planned' — exempt from evaluation, not a
-    // real discovery-path claim. via is empty; it's not a live claim of reachability.
-    expect(byId['machine-room'].reason).toMatch(/status:planned, not evaluated/);
-    expect(byId['machine-room'].via).toEqual([]);
   });
 });
