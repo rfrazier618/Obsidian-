@@ -211,7 +211,7 @@ export const REGISTRY: Destination[] = [
     type: 'room',
     status: 'live',
     parent: null,
-    adjacentDestinations: ['estate-hall', 'control-room'],
+    adjacentDestinations: ['estate-hall', 'control-room', 'hq-corridor'],
     backTarget: 'estate-hall',
     explorerVisibility: true,
     globalNavVisibility: false,
@@ -299,9 +299,10 @@ export const REGISTRY: Destination[] = [
         label: 'Basement — Power',
       },
       {
-        // hq-corridor is part of District II but outside this 4-destination
-        // slice — "do not migrate additional D2 rooms during this pass."
-        action: { kind: 'toast', message: 'Executive, Brand & Media HQ hasn’t migrated to Estate 2.0 yet.' },
+        // Activated during the HQ branch migration — this hotspot was a
+        // placeholder toast until hq-corridor itself was live. Same coords
+        // and title as legacy's own goTo('hq-corridor') hotspot, verbatim.
+        action: { kind: 'navigate', targetId: 'hq-corridor' },
         shape: 'rect',
         coords: { left: 82.7, top: 79.5, width: 17, height: 8.3 },
         label: 'D2 Navigation — Executive, Brand & Media HQ',
@@ -1366,17 +1367,420 @@ export const REGISTRY: Destination[] = [
     ],
     secretTrigger: null,
   },
+  // ─── HQ branch: Reception -> HQ Corridor (hub) -> 4 flagship leaves ───
+  // Governing architectural test for this migration: a hub-and-spoke
+  // branch, not another linear chain. HQ Corridor is the hub; the four
+  // flagship destinations are leaves unless legacy itself establishes a
+  // real leaf-to-leaf relationship (it does, once — see creator-lounge's
+  // hotspot into screening below). No leaf-to-leaf navigation was added
+  // to make the graph look more symmetrical than legacy actually built it.
+  {
+    id: 'hq-corridor',
+    canonicalName: 'Executive, Brand & Media HQ',
+    displayName: 'Executive, Brand & Media HQ',
+    // Legacy's own eyebrow calls this "II-3xx" — the corridor itself carries
+    // no single canonical room number; it's the unnumbered circulation hub
+    // for the II-3xx wing, same category as the Studio Wing Corridor in II-200.
+    reference: 'II-3xx',
+    district: 'II',
+    wing: 'Executive, Brand & Media HQ',
+    route: '/district-ii/hq-corridor',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['depmg', 'screening', 'boardroom', 'brand-studios', 'creator-lounge'],
+    backTarget: 'depmg',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.15, y: 0.5 } },
+    backgroundAsset: '/d2/depmg-hq-corridor-bg.jpg',
+    audioProfile: 'hq-corridor',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'screening' },
+        shape: 'rect',
+        coords: { left: 7.36, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'Obsidian Screening Theater — II-311',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'boardroom' },
+        shape: 'rect',
+        coords: { left: 20.96, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'Executive Suite — II-301–304',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'brand-studios' },
+        shape: 'rect',
+        coords: { left: 34.57, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'Brand Studios — II-305–308',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'creator-lounge' },
+        shape: 'rect',
+        coords: { left: 48.1, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'Creator Suites & Lounge — II-309–310',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 61.65, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 75.26, top: 49.3, width: 11.65, height: 37.6 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('d2-301-ceo', 'II-301', 'CEO Office', 'Executive, Brand & Media HQ'),
   stub('d2-302-vp', 'II-302', 'Vice President Office', 'Executive, Brand & Media HQ'),
-  stub('boardroom', 'II-303', 'Executive Boardroom', 'Executive, Brand & Media HQ'),
+  {
+    id: 'boardroom',
+    canonicalName: 'Executive Boardroom',
+    displayName: 'Executive Boardroom',
+    reference: 'II-303',
+    district: 'II',
+    wing: 'Executive, Brand & Media HQ',
+    route: '/district-ii/boardroom',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['hq-corridor'],
+    backTarget: 'hq-corridor',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.05, y: 0.7 } },
+    backgroundAsset: '/d2/depmg-boardroom-bg.jpg',
+    audioProfile: 'boardroom',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'hq-corridor' },
+        shape: 'rect',
+        coords: { left: 5.53, top: 72.07, width: 12.7, height: 26.37 },
+        label: 'HQ Corridor — return to the hub',
+      },
+      {
+        // CEO Office, VP Office and Small Executive Conference are
+        // informational-only in legacy — saOpenPanel, not goTo() — and
+        // each panel says so itself. They stay stubs in the Registry
+        // (Directory completeness only); this is NOT a navigate action,
+        // and the II-301/302/304 stubs are not promoted just because
+        // their architectural identities exist in A-202.
+        action: {
+          kind: 'panel',
+          title: 'CEO Office',
+          body: `<p>The CEO's private office, adjoining the Executive Boardroom.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 19.86, top: 72.07, width: 13.67, height: 26.37 },
+        label: 'CEO Office — II-301',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'VP Office',
+          body: `<p>The Vice President's private office, adjoining the Executive Boardroom.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 34.51, top: 72.07, width: 13.54, height: 26.37 },
+        label: 'VP Office — II-302',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Small Executive Conference',
+          body: `<p>A private space for small executive meetings, within the same cluster as the Boardroom.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 48.5, top: 72.07, width: 14.19, height: 26.37 },
+        label: 'Small Executive Conference — II-304',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 63.15, top: 72.07, width: 14, height: 26.37 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 78.13, top: 72.07, width: 13.35, height: 26.37 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('d2-304-smallconf', 'II-304', 'Small Executive Conference / Meeting Room', 'Executive, Brand & Media HQ'),
+  {
+    id: 'brand-studios',
+    canonicalName: 'Brand Studios',
+    displayName: 'Brand Studios',
+    reference: 'II-305–308',
+    district: 'II',
+    wing: 'Executive, Brand & Media HQ',
+    route: '/district-ii/brand-studios',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['hq-corridor'],
+    backTarget: 'hq-corridor',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.15, y: 0.75 } },
+    backgroundAsset: '/d2/depmg-brand-studios-bg.jpg',
+    audioProfile: 'brand-studios',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'hq-corridor' },
+        shape: 'rect',
+        coords: { left: 5.21, top: 70.6, width: 11.2, height: 28.32 },
+        label: 'HQ Corridor — return to the hub',
+      },
+      {
+        // The four brands are informational thresholds onto this shared
+        // creative commons, not separately navigable rooms — legacy's own
+        // panels say so. Each stays a stub for Directory completeness only.
+        action: {
+          kind: 'panel',
+          title: 'Twin Scales Publishing',
+          body: `<p>Where stories are crafted for generations &mdash; DEPMG's publishing imprint.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 17.06, top: 70.6, width: 13.22, height: 28.32 },
+        label: 'Twin Scales Publishing — II-305',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Algorhythm Design Studio',
+          body: `<p>Design. Fashion. Culture. DEPMG's design studio.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 31.05, top: 70.6, width: 12.11, height: 28.32 },
+        label: 'Algorhythm Design Studio — II-306',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'OMD Creative Studio',
+          body: `<p>Visual storytelling &mdash; comics, motion, and everything in between.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 43.95, top: 70.6, width: 12.04, height: 28.32 },
+        label: 'OMD Creative Studio — II-307',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Podcast Studio',
+          body: `<p>Voices that build ideas into impact.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 56.19, top: 70.6, width: 11.85, height: 28.32 },
+        label: 'Podcast Studio — II-308',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 69.01, top: 70.6, width: 12.37, height: 28.32 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 82.23, top: 70.6, width: 12.37, height: 28.32 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('d2-305-twinscales', 'II-305', 'Twin Scales Publishing', 'Executive, Brand & Media HQ'),
   stub('d2-306-algorhythm', 'II-306', 'Algorhythm Design Studio', 'Executive, Brand & Media HQ'),
   stub('d2-307-omd', 'II-307', 'OMD Creative Studio', 'Executive, Brand & Media HQ'),
   stub('d2-308-podcast', 'II-308', 'Podcast Studio', 'Executive, Brand & Media HQ'),
   stub('d2-309-creatorsuites', 'II-309', 'Creator Suites', 'Executive, Brand & Media HQ'),
-  stub('creator-lounge', 'II-310', 'Creator Collaboration Lounge', 'Executive, Brand & Media HQ'),
-  stub('screening', 'II-311', 'Obsidian Screening Theater', 'Executive, Brand & Media HQ'),
+  {
+    id: 'creator-lounge',
+    // Corrected from the earlier inventory stub's "Creator Collaboration
+    // Lounge" to legacy's actual room-nav-title, now that the room's real
+    // content has been extracted rather than guessed at inventory time.
+    canonicalName: 'Creator Suites & Lounge',
+    displayName: 'Creator Suites & Lounge',
+    reference: 'II-309–310',
+    district: 'II',
+    wing: 'Executive, Brand & Media HQ',
+    route: '/district-ii/creator-lounge',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    // The one verified leaf-to-leaf relationship in the whole HQ branch:
+    // legacy's creator-lounge render carries a real goTo('screening')
+    // hotspot. Preserved exactly as built, including its asymmetry —
+    // screening does NOT link back here, only to the hub.
+    adjacentDestinations: ['hq-corridor', 'screening'],
+    backTarget: 'hq-corridor',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.25, y: 0.75 } },
+    backgroundAsset: '/d2/depmg-creator-lounge-bg.jpg',
+    audioProfile: 'creator-lounge',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'hq-corridor' },
+        shape: 'rect',
+        coords: { left: 4.43, top: 70.6, width: 12.83, height: 28.03 },
+        label: 'HQ Corridor — return to the hub',
+      },
+      {
+        // Creator Suites (II-309) stays informational-only, matching
+        // legacy's own "Not built into the Estate yet" disclaimer — not
+        // promoted to a live room merely because its identity exists.
+        action: {
+          kind: 'panel',
+          title: 'Creator Suites',
+          body: `<p>Flexible creator workrooms for writers, artists, designers, producers, and guests.</p>
+          <p style="opacity:0.6; font-style:italic;">Not built into the Estate yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 18.36, top: 70.6, width: 13.54, height: 28.03 },
+        label: 'Creator Suites — II-309',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Creator Lounge',
+          body: `<p>The shared commons for collaboration across DEPMG's brands and disciplines &mdash; where ideas collide and creators build.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 33.07, top: 70.6, width: 13.15, height: 28.03 },
+        label: 'Creator Lounge — II-310',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 47.53, top: 70.6, width: 14, height: 28.03 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 62.37, top: 70.6, width: 14.13, height: 28.03 },
+        label: 'Floor Plan — A-202',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'screening' },
+        shape: 'rect',
+        coords: { left: 77.47, top: 70.6, width: 14.26, height: 28.03 },
+        label: 'Obsidian Screening Theater — II-311',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'screening',
+    canonicalName: 'Obsidian Screening Theater',
+    displayName: 'Obsidian Screening Theater',
+    reference: 'II-311',
+    district: 'II',
+    wing: 'Executive, Brand & Media HQ',
+    route: '/district-ii/screening',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    // Asymmetric on purpose: creator-lounge links here, this room links
+    // only back to the hub — preserved exactly as legacy built it.
+    adjacentDestinations: ['hq-corridor'],
+    backTarget: 'hq-corridor',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.15, y: 0.92 } },
+    backgroundAsset: '/d2/depmg-screening-bg.jpg',
+    audioProfile: 'screening',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'hq-corridor' },
+        shape: 'rect',
+        coords: { left: 0.52, top: 74.02, width: 11.98, height: 24.4 },
+        label: 'HQ Corridor — return to the hub',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Now Screening',
+          body: `<p>The Obsidian Screening Theater's reference-quality projection wall &mdash; rough cuts, private premieres, and OMD projects, screened the way they're meant to be seen.</p>
+          <p style="opacity:0.6; font-style:italic;">A real screening schedule and content library will populate this panel once assembled.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 13.67, top: 74.02, width: 11.91, height: 24.4 },
+        label: 'Now Screening',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Theater Seating',
+          body: `<p>Tiered, sightlined seating for roughly 20 to 30 guests &mdash; private and curated, not a commercial house.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 26.76, top: 74.02, width: 11.65, height: 24.4 },
+        label: 'Theater Seating',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Surround Sound',
+          body: `<p>Immersive surround audio, engineered into the room's own architecture and acoustic treatment.</p>
+          <p style="opacity:0.6; font-style:italic;">Exact system make and model are still being finalized and will be documented here once locked in.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 38.54, top: 74.02, width: 11.91, height: 24.4 },
+        label: 'Surround Sound',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Projection & Edit Suite',
+          body: `<p>The projection, control and edit support room behind the seating &mdash; where the screening actually gets prepared.</p>
+          <p style="opacity:0.6; font-style:italic;">Not a separately navigable room yet.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 50.78, top: 74.02, width: 12.04, height: 24.4 },
+        label: 'Projection & Edit Suite',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 63.93, top: 74.02, width: 11.91, height: 24.4 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 77.02, top: 74.02, width: 12.04, height: 24.4 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('d2-312-admin', 'II-312', 'Administrative / Support Workspace', 'Executive, Brand & Media HQ'),
   stub('d2-313-cafe', 'II-313', 'Shared Café / Refreshment', 'Executive, Brand & Media HQ'),
   stub('d2-314-restrooms', 'II-314', 'Restrooms, Storage, Print / Reprographics', 'Executive, Brand & Media HQ'),
