@@ -166,11 +166,11 @@ describe('District II reference slice — Reception → II-110 → Control Room 
     expect(reveal.tagName).toBe('SPAN');
     expect(within(reveal.closest('li')!).getByText('Reference only')).toBeInTheDocument();
 
-    // planned / not yet built (vocal-booth migrated in Batch 1 — use atmos,
-    // still a stub pending Batch 2, as the "not yet built" example instead)
-    const atmosRow = within(dir).getByText('Dolby Atmos Mixing Suite');
-    expect(atmosRow.tagName).toBe('SPAN');
-    expect(within(atmosRow.closest('li')!).getByText('Not yet built')).toBeInTheDocument();
+    // planned / not yet built (vocal-booth migrated in Batch 1, atmos in
+    // Batch 2 — use boardroom, an HQ room untouched until HQ migration begins)
+    const boardroomRow = within(dir).getByText('Executive Boardroom');
+    expect(boardroomRow.tagName).toBe('SPAN');
+    expect(within(boardroomRow.closest('li')!).getByText('Not yet built')).toBeInTheDocument();
   });
 
   it('clicking a navigable Directory row actually navigates', () => {
@@ -221,7 +221,8 @@ describe('District II reference slice — Reception → II-110 → Control Room 
     expect(byId['studio-a'].reachable).toBe(true);
     expect(byId['d2-110-threshold'].reason).toContain('No route');
     expect(byId['vocal-booth'].reachable).toBe(true); // migrated in Batch 1
-    expect(byId['atmos'].reason).toContain('status:planned'); // still a Batch 2 stub
+    expect(byId['atmos'].reachable).toBe(true); // migrated in Batch 2
+    expect(byId['boardroom'].reason).toContain('status:planned'); // HQ, not yet touched
   });
 
   it('direct-link resolves Studio A specifically, independent of navigation history', () => {

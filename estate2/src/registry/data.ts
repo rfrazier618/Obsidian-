@@ -1,6 +1,28 @@
 import type { Destination } from './types';
 
 /**
+ * DEPMG Sessions — the real media content, shared by every hotspot that
+ * surfaces it. Legacy reused the exact same saOpenPanel('sessions') call
+ * from both Control Room ("DEPMG Sessions") and Artist Lounge ("Now
+ * Playing — DEPMG Sessions"); this constant is that reuse made explicit
+ * at the data layer too, not just at the mechanism layer. A hotspot's
+ * own `label` can still differ by room context (contextual framing);
+ * the panel `title`/`body` payload never forks.
+ */
+const DEPMG_SESSIONS_PANEL = {
+  title: 'DEPMG Sessions',
+  body: `<p>Music recorded at DEPMG Studios, starting with RichFraz — MC, crooner and the artist this headquarters was built around.</p>
+  <p><em>Lost in the Mind of R.S. Frazier</em> — out now.</p>
+  <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:14px;">
+    <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank" rel="noopener" style="color:var(--gold);">Stream the Album</a>
+    <a href="https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd" target="_blank" rel="noopener" style="color:var(--gold);">Spotify</a>
+    <a href="https://soundcloud.com/richfrazmusic" target="_blank" rel="noopener" style="color:var(--gold);">SoundCloud</a>
+    <a href="https://music.apple.com/us/artist/richfraz/1444729870" target="_blank" rel="noopener" style="color:var(--gold);">Apple Music</a>
+  </div>
+  <p style="margin-top:18px; opacity:0.6; font-style:italic; font-size:13px;">Production credits and session stories for other DEPMG artists are still being assembled.</p>`,
+} as const;
+
+/**
  * The Estate Registry.
  *
  * Two bodies of data live here side by side:
@@ -331,19 +353,7 @@ export const REGISTRY: Destination[] = [
         label: 'District II Directory',
       },
       {
-        action: {
-          kind: 'panel',
-          title: 'DEPMG Sessions',
-          body: `<p>Music recorded at DEPMG Studios, starting with RichFraz — MC, crooner and the artist this headquarters was built around.</p>
-          <p><em>Lost in the Mind of R.S. Frazier</em> — out now.</p>
-          <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:14px;">
-            <a href="https://distrokid.com/hyperfollow/richfraz/lost-in-the-mind-of-rs-frazier-2?ref=release" target="_blank" rel="noopener" style="color:var(--gold);">Stream the Album</a>
-            <a href="https://open.spotify.com/artist/2TF5zvNLvklcRY2qu2YDxd" target="_blank" rel="noopener" style="color:var(--gold);">Spotify</a>
-            <a href="https://soundcloud.com/richfrazmusic" target="_blank" rel="noopener" style="color:var(--gold);">SoundCloud</a>
-            <a href="https://music.apple.com/us/artist/richfraz/1444729870" target="_blank" rel="noopener" style="color:var(--gold);">Apple Music</a>
-          </div>
-          <p style="margin-top:18px; opacity:0.6; font-style:italic; font-size:13px;">Production credits and session stories for other DEPMG artists are still being assembled.</p>`,
-        },
+        action: { kind: 'panel', ...DEPMG_SESSIONS_PANEL },
         shape: 'rect',
         coords: { left: 75.2, top: 0.98, width: 20.2, height: 16.6 },
         label: 'DEPMG Sessions',
@@ -648,9 +658,263 @@ export const REGISTRY: Destination[] = [
     ],
     secretTrigger: null,
   },
-  stub('atmos', 'II-206', 'Dolby Atmos Mixing Suite', 'Recording Complex'),
-  stub('mastering', 'II-207', 'Mastering / Critical Listening Room', 'Recording Complex'),
-  stub('artist-lounge', 'II-208', 'Artist Lounge', 'Recording Complex'),
+  // ─── II-200 batch 2: Dolby Atmos / Mastering / Artist Lounge ───
+  // Continues the same backward-only chain the demolition survey found
+  // (studio-b -> atmos -> mastering -> artist-lounge, each linking only
+  // to the previous room) — preserved exactly, not repaired. That's a
+  // canonical-adjacency question for a later pass, not a migration bug.
+  {
+    id: 'atmos',
+    canonicalName: 'Dolby Atmos Mixing Suite',
+    displayName: 'Dolby Atmos Mixing Suite',
+    reference: 'II-206',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/atmos',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['studio-b'],
+    backTarget: 'studio-b',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.6, y: 0.9 } },
+    backgroundAsset: '/d2/depmg-atmos-bg.jpg',
+    audioProfile: 'atmos',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'studio-b' },
+        shape: 'rect',
+        coords: { left: 0.33, top: 71.1, width: 13.67, height: 26.56 },
+        label: 'Studio B — return to the Recording Complex',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Sweet Spot',
+          body: `<p>The true center of the immersive listening field — the one position where the surround and overhead array converges into a calibrated three-dimensional mix.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.78, top: 71.1, width: 12.43, height: 26.56 },
+        label: 'Sweet Spot',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Speaker Array',
+          body: `<p>Surround and overhead speakers in a full 3D configuration, built for complete immersive mix translation.</p>
+          <p style="opacity:0.6; font-style:italic;">Exact speaker count, configuration and manufacturer are still being finalized and will be documented here once locked in.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.13, top: 71.1, width: 13.22, height: 26.56 },
+        label: 'Speaker Array',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Mix Console',
+          body: `<p>The production console and workstation at the mix position — where the immersive field actually gets built.</p>
+          <p style="opacity:0.6; font-style:italic;">Exact console make and model are still being finalized and will be documented here once locked in.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 42.19, top: 71.1, width: 13.54, height: 26.56 },
+        label: 'Mix Console',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Client Area',
+          body: `<p>Restrained seating behind the primary mix position — room for a client or collaborator to sit in on a mix without occupying the sweet spot.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 56.51, top: 71.1, width: 13.54, height: 26.56 },
+        label: 'Client Area',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 70.96, top: 71.1, width: 12.37, height: 26.56 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 84.11, top: 71.1, width: 13.54, height: 26.56 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'mastering',
+    canonicalName: 'Mastering / Critical Listening Room',
+    displayName: 'Mastering / Critical Listening Room',
+    reference: 'II-207',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/mastering',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['atmos'],
+    backTarget: 'atmos',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.7, y: 0.9 } },
+    backgroundAsset: '/d2/depmg-mastering-bg.jpg',
+    audioProfile: 'mastering',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'atmos' },
+        shape: 'rect',
+        coords: { left: 0.33, top: 71.1, width: 13.67, height: 26.56 },
+        label: 'Dolby Atmos — return to the Recording Complex',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Critical Listening Position',
+          body: `<p>The single position where final judgment is made — centered on an exceptionally clean, symmetrical monitoring wall. This is the last checkpoint before a record leaves DEPMG.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.78, top: 71.1, width: 12.43, height: 26.56 },
+        label: 'Critical Listening Position',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Reference Monitoring',
+          body: `<p>Forward-facing reference monitors only — no immersive or overhead field. That identity belongs to the Dolby Atmos Suite alone; this room's precision comes from symmetry, not surround.</p>
+          <p style="opacity:0.6; font-style:italic;">Exact monitor make and model are still being finalized and will be documented here once locked in.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.13, top: 71.1, width: 12.57, height: 26.56 },
+        label: 'Reference Monitoring',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Mastering Chain',
+          body: `<p>The outboard chain for the final pass — equalization, dynamics, conversion and metering, curated for translation and detail rather than character.</p>
+          <p style="opacity:0.6; font-style:italic;">Exact equipment make and model are still being finalized and will be documented here once locked in.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 41.67, top: 71.1, width: 13.67, height: 26.56 },
+        label: 'Mastering Chain',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Client Listening',
+          body: `<p>Restrained seating for two behind the engineer — present, but never competing with the critical listening position.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 56.12, top: 71.1, width: 12.76, height: 26.56 },
+        label: 'Client Listening',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 69.66, top: 71.1, width: 12.83, height: 26.56 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 83.33, top: 71.1, width: 12.89, height: 26.56 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'artist-lounge',
+    canonicalName: 'Artist Lounge',
+    displayName: 'Artist Lounge',
+    reference: 'II-208',
+    district: 'II',
+    wing: 'Recording Complex',
+    route: '/district-ii/artist-lounge',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['mastering'],
+    backTarget: 'mastering',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: { sheet: 'a202', marker: { x: 0.8, y: 0.9 } },
+    backgroundAsset: '/d2/depmg-artist-lounge-bg.jpg',
+    audioProfile: 'artist-lounge',
+    capabilities: ['directory', 'floorplan'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'mastering' },
+        shape: 'rect',
+        coords: { left: 0.98, top: 70.6, width: 13.35, height: 27.54 },
+        label: 'Recording Complex — return to the production cluster',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Lounge',
+          body: `<p>The studios demand performance. This room gives you permission to stop performing — decompress after a session, talk through a rough mix, eat something, take a call, or just sit with a verse that isn't working yet.</p>
+          <p style="opacity:0.6; font-style:italic;">Distinct from II-209 Producer Lounge/Writing Room — this space is for rest, not work.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 14.78, top: 70.6, width: 12.89, height: 27.54 },
+        label: 'Lounge',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Private Seating',
+          body: `<p>A quieter corner set apart from the main sectional — for a private conversation, a call, or a few minutes alone.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 28.19, top: 70.6, width: 13.15, height: 27.54 },
+        label: 'Private Seating',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Hospitality',
+          body: `<p>Drinks, snacks and light service, available without leaving the Recording Complex.</p>
+          <p style="opacity:0.6; font-style:italic;">This is a hospitality element within the Lounge, not the full II-211 Studio Kitchenette — a separate room down the wing.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 41.99, top: 70.6, width: 13.54, height: 27.54 },
+        label: 'Hospitality',
+      },
+      {
+        // Same shared DEPMG_SESSIONS_PANEL constant as Control Room's
+        // hotspot — the architectural point of this batch. Only the
+        // hotspot's own label differs ("Now Playing" framing for the
+        // lounge context); the panel content is never forked.
+        action: { kind: 'panel', ...DEPMG_SESSIONS_PANEL },
+        shape: 'rect',
+        coords: { left: 56.12, top: 70.6, width: 13.87, height: 27.54 },
+        label: 'Now Playing — DEPMG Sessions',
+      },
+      {
+        action: { kind: 'capability', capability: 'directory' },
+        shape: 'rect',
+        coords: { left: 70.51, top: 70.6, width: 13.48, height: 27.54 },
+        label: 'District II Directory',
+      },
+      {
+        action: { kind: 'capability', capability: 'floorplan' },
+        shape: 'rect',
+        coords: { left: 84.51, top: 70.6, width: 13.8, height: 27.54 },
+        label: 'Floor Plan — A-202',
+      },
+    ],
+    secretTrigger: null,
+  },
   stub('producer-lounge', 'II-209', 'Producer Lounge / Writing Room', 'Recording Complex'),
   stub('instrument-vault', 'II-210A', 'Instrument Vault', 'Recording Complex'),
   stub('mic-vault', 'II-210B', 'Microphone / Equipment Vault', 'Recording Complex'),
