@@ -13,6 +13,39 @@
 }
 
 /*
+ * Hardening pass: if the background asset 404s, the <img> is hidden
+ * (rather than left to show the browser's tiny broken-image glyph) and
+ * this fixed-aspect box takes over sizing the wrapper — the previous
+ * behavior collapsed the wrapper to near-zero height, which silently
+ * took every hotspot in the room down with it, since they're positioned
+ * as percentages of this box. A room-image aspect ratio isn't uniform
+ * across the Estate (one render already departs from the standard
+ * 1536x1024 canvas), so this is a reasonable fallback shape, not a
+ * claim about this specific room's real proportions.
+ */
+.wrapError {
+  aspect-ratio: 1536 / 1024;
+  background: var(--panel-2, #1c1610);
+}
+
+.wrapError .image {
+  display: none;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  line-height: 1.5;
+  font-size: 13px;
+  color: var(--cream-dim);
+}
+
+/*
  * Visual rect is exactly the coordinate the registry declares. The
  * minimum touch target is applied via a transparent expanded hit-area
  * (::after) rather than growing the visible rect itself — so alignment
@@ -43,4 +76,10 @@
 .hotspot:focus-visible {
   background: rgba(201, 168, 76, 0.14);
   border-color: rgba(201, 168, 76, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspot {
+    transition: none;
+  }
 }

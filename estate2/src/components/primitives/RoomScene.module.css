@@ -28,8 +28,10 @@
 
 .title {
   font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
   font-style: italic;
   font-size: 22px;
+  margin: 0;
   color: var(--cream);
 }
 

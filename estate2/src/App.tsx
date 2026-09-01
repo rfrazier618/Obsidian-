@@ -19,7 +19,7 @@ export default function App() {
     <Routes>
       <Route element={<EstateShell />}>
         {REGISTRY.filter((d) => d.status === 'live' && d.route).map((d) =>
-          d.id === 'estate-hall' ? (
+          d.type === 'hub' ? (
             <Route key={d.id} path={d.route!} element={<Hub />} />
           ) : (
             <Route key={d.id} path={d.route!} element={<RoomRoute destinationId={d.id} />} />

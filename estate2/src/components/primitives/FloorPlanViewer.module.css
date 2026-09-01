@@ -85,6 +85,12 @@
   transition: width 0.2s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .planWrap {
+    transition: none;
+  }
+}
+
 .planImage {
   width: 100%;
   display: block;

@@ -8,6 +8,7 @@ import { ThresholdKeypad } from './ThresholdKeypad';
 import { useAudio } from '@/state/AudioContext';
 import { useOverlay } from '@/state/OverlayContext';
 import { useEstateNavigation } from '@/state/useEstateNavigation';
+import { useAdjacentPrefetch } from '@/state/useAdjacentPrefetch';
 import styles from './RoomScene.module.css';
 
 interface RoomSceneProps {
@@ -38,6 +39,8 @@ export function RoomScene({ destination }: RoomSceneProps) {
     setProfile(destination.audioProfile);
     return () => setProfile(null);
   }, [destination.audioProfile, setProfile]);
+
+  useAdjacentPrefetch(destination);
 
   // Panels reset to closed whenever the mounted destination changes —
   // belt-and-suspenders on top of the unmount-on-navigate guarantee,
@@ -111,10 +114,10 @@ export function RoomScene({ destination }: RoomSceneProps) {
         >
           &larr; {destination.backTarget ? REGISTRY.find((d) => d.id === destination.backTarget)?.displayName : 'The Estate'}
         </button>
-        <span className={styles.title}>
+        <h1 className={styles.title}>
           {destination.reference && <span className={styles.reference}>{destination.reference}</span>}
           {destination.displayName}
-        </span>
+        </h1>
         <span className={styles.district}>District {destination.district}</span>
       </header>
 

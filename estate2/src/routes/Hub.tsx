@@ -9,9 +9,9 @@ export function Hub() {
   const { navigateTo } = useEstateNavigation();
   return (
     <div style={{ padding: '60px clamp(20px,4vw,56px)', maxWidth: 720 }}>
-      <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 28, color: 'var(--cream)' }}>
+      <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontWeight: 400, fontSize: 28, margin: 0, color: 'var(--cream)' }}>
         Estate 2.0 — Foundation
-      </p>
+      </h1>
       <p style={{ color: 'var(--cream-dim)', fontSize: 14, lineHeight: 1.7 }}>
         This is the hub destination (<code>estate-hall</code>), rendered from the same Registry as
         everything else. Use Global Navigation, Explore, or the button below — all three resolve
