@@ -24,8 +24,21 @@ export type Capability =
   | 'floorplan'
   | 'audio-profile'
   /** Added during the D2 reference migration — an access-code interaction
-   *  gating entry to another destination. See ThresholdConfig below. */
-  | 'threshold';
+   *  gating entry to another destination. Always succeeds — a permissive,
+   *  decorative interaction, not a real lock. See ThresholdConfig below. */
+  | 'threshold'
+  /**
+   * Added during the District III (Gemini) reference migration — a real,
+   * failable credential gate (monthly-rotating password, hashed) distinct
+   * from 'threshold' on purpose: District II's II-110 keypad accepts any
+   * 4 digits, because it was never a real lock in legacy either. Gemini's
+   * reception genuinely is. Reusing 'threshold' for this would blur an
+   * intentional distinction the owner drew between the two districts.
+   * See AdmissionConfig below.
+   */
+  | 'gemini-admission'
+  /** Read-only catalogue browse — adding nothing to a cart. See MenuItem. */
+  | 'menu';
 
 /**
  * A hotspot's behavior, extracted from the D2 reference migration where
@@ -77,6 +90,26 @@ export interface ThresholdConfig {
   motto: string;
 }
 
+/**
+ * Config for a destination with the 'gemini-admission' capability — a
+ * real credential gate, unlike ThresholdConfig's always-succeeds keypad.
+ * `monthlyKeyHashes[monthIndex]` (0-11, JS `Date#getMonth()`) is the
+ * SHA-256 hex digest of that month's real password (trimmed + lowercased
+ * before hashing) — ported verbatim from legacy's GEMINI_KEYS/geminiHash,
+ * so the actual gate behavior carries over, including its real monthly
+ * rotation, not just its shape. `monthlyRhythms` is the non-interactive
+ * sequence legacy plays after a correct password — staff performs it in
+ * the legacy telling, the guest only ever watches, so it's reveal-
+ * animation data, never a second thing the guest has to get right.
+ */
+export interface AdmissionConfig {
+  targetId: string;
+  eyebrow: string;
+  motto: string;
+  monthlyKeyHashes: string[];
+  monthlyRhythms: number[][];
+}
+
 export interface Destination {
   /** Stable forever. Never reused, even after a destination retires. */
   id: string;
@@ -118,6 +151,17 @@ export interface Destination {
   capabilities: Capability[];
   /** Required and used only when capabilities includes 'threshold'. */
   thresholdConfig?: ThresholdConfig | null;
+  /** Required and used only when capabilities includes 'gemini-admission'. */
+  admissionConfig?: AdmissionConfig | null;
+  /**
+   * If set, this destination cannot be entered — by direct link or by a
+   * hotspot — until admission has been granted at the named gate
+   * destination (see registry/admission.ts). Enforced centrally in
+   * RoomRoute, the same chokepoint that already turns an unknown id into
+   * an honest "no destination" page rather than a broken one, so a
+   * hotspot-triggered navigation and a typed URL are refused identically.
+   */
+  admissionRequired?: string | null;
   hotspots: Hotspot[];
   /**
    * Declared trigger for status:'secret' destinations. Secrets are allowed

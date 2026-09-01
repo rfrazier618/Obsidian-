@@ -1,4 +1,4 @@
-import type { Destination } from './types';
+import type { Destination, District } from './types';
 
 /**
  * DEPMG Sessions — the real media content, shared by every hotspot that
@@ -211,7 +211,7 @@ export const REGISTRY: Destination[] = [
     type: 'room',
     status: 'live',
     parent: null,
-    adjacentDestinations: ['estate-hall', 'control-room', 'hq-corridor'],
+    adjacentDestinations: ['estate-hall', 'control-room', 'hq-corridor', 'gemini-reception'],
     backTarget: 'estate-hall',
     explorerVisibility: true,
     globalNavVisibility: false,
@@ -277,11 +277,11 @@ export const REGISTRY: Destination[] = [
         label: 'District I — Foundation',
       },
       {
-        // Out of scope for this reference slice — District III itself, not
-        // just another D2 room. Left as an honest toast rather than a
-        // broken link or a silent omission of a hotspot that exists on
-        // the real render.
-        action: { kind: 'toast', message: 'District III — GEMINI Speakeasy hasn’t migrated to Estate 2.0 yet.' },
+        // Activated during the District III reference-slice migration —
+        // this hotspot was a placeholder toast until Gemini Reception
+        // itself went live. Same coords and title as before; only the
+        // action changed, same pattern as HQ Corridor's activation above.
+        action: { kind: 'navigate', targetId: 'gemini-reception' },
         shape: 'rect',
         coords: { left: 48.3, top: 89.5, width: 7.2, height: 7 },
         label: 'District III — GEMINI Speakeasy',
@@ -1784,6 +1784,451 @@ export const REGISTRY: Destination[] = [
   stub('d2-312-admin', 'II-312', 'Administrative / Support Workspace', 'Executive, Brand & Media HQ'),
   stub('d2-313-cafe', 'II-313', 'Shared Café / Refreshment', 'Executive, Brand & Media HQ'),
   stub('d2-314-restrooms', 'II-314', 'Restrooms, Storage, Print / Reprographics', 'Executive, Brand & Media HQ'),
+
+  // ═══════════════ DISTRICT III — GEMINI REFERENCE SLICE ═══════════════
+  // Reception (admission) -> Gemini Main Floor (III-201, the district hub
+  // equivalent) -> Gemini Core/Main Bar -> Constellation Mezzanine (III-601)
+  // -> Mintaka, the first VIP lounge migrated. Every destination past
+  // Reception carries admissionRequired: 'gemini-reception' — mirroring
+  // legacy's own goTo('gemini') central intercept, which gates the whole
+  // Gemini experience for every caller, not just the arrival hero. See
+  // the reference-slice report for the full disclosure of what's in and
+  // out of scope this pass (Alnilam, Alnitak, Piano/Vinyl/Cigar/Wine,
+  // Main Performance Stage, Private Events, table/seat routing and
+  // concierge features all stay out — represented as honest stubs/toasts).
+  {
+    id: 'gemini-reception',
+    canonicalName: 'Gemini Reception',
+    displayName: 'Gemini Reception',
+    // No canon reference number was found in legacy source for Reception
+    // itself (only III-201 Main Floor and III-601 Mezzanine are verified)
+    // — left undefined rather than invented. See the reference-slice report.
+    district: 'III',
+    wing: 'Gemini Speakeasy',
+    route: '/district-iii/reception',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['depmg', 'gemini-hall'],
+    backTarget: 'depmg',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: null,
+    backgroundAsset: '/d3/gemini-reception-bg.jpg',
+    audioProfile: 'gemini-reception',
+    capabilities: ['gemini-admission'],
+    admissionConfig: {
+      targetId: 'gemini-hall',
+      eyebrow: 'Gemini Speakeasy · District III · Reception',
+      motto: 'Access Level — Gemini.',
+      // Ported verbatim from legacy's GEMINI_KEYS — real SHA-256 digests of
+      // each month's real password, not placeholders. A password that
+      // works in Estate 1.0 this month works here too.
+      monthlyKeyHashes: [
+        '4e2295dd929e424aa1afde7049924cb231f451c9884d7915ae33690b73b227ec',
+        '0f0e99f465a65c3cb8a7514fa35714553fc70d91c948679dc7a91fb3d79e6a06',
+        'ee8815ae059140259ea0be8c941b46fe94341c41ef92e1082caec869afc7935c',
+        'd924695fc9dd29e99cd2946a1c3f2242456dd75623c169c952b5968249dc523f',
+        '3bb68de60f56156655a2a70e606892edda3e2f2fc57b482bfe3ef1c5263db5b6',
+        'f88594fcb8a375fd6d6dd9f78811ff6cd170a5e4d90acafd9f3559f7b2f983fb',
+        '2cd15a3bcdabdb73a4a95873835e05aa225de16d7fdbe5eefddbb01a69e966e3',
+        '3a183bb6464f5cebe1e6618ba2035d5282d240ad629ea82fb5302b760f8d03a2',
+        '019a4a1edc7efb580e5e54763cf028dc33dc558814e80eeea80a602fa2f37319',
+        'baf1f24970f312d4c98cd8138be1a8312817532fcd3d4b30a9feafe6789f864d',
+        'c49fea7425fa7f8699897a97c159c6690267d9003bb78c53fafa8fc15c325d84',
+        '05c8b1e5aab515703364c49f2a64d813e7cdaea34dc6a07b275801e7d32da074',
+      ],
+      // Ported verbatim from legacy's GEMINI_RHYTHM — cosmetic, never checked.
+      monthlyRhythms: [
+        [2, 4, 1, 3], [1, 3, 4, 2], [3, 1, 2, 4], [4, 2, 3, 1],
+        [2, 3, 1, 4], [1, 4, 2, 3], [3, 2, 4, 1], [2, 4, 1, 3],
+        [4, 1, 3, 2], [1, 2, 4, 3], [3, 4, 2, 1], [2, 1, 4, 3],
+      ],
+    },
+    hotspots: [
+      {
+        action: { kind: 'capability', capability: 'gemini-admission' },
+        shape: 'rect',
+        coords: { left: 20.7, top: 86.5, width: 7.6, height: 18.5 },
+        label: 'Enter Password',
+      },
+      {
+        // Legacy's own doors card refuses entry the same way the password
+        // card does when not yet admitted (rcRefuse), and passes straight
+        // through without asking again once admitted (geminiAdmitted()) —
+        // both converge on the identical isAdmitted() check GeminiAdmissionGate
+        // already runs on open, so both hotspots share one capability trigger.
+        action: { kind: 'capability', capability: 'gemini-admission' },
+        shape: 'rect',
+        coords: { left: 93.9, top: 87.7, width: 8.2, height: 20.5 },
+        label: 'Enter Gemini Speakeasy',
+      },
+      {
+        action: {
+          kind: 'toast',
+          message:
+            'History of Gemini, Reservations & Concierge, Membership, Private Wine Lockers, Cigar Program, Tonight’s Entertainment, House Rules, VIP Elevator, Private Suites and the Grand Stair are all real cards in legacy Reception but are out of scope for this reference slice.',
+        },
+        shape: 'rect',
+        coords: { left: 4.5, top: 86.5, width: 16, height: 18.5 },
+        label: 'Reception Information',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'gemini-hall',
+    canonicalName: 'Gemini Hall — Main Floor',
+    displayName: 'Gemini Main Floor',
+    reference: 'III-201',
+    district: 'III',
+    wing: 'Gemini Speakeasy',
+    route: '/district-iii/main-floor',
+    // NOT DestinationType 'hub' — that value is reserved for estate-hall's
+    // own bespoke top-level screen (App.tsx routes it straight to <Hub/>,
+    // bypassing RoomScene entirely). A hub-and-spoke room like this one,
+    // same as District II's hq-corridor, is still type 'room' so it gets
+    // a real background, hotspots and admission enforcement through
+    // RoomScene/RoomRoute like everywhere else.
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['gemini-reception', 'gemini-bar', 'constellation-mezzanine', 'estate-hall'],
+    backTarget: 'gemini-reception',
+    admissionRequired: 'gemini-reception',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: null,
+    backgroundAsset: '/d3/gemini-hall-bg.jpg',
+    audioProfile: 'gemini-hall',
+    capabilities: ['directory'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'constellation-mezzanine' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 24.3, width: 17.5, height: 5.2 },
+        label: 'VIP Mezzanine — III-601',
+      },
+      {
+        action: { kind: 'toast', message: 'Main Performance Stage — tonight’s entertainment hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 35.2, width: 17.5, height: 5.2 },
+        label: 'Main Performance Stage',
+      },
+      {
+        action: { kind: 'toast', message: 'Piano Lounge hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 17.3, top: 35.2, width: 15.5, height: 5.2 },
+        label: 'Piano Lounge',
+      },
+      {
+        action: { kind: 'toast', message: 'Vinyl Lounge hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 82.7, top: 35.2, width: 15.5, height: 5.2 },
+        label: 'Vinyl Lounge',
+      },
+      {
+        action: { kind: 'toast', message: 'Cigar & Whiskey hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 17.3, top: 59.5, width: 15.5, height: 4.8 },
+        label: 'Cigar & Whiskey',
+      },
+      {
+        action: { kind: 'toast', message: 'DEPMG Wine Bar hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 82.7, top: 59.5, width: 15.5, height: 4.8 },
+        label: 'DEPMG Wine Bar',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'gemini-bar' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 59.8, width: 16.5, height: 4.8 },
+        label: 'Gemini Core — Center Bar',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'estate-hall' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 73.5, width: 16.5, height: 4.8 },
+        label: 'Gemini Doors — Return to the Estate',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'gemini-bar',
+    canonicalName: 'Gemini Core — Main Bar',
+    displayName: 'Gemini Main Bar',
+    district: 'III',
+    wing: 'Gemini Speakeasy',
+    route: '/district-iii/gemini-bar',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['gemini-hall'],
+    backTarget: 'gemini-hall',
+    admissionRequired: 'gemini-reception',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: null,
+    backgroundAsset: '/d3/gemini-bar-bg.jpg',
+    audioProfile: 'gemini-bar',
+    // 'ordering' alongside 'menu' documents that this room transacts, not
+    // just browses — both render through the one GeminiMenu component;
+    // see RoomScene's activateCapability and registry/commerce.ts.
+    capabilities: ['directory', 'menu', 'ordering'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'gemini-hall' },
+        shape: 'rect',
+        coords: { left: 90.5, top: 6.0, width: 15.0, height: 8.0 },
+        label: 'Return to Gemini Main Floor',
+      },
+      // The eight menu-category cards below all route to the identical
+      // catalogue in legacy (gcAction: every 'menu'-tagged spot calls the
+      // same openBar()) — preserved exactly, not forked into eight menus
+      // that were never real in the source.
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 7.0, top: 77.25, width: 12.0, height: 12.5 },
+        label: 'Signature Cocktails',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 19.0, top: 77.25, width: 12.0, height: 12.5 },
+        label: 'Classics',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 30.5, top: 77.25, width: 13.0, height: 12.5 },
+        label: 'Whiskey & Bourbon',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 42.0, top: 77.25, width: 11.0, height: 12.5 },
+        label: 'Cognac',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 52.0, top: 77.25, width: 11.0, height: 12.5 },
+        label: 'Tequila & Mezcal',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 63.5, top: 77.25, width: 13.0, height: 12.5 },
+        label: 'Wine & Champagne',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 75.0, top: 77.25, width: 11.0, height: 12.5 },
+        label: 'Zero-Proof',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 87.0, top: 77.25, width: 13.0, height: 12.5 },
+        label: 'Small Bites',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'constellation-mezzanine',
+    canonicalName: 'Constellation Mezzanine',
+    displayName: 'Constellation Mezzanine',
+    reference: 'III-601',
+    district: 'III',
+    wing: 'Gemini Speakeasy',
+    route: '/district-iii/constellation-mezzanine',
+    // Same reasoning as gemini-hall above: type 'room', not 'hub'.
+    type: 'room',
+    status: 'live',
+    parent: null,
+    // The real intermediate hop legacy uses between Main Floor and Mintaka
+    // (Main Floor's 'vip' hotspot lands here, not on Mintaka directly) —
+    // preserved as a real 2-hop structure rather than a fabricated
+    // shortcut edge. See the reference-slice report.
+    adjacentDestinations: ['gemini-hall', 'mintaka'],
+    backTarget: 'gemini-hall',
+    admissionRequired: 'gemini-reception',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: null,
+    backgroundAsset: '/d3/constellation-mezzanine-bg.jpg',
+    audioProfile: 'constellation-mezzanine',
+    capabilities: ['directory'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'estate-hall' },
+        shape: 'rect',
+        coords: { left: 86.5, top: 6.2, width: 18.0, height: 7.5 },
+        label: 'Constellation Doors — Reception & Estate Return',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'mintaka' },
+        shape: 'rect',
+        coords: { left: 17.0, top: 24.8, width: 15.0, height: 11.5 },
+        label: 'Mintaka — West VIP Lounge',
+      },
+      {
+        action: { kind: 'toast', message: 'Alnilam — Center VIP Lounge hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 24.0, width: 16.0, height: 11.5 },
+        label: 'Alnilam — Center VIP Lounge',
+      },
+      {
+        action: { kind: 'toast', message: 'Alnitak — East VIP Lounge hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 83.5, top: 24.8, width: 15.0, height: 11.5 },
+        label: 'Alnitak — East VIP Lounge',
+      },
+      {
+        action: { kind: 'navigate', targetId: 'gemini-bar' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 60.8, width: 18.0, height: 10.0 },
+        label: 'Celestial Overlook — View Gemini Core Performance Floor Below',
+      },
+      {
+        action: { kind: 'toast', message: 'Tonight’s Performance stage view hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 50.0, top: 74.2, width: 18.0, height: 11.0 },
+        label: 'Stage Overlook — Tonight’s Performance',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'VIP Elevator',
+          body: `<p>The private elevator connects the Constellation Mezzanine to every reserved level above Gemini Speakeasy — the VIP lounges, and the Estate's private suites beyond them.</p>
+          <p>Access is by badge, or by the desk's own recognition. Ask your host if you're unsure where a level leads.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 15.5, top: 69.0, width: 17.0, height: 6.0 },
+        label: 'VIP Elevator — To All Levels',
+      },
+      {
+        action: {
+          kind: 'panel',
+          title: 'Grand Stair',
+          body: `<p>A private stair for guests who'd rather feel the climb than wait for the elevator — connecting the mezzanine down through the Estate's other levels.</p>`,
+        },
+        shape: 'rect',
+        coords: { left: 85.5, top: 69.0, width: 17.0, height: 6.0 },
+        label: 'Grand Stair — To Estate Levels',
+      },
+    ],
+    secretTrigger: null,
+  },
+  {
+    id: 'mintaka',
+    canonicalName: 'Mintaka — West VIP Lounge',
+    displayName: 'Mintaka',
+    district: 'III',
+    wing: 'Gemini Speakeasy',
+    route: '/district-iii/mintaka',
+    type: 'room',
+    status: 'live',
+    parent: null,
+    adjacentDestinations: ['constellation-mezzanine', 'gemini-bar'],
+    backTarget: 'constellation-mezzanine',
+    admissionRequired: 'gemini-reception',
+    explorerVisibility: true,
+    globalNavVisibility: false,
+    directoryVisibility: true,
+    floorPlanRef: null,
+    backgroundAsset: '/d3/mintaka-bg.jpg',
+    audioProfile: 'mintaka',
+    capabilities: ['directory', 'menu', 'ordering'],
+    hotspots: [
+      {
+        action: { kind: 'navigate', targetId: 'gemini-bar' },
+        shape: 'rect',
+        coords: { left: 9.0, top: 49.0, width: 13.0, height: 4.5 },
+        label: 'Gemini Core',
+      },
+      {
+        // Both route to openBar() in legacy — the identical Gemini Core
+        // catalogue, not a separate Mintaka menu. Same GeminiMenu overlay,
+        // fulfillmentContext: 'mintaka' instead of 'gemini-bar' — that
+        // difference alone is what makes the order land at MINTAKA · LOUNGE
+        // DELIVERY instead of GEMINI MAIN BAR · BAR PICKUP.
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 9.0, top: 58.5, width: 13.0, height: 4.0 },
+        label: 'Cocktail Menu',
+      },
+      {
+        action: { kind: 'capability', capability: 'menu' },
+        shape: 'rect',
+        coords: { left: 9.0, top: 65.5, width: 13.0, height: 4.0 },
+        label: 'Small Bites Menu',
+      },
+      {
+        action: { kind: 'capability', capability: 'ordering' },
+        shape: 'rect',
+        coords: { left: 10.0, top: 71.5, width: 15.0, height: 4.0 },
+        label: 'Current Order',
+      },
+      {
+        action: { kind: 'toast', message: 'Cigar & Whiskey hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 23.5, top: 47.5, width: 15.0, height: 4.5 },
+        label: 'Cigar & Whiskey',
+      },
+      {
+        action: { kind: 'toast', message: 'DEPMG Wine Bar hasn’t migrated to Estate 2.0 yet.' },
+        shape: 'rect',
+        coords: { left: 37.5, top: 47.5, width: 15.0, height: 4.5 },
+        label: 'DEPMG Wine Bar',
+      },
+      {
+        // Table/seat routing and concierge features (Request Service,
+        // Lounge Controls, Request Valet) are real in legacy Mintaka but
+        // were out of scope for this reference slice — see the report.
+        action: { kind: 'toast', message: 'Request Service isn’t part of this reference slice yet.' },
+        shape: 'rect',
+        coords: { left: 25.0, top: 71.5, width: 15.0, height: 4.0 },
+        label: 'Request Service',
+      },
+      {
+        action: { kind: 'toast', message: 'Lounge Controls aren’t part of this reference slice yet.' },
+        shape: 'rect',
+        coords: { left: 38.0, top: 66.5, width: 15.0, height: 4.0 },
+        label: 'Lounge Controls',
+      },
+      {
+        action: { kind: 'toast', message: 'Privacy & Lighting controls aren’t part of this reference slice yet.' },
+        shape: 'rect',
+        coords: { left: 81.5, top: 82.2, width: 20.0, height: 4.5 },
+        label: 'Privacy Control & Lighting',
+      },
+      {
+        action: { kind: 'toast', message: 'Request Valet isn’t part of this reference slice yet.' },
+        shape: 'rect',
+        coords: { left: 81.5, top: 91.7, width: 20.0, height: 4.5 },
+        label: 'Request Valet',
+      },
+    ],
+    secretTrigger: null,
+  },
+  // ─── Out of scope this pass — Directory completeness only ───
+  stub('d3-piano', '', 'Piano Lounge', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-vinyl', '', 'Vinyl Lounge', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-cigar-whiskey', '', 'Cigar & Whiskey', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-wine-bar', '', 'DEPMG Wine Bar', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-stage', '', 'Main Performance Stage', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-private-events', '', 'Private Events', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-alnilam', '', 'Alnilam — Center VIP Lounge', 'Gemini Speakeasy', 'room', 'III'),
+  stub('d3-alnitak', '', 'Alnitak — East VIP Lounge', 'Gemini Speakeasy', 'room', 'III'),
 ];
 
 /**
@@ -1799,14 +2244,15 @@ function stub(
   reference: string,
   canonicalName: string,
   wing: string,
-  type: 'room' | 'overlay' = 'room'
+  type: 'room' | 'overlay' = 'room',
+  district: District = 'II'
 ): Destination {
   return {
     id,
     canonicalName,
     displayName: canonicalName,
-    reference,
-    district: 'II',
+    reference: reference || undefined,
+    district,
     wing,
     route: null,
     type,

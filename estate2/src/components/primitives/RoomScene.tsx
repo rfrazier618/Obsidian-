@@ -5,6 +5,9 @@ import { HotspotLayer } from './HotspotLayer';
 import { EstateDirectory } from './EstateDirectory';
 import { FloorPlanViewer, type FloorPlanMarker } from './FloorPlanViewer';
 import { ThresholdKeypad } from './ThresholdKeypad';
+import { GeminiAdmissionGate } from './GeminiAdmissionGate';
+import { GeminiMenu } from './GeminiMenu';
+import { GEMINI_CORE_MENU } from '@/registry/menu';
 import { useAudio } from '@/state/AudioContext';
 import { useOverlay } from '@/state/OverlayContext';
 import { useEstateNavigation } from '@/state/useEstateNavigation';
@@ -34,6 +37,8 @@ export function RoomScene({ destination }: RoomSceneProps) {
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const [floorPlanOpen, setFloorPlanOpen] = useState(false);
   const [thresholdOpen, setThresholdOpen] = useState(false);
+  const [admissionOpen, setAdmissionOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     setProfile(destination.audioProfile);
@@ -49,6 +54,8 @@ export function RoomScene({ destination }: RoomSceneProps) {
     setDirectoryOpen(false);
     setFloorPlanOpen(false);
     setThresholdOpen(false);
+    setAdmissionOpen(false);
+    setMenuOpen(false);
   }, [destination.id]);
 
   const sheet = destination.floorPlanRef ? FLOOR_PLAN_SHEETS[destination.floorPlanRef.sheet] : null;
@@ -91,6 +98,8 @@ export function RoomScene({ destination }: RoomSceneProps) {
     if (capability === 'directory') setDirectoryOpen(true);
     else if (capability === 'floorplan') setFloorPlanOpen(true);
     else if (capability === 'threshold') setThresholdOpen(true);
+    else if (capability === 'gemini-admission') setAdmissionOpen(true);
+    else if (capability === 'menu' || capability === 'ordering') setMenuOpen(true);
     else if (capability === 'media') {
       openModal({
         id: 'media-proof',
@@ -153,6 +162,16 @@ export function RoomScene({ destination }: RoomSceneProps) {
             {destination.thresholdConfig.eyebrow}
           </button>
         )}
+        {destination.capabilities.includes('gemini-admission') && destination.admissionConfig && (
+          <button className={styles.actionBtn} onClick={() => setAdmissionOpen(true)}>
+            {destination.admissionConfig.eyebrow}
+          </button>
+        )}
+        {(destination.capabilities.includes('menu') || destination.capabilities.includes('ordering')) && (
+          <button className={styles.actionBtn} onClick={() => setMenuOpen(true)}>
+            Menu &amp; Order
+          </button>
+        )}
       </div>
 
       <div className={styles.meta}>
@@ -186,6 +205,33 @@ export function RoomScene({ destination }: RoomSceneProps) {
           onClose={() => setThresholdOpen(false)}
           config={destination.thresholdConfig}
           onComplete={navigateTo}
+        />
+      )}
+
+      {destination.admissionConfig && (
+        <GeminiAdmissionGate
+          open={admissionOpen}
+          onClose={() => setAdmissionOpen(false)}
+          gateId={destination.id}
+          config={destination.admissionConfig}
+          onComplete={() => {
+            setAdmissionOpen(false);
+            navigateTo(destination.admissionConfig!.targetId);
+          }}
+          onReject={() => {
+            setAdmissionOpen(false);
+            navigateTo(destination.backTarget ?? 'estate-hall');
+          }}
+        />
+      )}
+
+      {(destination.capabilities.includes('menu') || destination.capabilities.includes('ordering')) && (
+        <GeminiMenu
+          open={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          items={GEMINI_CORE_MENU}
+          fulfillmentContext={destination.id}
+          roomLabel={destination.displayName}
         />
       )}
     </div>

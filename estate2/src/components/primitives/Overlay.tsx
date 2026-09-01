@@ -27,6 +27,18 @@ const FOCUSABLE_SELECTOR =
 export function Overlay({ open, onClose, ariaLabel, size = 'modal', children }: OverlayProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
+  // Read through a ref inside the effect below, rather than putting
+  // `onClose` in that effect's dependency array — a caller that re-renders
+  // while the overlay is open (GeminiAdmissionGate does, once per
+  // keystroke in its password field) would otherwise hand this effect a
+  // fresh `onClose` closure every time, retriggering its cleanup+setup on
+  // every keystroke: cleanup restores focus to whatever was focused
+  // before the overlay opened, then setup immediately steals it back to
+  // the panel — yanking focus out of the input on the very next
+  // keystroke. Keeping the effect keyed on `open` alone, with the latest
+  // `onClose` always available via the ref, avoids that entirely.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
@@ -38,7 +50,7 @@ export function Overlay({ open, onClose, ariaLabel, size = 'modal', children }: 
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab' || !panelRef.current) return;
@@ -83,7 +95,7 @@ export function Overlay({ open, onClose, ariaLabel, size = 'modal', children }: 
         toRestore.focus();
       }
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 

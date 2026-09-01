@@ -1,0 +1,131 @@
+.eyebrow {
+  font-family: monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-align: center;
+  margin: 0 0 18px;
+}
+
+.logo {
+  font-family: 'Cormorant SC', serif;
+  font-size: 28px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.motto {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--cream-dim);
+  text-align: center;
+  margin: 0 0 28px;
+}
+
+.stage {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.line {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--cream);
+  text-align: center;
+  margin: 0;
+}
+
+.input {
+  background: var(--panel-2);
+  border: 1px solid var(--walnut);
+  color: var(--cream);
+  font-family: monospace;
+  font-size: 15px;
+  letter-spacing: 0.15em;
+  padding: 10px 14px;
+  border-radius: 4px;
+  width: 220px;
+  text-align: center;
+  /* type="text" + CSS masking instead of type="password" — see the
+     component comment for why. Unsupported browsers just show plain
+     text, which is a cosmetic-only degradation for a speakeasy phrase. */
+  -webkit-text-security: disc;
+  text-security: disc;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.wrong {
+  border-color: #a33;
+  animation: shake 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrong {
+    animation: none;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.submit {
+  background: var(--panel-2);
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.submit:not(:disabled):hover {
+  border-color: var(--gold);
+}
+
+.rhythm {
+  display: flex;
+  gap: 16px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 1px solid var(--walnut);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    transition: none;
+  }
+}
+
+.dotLit {
+  background: var(--gold);
+  border-color: var(--gold);
+}

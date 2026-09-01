@@ -36,10 +36,16 @@ describe('District II reference slice — Reception → II-110 → Control Room 
     expect(screen.getByText('DEPMG Executive Reception')).toBeInTheDocument();
   });
 
-  it('out-of-scope District III/IV and HQ hotspots give an honest toast instead of a broken link', () => {
+  it('District III — GEMINI Speakeasy hotspot navigates to Gemini Reception now that it has migrated', () => {
     renderApp('/district-ii/reception');
     fireEvent.click(screen.getByTitle('District III — GEMINI Speakeasy'));
-    expect(screen.getByText(/GEMINI Speakeasy hasn.t migrated to Estate 2\.0 yet/)).toBeInTheDocument();
+    expect(screen.getByText('Gemini Reception')).toBeInTheDocument();
+  });
+
+  it('still-out-of-scope District I/IV/Basement hotspots give an honest toast instead of a broken link', () => {
+    renderApp('/district-ii/reception');
+    fireEvent.click(screen.getByTitle('District IV — The Experience'));
+    expect(screen.getByText(/District IV — The Experience hasn.t migrated to Estate 2\.0 yet/)).toBeInTheDocument();
   });
 
   it('"Return Home" hotspot navigates to the hub', () => {
